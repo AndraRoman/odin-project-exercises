@@ -5,7 +5,7 @@ module Enumerable
         yield(j)
       end
     else
-      self.to_enum # kind of cheating, this uses each
+      self.to_enum(:my_each) # kind of cheating, this uses each
     end
   end
 
@@ -17,49 +17,60 @@ module Enumerable
         index += 1
       end
     else
-      self.to_enum
+      self.to_enum(:my_each_with_index)
     end
   end
 
-  # not bothering to return an enumerator for anything else, oh well
   def my_select
-    result = self.class.new
-    self.my_each do |i|
-      if yield(i)
-        result.my_add_to_enumerable(i)
+    if block_given?
+      result = self.class.new
+      self.my_each do |i|
+        if yield(i)
+          result.my_add_to_enumerable(i)
+        end
       end
+      result
+    else
+      self.to_enum(:my_select)
     end
-    result
   end
 
   def my_all?
-    answer = true
-    self.my_each do |i|
-      if !yield(i)
-        answer = false
+    if block_given?
+      self.my_each do |i|
+        if !yield(i)
+          return false
+        end
       end
     end
-    answer
+    true
   end
 
   def my_any?
-    self.my_each do |i|
-      if yield(i)
-        return true
+    if block_given?
+      self.my_each do |i|
+        if yield(i)
+          return true
+        end
       end
+      return false
     end
-    return false
+    true
   end
 
   def my_none?
-    self.my_each do |i|
-      puts "comparing #{i}"
-      if yield(i)
-        puts "condition met"
-        return false
+    if block_given?
+      self.my_each do |i|
+        puts "comparing #{i}"
+        if yield(i)
+          puts "condition met"
+          return false
+        end
       end
+      return true
+    else
+      return false
     end
-    return true
   end
 
   def my_count
@@ -71,12 +82,16 @@ module Enumerable
   end
 
   def my_map
-    result = self.class.new
-    self.my_each do |i|
-      j = yield(i)
-      result.my_add_to_enumerable(j)
+    if block_given?
+      result = self.class.new
+      self.my_each do |i|
+        j = yield(i)
+        result.my_add_to_enumerable(j)
+      end
+      result
+    else
+      self.to_enum(:my_map)
     end
-    result
   end
 
   # assyming that every enumerable class but hashes has push method

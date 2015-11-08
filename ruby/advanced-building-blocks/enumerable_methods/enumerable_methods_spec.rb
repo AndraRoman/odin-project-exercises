@@ -23,6 +23,17 @@ describe "my_each" do
     array = [1, 2, 4]
     expect(array.my_each.class).to be(Enumerator)
   end
+
+  it "returns an enumerator that works with with_index" do
+    input = [5, 6, 7]
+    array = []
+    p input.my_each.with_index
+    input.my_each.with_index do |i, index|
+      array.push(i)
+      array.push(index)
+    end
+    expect(array).to eq([5, 0, 6, 1, 7, 2])
+  end
 end
 
 describe "my_each_with_index" do
@@ -57,6 +68,11 @@ describe "my_select" do
     hash = {:a => 1, :b => 2, :c => 3}.select {|k, v| v.odd?}
     expect(hash).to eq({:a => 1, :c => 3})
   end
+
+  it "returns an enumerator that works with with_index" do
+    array = [0, 1, 2, 5].my_select.with_index{|i, ind| i != ind}
+    expect(array).to eq([5])
+  end
 end
 
 describe "my_all" do
@@ -78,6 +94,10 @@ describe "my_all" do
   it "handles hash with result false" do
     answer = {:a => 1, :b => 2, :c => 3}.my_all? {|k, v| v > 2}
     expect(answer).to be(false)
+  end
+
+  it "returns true when no block given" do
+    expect([2, 4, 5].my_all?).to be(true)
   end
 end
 
@@ -101,6 +121,10 @@ describe "my_any" do
     answer = {:a => 1, :b => 2, :c => 3}.my_any? {|k, v| v > 3}
     expect(answer).to be(false)
   end
+
+  it "returns true when no block given" do
+    expect([2, 4, 5].my_any?).to be(true)
+  end
 end
 
 describe "my_none" do
@@ -122,6 +146,10 @@ describe "my_none" do
   it "handles hash with result true" do
     answer = {:a => 1, :b => 2, :c => 3}.my_none? {|k, v| v > 3}
     expect(answer).to be(true)
+  end
+
+  it "returns false when no block given" do
+    expect([2, 4, 5].my_none?).to be(false)
   end
 end
 
@@ -152,6 +180,12 @@ describe "my_map" do
     hash = {0 => 1, 2 => 3, 4 => 5}
     result = hash.my_map {|k, v| [k ** 2, v * 2]}
     expect(result).to eq({0 => 2, 4 => 6, 16 => 10})
+  end
+
+  it "returns an enumerator that works with with_index " do
+    array = [0, 2, 5, 3, 5, 7].map.with_index {|i, ind| i == ind}
+    result = [true, false, false, true, false, false]
+    expect(array).to eq(result)
   end
 end
 
