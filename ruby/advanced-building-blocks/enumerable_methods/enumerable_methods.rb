@@ -5,7 +5,7 @@ module Enumerable
         yield(j)
       end
     else
-      self.to_enum(:my_each) # kind of cheating, this uses each
+      self.to_enum(:my_each)
     end
   end
 
