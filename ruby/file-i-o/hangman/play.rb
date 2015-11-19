@@ -3,11 +3,29 @@ include MiscMethods
 
 dictionary = (File.readlines "dictionary").map { |w| w.strip }
 
-game = Game.new(dictionary)
+# TODO interface for getting name
+
+filename = choose_file
+
+if filename
+  file = File.read("#{filename}")
+  puts "Opened saved game #{filename}."
+  game = Marshal.load(file)
+else
+  puts "Starting new game."
+  game = Game.new(dictionary)
+end
+
+game.display
 
 loop do
-  letter = get_letter
-  break unless game.turn(letter)
+  begin
+    input = get_letter
+  rescue SaveGame
+    filename = get_filename
+    save_game(game, filename)
+  end
+  break unless game.turn(input)
 end
 
 if game.won?

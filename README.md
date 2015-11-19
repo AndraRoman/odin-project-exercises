@@ -16,3 +16,6 @@ In which I work through, and sometimes overthink, the exercises in [http://www.t
 ###Object-Oriented Programming Project###
 * Tic-tac-toe (with AI; allows arbitrary board size, though AI is impractically slow for board larger than 3x3)
 * Mastermind (with AI)
+
+###Serialization and Working with Files###
+* Hangman
