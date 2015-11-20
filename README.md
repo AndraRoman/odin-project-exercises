@@ -22,3 +22,7 @@ In which I work through, and sometimes overthink, the exercises in [http://www.t
 
 ###Ruby on the Web###
 * Toy server and browser
+
+###Recursion###
+* Fibonacci sequence
+* Merge sort
