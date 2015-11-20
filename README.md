@@ -19,3 +19,6 @@ In which I work through, and sometimes overthink, the exercises in [http://www.t
 
 ###Serialization and Working with Files###
 * Hangman
+
+###Ruby on the Web###
+* Toy server and browser
