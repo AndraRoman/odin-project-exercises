@@ -1,3 +1,5 @@
+require 'set'
+
 class Node
 
   attr_accessor :value, :left_child, :right_child, :parent
@@ -94,16 +96,27 @@ def breadth_first_search(tree, target)
 end
 
 def depth_first_search(tree, target)
-  stack = []
+  stack = [tree]
+  current_node = tree
   visited_values = Set.new()
-  if tree.nil?
-    nil
-  elsif tree.value == target
-    tree
-  else
-    # put tree on stack
-    # if left subtree unvisited, move there and put it on the stack
+  result = nil
+  while stack.length > 0
+    if current_node.value == target
+      result = current_node
+      break
+    elsif current_node.left_child && !visited_values.include?(current_node.left_child.value)
+      current_node = current_node.left_child
+      stack.push(current_node)
+      visited_values.add(current_node.value)
+    elsif current_node.right_child && !visited_values.include?(current_node.right_child.value)
+      current_node = current_node.right_child
+      stack.push(current_node)
+      visited_values.add(current_node.value)
+    else
+      current_node = stack.pop
+    end
   end
+  result
 end
 
 def binary_search(tree, target)

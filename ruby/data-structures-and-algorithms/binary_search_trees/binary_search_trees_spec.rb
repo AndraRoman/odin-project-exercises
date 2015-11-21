@@ -121,3 +121,21 @@ describe "binary_search" do
     expect(binary_search(tree, 5)).to be(nil)
   end
 end
+
+describe "depth_first_search" do
+  it "returns node with a target value if present in tree" do
+    tree = Node.new(5)
+    tree.insert(3)
+    tree.insert(7)
+    tree.insert(1)
+    tree.insert(2)
+    expect(depth_first_search(tree, 5)).to be(tree)
+    expect(depth_first_search(tree, 3)).to be(tree.left_child)
+    expect(depth_first_search(tree, 1)).to be(tree.left_child.left_child)
+  end
+
+  it "returns nil otherwise" do
+    tree = Node.new(1)
+    expect(depth_first_search(tree, 5)).to be(nil)
+  end
+end
