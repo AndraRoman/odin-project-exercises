@@ -12,11 +12,11 @@ class Node
   # returns new tree in which @right_child is the root
   def rotate_left
     if @right_child
-      rotated = Node.new(@right_child.value)
-      rotated.left_child = Node.new(@value)
-      rotated.left_child.left_child = @left_child
-      rotated.left_child.right_child = @right_child.left_child
-      rotated.right_child = @right_child.right_child
+      rotated = Node.new(@right_child.value) # no parent
+      rotated.add_left_child(Node.new(@value))
+      rotated.left_child.add_left_child(@left_child)
+      rotated.left_child.add_right_child(@right_child.left_child)
+      rotated.add_right_child(@right_child.right_child)
       rotated
     else
       self.copy
@@ -26,15 +26,25 @@ class Node
   # returns new tree in which @left_child is the root
   def rotate_right
      if @left_child
-      rotated = Node.new(@left_child.value)
-      rotated.right_child = Node.new(@value)
-      rotated.right_child.right_child = @right_child
-      rotated.right_child.left_child = @left_child.right_child
-      rotated.left_child = @left_child.left_child
+      rotated = Node.new(@left_child.value) # no parent
+      rotated.add_right_child(Node.new(@value))
+      rotated.right_child.add_right_child(@right_child)
+      rotated.right_child.add_left_child(@left_child.right_child)
+      rotated.add_left_child(@left_child.left_child)
       rotated
     else
       self.copy
     end
+  end
+
+  def add_left_child(child)
+    @left_child = child
+    child.parent = self unless child.nil?
+  end
+
+  def add_right_child(child)
+    @right_child = child
+    child.parent = self unless child.nil?
   end
 
   def insert(n)
@@ -42,13 +52,13 @@ class Node
       if @left_child
         @left_child.insert(n)
       else
-        @left_child = Node.new(n)
+        add_left_child(Node.new(n))
       end
     elsif n > @value
       if @right_child
         @right_child.insert(n)
       else
-        @right_child = Node.new(n)
+        add_right_child(Node.new(n))
       end
     end
   end
@@ -62,8 +72,8 @@ def build_tree_from_sorted(array)
   else
     center = array.length / 2
     result = Node.new(array[center])
-    result.left_child = build_tree_from_sorted(array[0 ... center])
-    result.right_child = build_tree_from_sorted(array[center + 1 .. -1])
+    result.add_left_child(build_tree_from_sorted(array[0 ... center]))
+    result.add_right_child(build_tree_from_sorted(array[center + 1 .. -1]))
     result
   end
 end
@@ -74,4 +84,36 @@ def build_tree(array)
     tree.insert(i)
   end
   tree
+end
+
+def breadth_first_search(tree, target)
+  if tree.nil?
+    nil
+  else
+  end
+end
+
+def depth_first_search(tree, target)
+  stack = []
+  visited_values = Set.new()
+  if tree.nil?
+    nil
+  elsif tree.value == target
+    tree
+  else
+    # put tree on stack
+    # if left subtree unvisited, move there and put it on the stack
+  end
+end
+
+def binary_search(tree, target)
+  if tree.nil?
+    nil
+  elsif tree.value == target
+    tree
+  elsif tree.value > target
+    binary_search(tree.left_child, target)
+  else
+    binary_search(tree.right_child, target)
+  end
 end

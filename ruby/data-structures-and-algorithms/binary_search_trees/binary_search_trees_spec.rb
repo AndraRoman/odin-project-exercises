@@ -1,5 +1,35 @@
 require 'binary_search_trees'
 
+describe "add_left_child" do
+  it "adds (or replaces) a left child with correct parent" do
+    tree = build_tree_from_sorted([1, 2, 3, 4, 5])
+    tree.add_left_child(Node.new(0))
+    expect(tree.left_child.value).to be(0)
+    expect(tree.left_child.parent.value).to be(3)
+  end
+
+  it "does not throw exception if child is nil" do
+    tree = build_tree_from_sorted([1, 2, 3, 4, 5])
+    tree.add_left_child(nil)
+    expect(tree.left_child).to be(nil)
+  end
+end
+
+describe "add_right_child" do
+  it "adds (or replaces) a left child with correct parent" do
+    tree = build_tree_from_sorted([1, 2, 3, 4, 5])
+    tree.add_right_child(Node.new(10))
+    expect(tree.right_child.value).to be(10)
+    expect(tree.right_child.parent.value).to be(3)
+  end
+
+  it "does not throw exception if child is nil" do
+    tree = build_tree_from_sorted([1, 2, 3, 4, 5])
+    tree.add_right_child(nil)
+    expect(tree.right_child).to be(nil)
+  end
+end
+
 describe "rotate_left" do
   it "rotates a tree counterclockwise" do
     tree = build_tree_from_sorted([1, 2, 3, 4, 5, 6, 7])
@@ -38,6 +68,14 @@ describe "insert" do
     expect(tree.right_child.left_child.left_child.value).to be(9)
     expect(tree.left_child.left_child.right_child.value).to be(3)
   end
+
+  it "inserted node has correct parent" do
+    tree = build_tree_from_sorted([2, 4, 6, 8, 10, 12, 14])
+    tree.insert(9)
+    tree.insert(3)
+    expect(binary_search(tree, 3).value).to be(3)
+    expect(binary_search(tree, 3).parent.value).to be(2)
+  end
 end
 
 describe "build_tree_from_sorted" do
@@ -48,6 +86,12 @@ describe "build_tree_from_sorted" do
     expect(tree.left_child.right_child.value).to be(3)
     expect(tree.right_child.right_child.value).to be(7)
     expect(tree.right_child.right_child.right_child).to be(nil)
+  end
+
+  it "ensures nodes have correct parents" do
+    tree = build_tree_from_sorted([1, 2, 3, 4, 5, 6, 7])
+    expect(tree.parent).to be(nil)
+    expect(tree.left_child.parent.value).to be(4)
   end
 end
 
@@ -61,4 +105,19 @@ describe "build_tree" do
   end
 end
 
+describe "binary_search" do
+  it "returns node with a target value if present in tree" do
+    tree = Node.new(5)
+    tree.insert(3)
+    tree.insert(7)
+    tree.insert(1)
+    tree.insert(2)
+    expect(binary_search(tree, 5)).to be(tree)
+    expect(binary_search(tree, 1)).to be(tree.left_child.left_child)
+  end
 
+  it "returns nil otherwise" do
+    tree = Node.new(1)
+    expect(binary_search(tree, 5)).to be(nil)
+  end
+end
