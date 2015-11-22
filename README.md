@@ -26,3 +26,7 @@ In which I work through, and sometimes overthink, the exercises in [http://www.t
 ###Recursion###
 * Fibonacci sequence
 * Merge sort
+
+###Data Structures and Algorithms###
+* Searching binary trees (with red-black tree, though deletion is not implemented)
+* Knight's path (coming soon; note this is NOT the knight's tour)

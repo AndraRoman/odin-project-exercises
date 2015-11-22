@@ -6,45 +6,24 @@ class Node
 
   attr_accessor :value, :left_child, :right_child, :parent
 
-  def initialize(value, parent = nil)
+  def initialize(value)
     @value = value
-    @parent = parent
+    @parent = nil
     @left_child = nil
     @right_child = nil
     self
   end
 
-  # replaces current (sub)tree with one in which @right_child is the root
-  def rotate_left!
-    if @right_child
-      right = @right_child
-      left = self.clone
-      right.parent = self.parent
-      left.add_right_child(right.left_child)
-      right.add_left_child(left)
-      replace_self(right)
-    end
-    self
+  def minimal_copy
+    node = self.class.new(@value)
   end
 
-  # replaces current (sub)tree with one in which @left_child is the root
-  def rotate_right!
-    if @left_child
-      left = @left_child # color is changing
-      right = self.clone
-      left.parent = self.parent
-      right.add_left_child(left.right_child)
-      left.add_right_child(right)
-      replace_self(left)
-    end
-    self
-  end
-
-  def replace_self(tree)
-    @value = tree.value
-    @parent = tree.parent
-    @left_child = tree.left_child
-    @right_child = tree.right_child
+  # for testing
+  def display
+    array = [@value]
+    left_child ? array.push(left_child.display) : array.push([])
+    right_child ? array.push(right_child.display) : array.push([])
+    array
   end
 
   def uncle
@@ -59,40 +38,116 @@ class Node
     end
   end
 
+  def remove_from_parent
+    if parent
+      if @value < parent.value
+        parent.left_child = nil
+      elsif @value > parent.value
+        parent.right_child = nil
+      end
+    end
+  end
+
   def add_left_child(child)
-    @left_child = child # why is @ necessary here?
+    child.remove_from_parent if child
+    @left_child = child
     child.parent = self unless child.nil?
   end
 
   def add_right_child(child)
+    child.remove_from_parent if child
     @right_child = child
     child.parent = self unless child.nil?
   end
 
+  def add_child(child)
+    if child.value < @value
+      add_left_child(child)
+    elsif @value < child.value
+      add_right_child(child)
+    end
+  end
+
   def insert(n)
-    child = self.class.new(n)
+    node = self.class.new(n)
+    insert_node(node)
+  end
+
+  def insert_node(node)
+    n = node.value
     if n < value
       if left_child
-        left_child.insert(n)
+        left_child.insert_node(node)
       else
-        add_left_child(child)
-        child
+        add_left_child(node)
+        node
       end
     elsif n > value
       if right_child
-        right_child.insert(n)
+        right_child.insert_node(node)
       else
-        add_right_child(child)
-        child
+        add_right_child(node)
+        node
       end
     elsif n == value
       nil
     end
   end
 
-  # not actually used
   def size
     1 + [left_child, right_child].compact.inject(0) { |x, y| x + y.size }
+  end
+
+  # does NOT check parent
+  def equiv?(tree)
+    tree_value = tree.nil? ? nil : tree.value # makes it easier to modify for rb trees
+    if @value != tree_value
+      return false
+    elsif [@left_child, @right_child, tree.left_child, tree.right_child].all? { |t| t.nil? }
+      return true
+    elsif @left_child.nil?
+      return (tree.left_child.nil? && @right_child.equiv?(tree.right_child))
+    elsif @right_child.nil?
+      return (tree.right_child.nil? && @left_child.equiv?(tree.left_child))
+    else
+      return (@left_child.equiv?(tree.left_child) && @right_child.equiv?(tree.right_child))
+    end
+  end
+
+  # creates new subtree; pastes into position in parent tree if parent exists
+  def rotate_left
+    if @right_child
+      new_left = minimal_copy
+      new_left.add_right_child(@right_child.left_child)
+      new_left.add_left_child(@left_child)
+
+      @value = @right_child.value
+      add_right_child(@right_child.right_child)
+      add_left_child(new_left)
+
+      parent.add_child(self) if parent
+      self
+    else
+      false # not possible to rotate
+    end
+  end
+
+  # creates new subtree; pastes into position in parent tree if parent exists
+  def rotate_right
+    if @left_child
+      new_right = minimal_copy
+      new_right.add_left_child(@left_child.right_child)
+      new_right.add_right_child(@right_child)
+
+      @value = @left_child.value
+      add_left_child(@left_child.left_child)
+      add_right_child(new_right)
+
+      parent.add_child(self) if parent
+      self
+    else
+      false # not possible to rotate
+    end
   end
 
 end
@@ -118,9 +173,22 @@ def build_tree(array)
   tree
 end
 
-# assumes tree isn't nil
+def build_explicit_tree(array)
+  if array.length == 0
+    nil
+  else
+    node = Node.new(array[0])
+    if array.length > 1
+      node.add_left_child(build_explicit_tree(array[1]))
+      node.add_right_child(build_explicit_tree(array[2]))
+    end
+  end
+  node
+end
+
 def breadth_first_search(tree, target)
-  queue = [tree]
+  queue = []
+  queue.push(tree) unless tree.nil?
   visited_values = Set.new()
   result = nil
   while queue.length > 0 do
@@ -135,24 +203,21 @@ def breadth_first_search(tree, target)
   result
 end
 
-# assumes tree isn't nil
 def depth_first_search(tree, target)
-  stack = [tree]
-  current_node = tree
+  stack = []
+  stack.push(tree) unless tree.nil?
   visited_values = Set.new()
   result = nil
   while stack.length > 0
+    current_node = stack[-1] # peek
+    visited_values.add(current_node.value)
     if current_node.value == target
       result = current_node
       break
     elsif current_node.left_child && !visited_values.include?(current_node.left_child.value)
-      current_node = current_node.left_child
-      stack.push(current_node)
-      visited_values.add(current_node.value)
+      stack.push(current_node.left_child)
     elsif current_node.right_child && !visited_values.include?(current_node.right_child.value)
-      current_node = current_node.right_child
-      stack.push(current_node)
-      visited_values.add(current_node.value)
+      stack.push(current_node.right_child)
     else
       current_node = stack.pop
     end
