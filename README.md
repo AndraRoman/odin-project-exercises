@@ -29,4 +29,4 @@ In which I work through, and sometimes overthink, the exercises in [http://www.t
 
 ###[Data Structures and Algorithms](http://www.theodinproject.com/ruby-programming/data-structures-and-algorithms)###
 * Searching binary trees (with red-black tree, though deletion is not implemented)
-* Knight's path (coming soon; note this is NOT the knight's tour)
+* Knight's path (find shortest path to take knight from one point to another - NOT the knight's tour)
