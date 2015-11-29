@@ -14,6 +14,7 @@ class Board
     end
     vals ||= Array.new(n, nil)
     raise InvalidBoardContents unless vals.length == n
+    @output_stream = $stdout
     @size = n
     @board = []
     (0...n).each {|i| @board.push(Row.new(n, vals[i])) }
@@ -23,7 +24,7 @@ class Board
     @board.each_with_index do |row, index|
       row.display
       if index < @size - 1
-        puts "-" * (4 * @size - 1)
+        @output_stream.puts "-" * (4 * @size - 1)
       end
     end
   end
@@ -105,11 +106,11 @@ class Board
     result = game_over?
     case result
     when :draw then
-      puts "GAME OVER. WINNER: NONE"
+      @output_stream.puts "GAME OVER. WINNER: NONE."
       return true
     when false then return false
     else
-      puts "GAME OVER. WINNER: #{result}."
+      @output_stream.puts "GAME OVER. WINNER: #{result}."
       return true
     end
   end
@@ -124,6 +125,7 @@ class Row
   def initialize(n, vals = nil)
     @row = Array.new(n) { Square.new }
     @row.each do |i|
+    @output_stream = $stdout
     end
     @size = n
     if vals && vals.length > 0 # empty array is accepted
@@ -134,7 +136,6 @@ class Row
     end
   end
 
-  # no test
   def display
     result = " "
     @row.each_with_index do |square, index|
@@ -143,9 +144,10 @@ class Row
         result += " | "
       end
     end
-    puts result
+    @output_stream.puts result
   end
 
+  # TODO test
   def row_values
     @row.map {|s| s.symbol}
   end
@@ -176,6 +178,7 @@ class Square
 
   attr_reader :symbol
 
+  # TODO test
   def initialize()
     @symbol = :' '
   end
@@ -188,7 +191,7 @@ class Square
     end
   end
 
-  # no test
+  # TODO test
   def valid?(symbol)
     [:X, :O, :' '].include? symbol
   end
@@ -199,6 +202,7 @@ class Player
 
   attr_reader :symbol, :mode
 
+  # TODO test
   def initialize(mode, symbol)
     @mode = mode
     @symbol = symbol
@@ -221,6 +225,7 @@ class Player
     move = move_table[best_val]
   end
 
+  # TODO test
   def build_tree(board)
     tree = GameTree.new(board.copy, @symbol)
     tree.grow_tree(@symbol)
@@ -235,6 +240,7 @@ class GameTree
   attr_reader :move, :board, :symbol, :children
   attr_accessor :value
 
+  # TODO test
   def initialize(board, symbol, move=nil)
     @move = move # previous move (how we got here) - can be nil
     @board = board
@@ -280,6 +286,7 @@ class GameTree
     end
   end
 
+  # TODO test
   def evaluate(symbol)
     if @value # do nothing
     elsif @symbol == symbol
@@ -354,5 +361,18 @@ def turn(board, player)
   rescue InvalidMove
     puts "The square (#{coords["column"]}, #{coords["row"]}) is already occupied. Let's try this again."
     retry
+  end
+end
+
+# TODO test
+def game
+  board = create_board
+  players = [create_player(1), create_player(2)]
+  board.display
+  loop do
+    turn(board, players[0])
+    break if board.check_game_over
+    turn(board, players[1])
+    break if board.check_game_over
   end
 end
