@@ -176,10 +176,11 @@ describe "my_map" do
     expect(squares).to eq([0, 1, 4, 9])
   end
 
-  it "maps 'square keys and double values' on a hash" do
+  it "maps 'square keys and double values' on a hash, returning an array" do
     hash = {0 => 1, 2 => 3, 4 => 5}
     result = hash.my_map {|k, v| [k ** 2, v * 2]}
-    expect(result).to eq({0 => 2, 4 => 6, 16 => 10})
+    expect(result.length).to be(3)
+    expect(result.flatten).to eq([0, 2, 4, 6, 16, 10])
   end
 
   it "returns an enumerator that works with with_index " do
@@ -196,10 +197,11 @@ describe "my_map_with_proc" do
     expect(squares).to eq([0, 1, 4, 9])
   end
 
-  it "maps 'square keys and double values' on a hash" do
+  it "maps 'square keys and double values' on a hash, returning an array" do
     hash = {0 => 1, 2 => 3, 4 => 5}
     result = hash.my_map_with_proc Proc.new {|k, v| [k ** 2, v * 2]}
-    expect(result).to eq({0 => 2, 4 => 6, 16 => 10})
+    expect(result.length).to be(3)
+    expect(result.flatten).to eq([0, 2, 4, 6, 16, 10])
   end
 end
 

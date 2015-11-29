@@ -83,7 +83,7 @@ module Enumerable
 
   def my_map
     if block_given?
-      result = self.class.new
+      result = []
       self.my_each do |i|
         j = yield(i)
         result.my_add_to_enumerable(j)
@@ -104,7 +104,7 @@ module Enumerable
   end
 
   def my_map_with_proc(my_proc)
-    result = self.class.new
+    result = []
     self.my_each do |i|
       j = my_proc.call(i)
       result.my_add_to_enumerable(j)
