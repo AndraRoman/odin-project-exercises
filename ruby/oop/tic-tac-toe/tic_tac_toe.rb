@@ -369,3 +369,7 @@ def game(io = {:input => $stdin, :output => $stdout})
     break if board.check_game_over
   end
 end
+
+if __FILE__ == $0
+  game
+end

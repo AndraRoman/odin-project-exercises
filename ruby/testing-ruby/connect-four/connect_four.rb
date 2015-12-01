@@ -133,3 +133,11 @@ def game(board, p1, p2, output_stream = $stdout)
   end
   output_stream.puts "Game over! Winner is #{board.game_over?}."
 end
+
+if __FILE__ == $0
+  board = Board.new
+  p1 = Player.new(:red)
+  p2 = Player.new(:yellow)
+
+  game(board, p1, p2)
+end
