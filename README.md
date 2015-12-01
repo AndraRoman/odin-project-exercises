@@ -30,3 +30,7 @@ In which I work through, and sometimes overthink, the exercises in [http://www.t
 ###[Data Structures and Algorithms](http://www.theodinproject.com/ruby-programming/data-structures-and-algorithms)###
 * Searching binary trees (with red-black tree, though deletion is not implemented)
 * Knight's path (find shortest path to take knight from one point to another - NOT the knight's tour)
+
+###[Testing Ruby with RSpec](http://www.theodinproject.com/ruby-programming/testing-ruby)
+* Added more tests for Building Blocks, Advanced Building Blocks, and Tic-Tac-Toe projects
+* TDD Connect Four
