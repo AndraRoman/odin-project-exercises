@@ -8,16 +8,16 @@ class Board
 
   attr_reader :board, :size
 
-  def initialize(n, vals = nil)
+  def initialize(n, params = {})
     unless n.is_a?(Integer) && n.odd? && n > 0
       raise InvalidBoardSize
     end
-    vals ||= Array.new(n, nil)
-    raise InvalidBoardContents unless vals.length == n
-    @output_stream = $stdout
+    params[:vals] ||= Array.new(n, nil)
+    raise InvalidBoardContents unless params[:vals].length == n
     @size = n
     @board = []
-    (0...n).each {|i| @board.push(Row.new(n, vals[i])) }
+    @output_stream = params[:output] || $stdout
+    (0...n).each {|i| @board.push(Row.new(n, {:vals => params[:vals][i], :output => @output_stream})) }
   end
 
   def display
@@ -37,7 +37,7 @@ class Board
       (0...size).each do |j|
         vals.push(get_square({:column => i, :row => j}))
       end
-      cols.push(Row.new(size, vals))
+      cols.push(Row.new(size, {:vals => vals}))
     end
     cols
   end
@@ -49,7 +49,7 @@ class Board
       vals[0].push(get_square({:column => i, :row => i}))
       vals[1].push(get_square({:column => i, :row => size - i - 1}))
     end
-    vals.map {|v| Row.new(size, v) }
+    vals.map {|v| Row.new(size, {:vals => v}) }
   end
 
   def values
@@ -61,7 +61,7 @@ class Board
   end
 
   def copy
-    Board.new(size, values)
+    Board.new(size, {:vals => values})
   end
 
   def game_over?
@@ -122,12 +122,13 @@ class Row
   attr_reader :row
 
   # skip validation of n since Board handles it
-  def initialize(n, vals = nil)
+  def initialize(n, params = {})
     @row = Array.new(n) { Square.new }
     @row.each do |i|
-    @output_stream = $stdout
+    @output_stream = params[:output] || $stdout
     end
     @size = n
+    vals = params[:vals]
     if vals && vals.length > 0 # empty array is accepted
       raise InvalidBoardContents unless vals.length == n # uncaught
       vals.each_with_index do |symbol, index|
@@ -147,7 +148,6 @@ class Row
     @output_stream.puts result
   end
 
-  # TODO test
   def row_values
     @row.map {|s| s.symbol}
   end
@@ -178,21 +178,19 @@ class Square
 
   attr_reader :symbol
 
-  # TODO test
   def initialize()
     @symbol = :' '
   end
 
   def update(symbol)
-    if valid?(symbol)
+    if Square.valid?(symbol)
       @symbol = symbol
     else
-      raise InvalidSymbol
+      raise InvalidSymbol.new(symbol)
     end
   end
 
-  # TODO test
-  def valid?(symbol)
+  def Square.valid?(symbol)
     [:X, :O, :' '].include? symbol
   end
 
@@ -202,7 +200,6 @@ class Player
 
   attr_reader :symbol, :mode
 
-  # TODO test
   def initialize(mode, symbol)
     @mode = mode
     @symbol = symbol
@@ -225,7 +222,6 @@ class Player
     move = move_table[best_val]
   end
 
-  # TODO test
   def build_tree(board)
     tree = GameTree.new(board.copy, @symbol)
     tree.grow_tree(@symbol)
@@ -240,7 +236,6 @@ class GameTree
   attr_reader :move, :board, :symbol, :children
   attr_accessor :value
 
-  # TODO test
   def initialize(board, symbol, move=nil)
     @move = move # previous move (how we got here) - can be nil
     @board = board
@@ -286,7 +281,6 @@ class GameTree
     end
   end
 
-  # TODO test
   def evaluate(symbol)
     if @value # do nothing
     elsif @symbol == symbol
@@ -299,13 +293,13 @@ class GameTree
 
 end
 
-def create_board
+def create_board(io = {:input => $stdin, :output => $stdout})
   begin
-    puts "Welcome! First, choose the board size."
-    n = gets.chomp.to_i
-    return Board.new(n)
+    io[:output].puts "Welcome! First, choose the board size."
+    n = io[:input].gets.chomp.to_i
+    return Board.new(n, {:output => io[:output]})
   rescue InvalidBoardSize
-    puts "Sorry, board size must be a positive odd integer. Let's try this again."
+    io[:output].puts "Sorry, board size must be a positive odd integer. Let's try this again."
     retry
   end
 end
@@ -314,13 +308,13 @@ def opposite(symbol)
   symbol == :X ? :O : :X
 end
 
-def create_player(n=1)
+def create_player(n, io = {:input => $stdin, :output => $stdout})
   symbol = n == 1 ? :X : :O
   mode = nil
-  puts "Enter 'a' for auto mode or 'm' for manual play for player #{symbol}."
+  io[:output].puts "Enter 'a' for auto mode or 'm' for manual play for player #{symbol}."
   begin
-    input = gets.chomp
-    case input
+    input = io[:input].gets.chomp
+    case input.downcase
     when 'a'
       mode = :auto
     when 'm'
@@ -328,51 +322,50 @@ def create_player(n=1)
     else raise InvalidInput.new(input)
     end
   rescue InvalidInput => e
-    puts "Input #{e} is not valid. Please enter either 'a' or 'm'."
+    io[:output].puts "Input #{e} is not valid. Please enter either 'a' or 'm'."
     retry
   end
   Player.new(mode, symbol)
 end
 
-def get_coordinates(symbol, size)
+def get_coordinates(symbol, size, io = {:input => $stdin, :output => $stdout})
   coords = { :column => nil, :row => nil }
   coords.each do |name, value|
-    puts "#{symbol}: Enter the #{name} of the square where you would like to play."
+    io[:output].puts "#{symbol}: Enter the #{name} of the square where you would like to play."
     begin
-      c = gets.chomp
+      c = io[:input].gets.chomp
       if (0...size).to_a.map {|i| i.to_s }.include? c
         coords[name] = c.to_i
-      else raise InvalidInput
+      else raise InvalidInput.new(c)
       end
     rescue InvalidInput
-      puts "Please enter an integer from 0 to #{size - 1}."
+      io[:output].puts "Please enter an integer from 0 to #{size - 1}."
       retry
     end
   end
   coords
 end
 
-def turn(board, player)
+def turn(board, player, io = {:input => $stdin, :output => $stdout})
   begin
-    coords = (player.mode == :manual ? get_coordinates(player.symbol, board.size) : player.choose_best_move(board))
+    coords = (player.mode == :manual ? get_coordinates(player.symbol, board.size, io) : player.choose_best_move(board))
     player.play(coords, board)
-    puts "\n#{player.symbol} has played on (#{coords[:column]}, #{coords[:row]})."
+    io[:output].puts "\n#{player.symbol} has played on (#{coords[:column]}, #{coords[:row]})."
     board.display
   rescue InvalidMove
-    puts "The square (#{coords["column"]}, #{coords["row"]}) is already occupied. Let's try this again."
+    io[:output].puts "The square (#{coords["column"]}, #{coords["row"]}) is already occupied. Let's try this again."
     retry
   end
 end
 
-# TODO test
-def game
-  board = create_board
-  players = [create_player(1), create_player(2)]
+def game(io = {:input => $stdin, :output => $stdout})
+  board = create_board(io)
+  players = [create_player(1, io), create_player(2, io)]
   board.display
   loop do
-    turn(board, players[0])
+    turn(board, players[0], io)
     break if board.check_game_over
-    turn(board, players[1])
+    turn(board, players[1], io)
     break if board.check_game_over
   end
 end

@@ -9,11 +9,11 @@ describe Board do
     end
   
     it "rejects creation with set values that do not match board size" do
-      expect { Board.new(3, [[:X, :X, :X, :O]]) }.to raise_exception(InvalidBoardContents)
+      expect { Board.new(3, {:vals => [[:X, :X, :X, :O]]}) }.to raise_exception(InvalidBoardContents)
     end
 
     it "initializes output_stream, size, and board contents" do
-      board = Board.new(3, [[:X, :X, :X], [:X, :O, :O], []])
+      board = Board.new(3, {:vals => [[:X, :X, :X], [:X, :O, :O], []]})
       expect(board.size).to be(3)
       expect(board.board.length).to be(3)
     end
@@ -22,10 +22,8 @@ describe Board do
   # covers Row.display as well
   describe "display" do
     it "sends pretty representation of board to output stream" do
-      board = Board.new(3, [[:X, :X, :X], [:X, :O, :O], []])
       output_stream = StringIO.new
-      board.instance_variable_set(:@output_stream, output_stream)
-      board.board.each { |row| row.instance_variable_set(:@output_stream, output_stream) }
+      board = Board.new(3, {:vals => [[:X, :X, :X], [:X, :O, :O], []], :output => output_stream})
       board.display
       expect(output_stream.string).to eq(" X | X | X\n-----------\n X | O | O\n-----------\n   |   |  \n")
     end
@@ -33,7 +31,7 @@ describe Board do
   
   describe "copy" do
     it "creates copy, doesn't modify the original board" do
-      board = Board.new(3, [[:X, :O, :X], [], []])
+      board = Board.new(3, {:vals => [[:X, :O, :X], [], []]})
       changed_board = board.copy
       changed_board.set_square({:column => 1, :row => 1}, :X)
       expect(board.get_square({:column => 1, :row => 1})).to be(:' ')
@@ -42,9 +40,10 @@ describe Board do
     end
   end
 
+  # covers Row.row_values as well
   describe "values" do
     it "gives a 2D array of values of all squares" do
-      board = Board.new(3, [[:X, :X, :X], [:O, :O, :O], []])
+      board = Board.new(3, {:vals => [[:X, :X, :X], [:O, :O, :O], []]})
       expect(board.values.length).to be(3)
       expect(board.values.flatten).to eq([:X, :X, :X, :O, :O, :O, :" ", :" ", :" "])
     end
@@ -52,7 +51,7 @@ describe Board do
   
   describe "columns" do
     it "lists columns of the board" do
-      board = Board.new(3, [[:X, :X, :X], [:O, :O, :O], []])
+      board = Board.new(3, {:vals => [[:X, :X, :X], [:O, :O, :O], []]})
       column = board.columns[0]
       vals = (0...board.size).to_a.map {|i| column.get_square(i)}
       expect(column.class).to be(Row)
@@ -62,7 +61,7 @@ describe Board do
   
   describe "diagonals" do
     it "lists diagonals of the board" do
-      board = Board.new(3, [[:X, :X, :X], [:O, :O, :O], []])
+      board = Board.new(3, {:vals => [[:X, :X, :X], [:O, :O, :O], []]})
       vals = []
       board.diagonals.each do |diag|
         v = (0...board.size).to_a.map {|i|; diag.get_square(i)}
@@ -75,51 +74,51 @@ describe Board do
   
   describe "game_over?" do
     it "returns winner's symbol for game won on a row" do
-      board = Board.new(3, [[:X, :X, :X], [:X, :O, :O], []])
+      board = Board.new(3, {:vals => [[:X, :X, :X], [:X, :O, :O], []]})
       expect(board.game_over?).to be(:X)
     end
   
     it "also works on columns" do
-      board = Board.new(5, [[:O, :' ', :' ', :' ', :' '], [:O, :O, :X, :X, :X], [:O, :' ', :' ', :' ', :' '], [:O, :O, :X, :X, :X], [:O, :X, :X, :X, :X]])
+      board = Board.new(5, {:vals => [[:O, :' ', :' ', :' ', :' '], [:O, :O, :X, :X, :X], [:O, :' ', :' ', :' ', :' '], [:O, :O, :X, :X, :X], [:O, :X, :X, :X, :X]]})
       expect(board.game_over?).to be(:O)
     end 
   
     it "also works on downward diagonal" do
-      board = Board.new(5, [[:X, :O, :O, :O, :O], [:O, :X, :O, :O, :O], [:O, :O, :X, :O, :O], [:O, :O, :O, :X, :O], [:' ', :' ', :' ', :' ', :X]])
+      board = Board.new(5, {:vals => [[:X, :O, :O, :O, :O], [:O, :X, :O, :O, :O], [:O, :O, :X, :O, :O], [:O, :O, :O, :X, :O], [:' ', :' ', :' ', :' ', :X]]})
       expect(board.game_over?).to be(:X)
     end 
   
     it "also works on upward diagonal" do
-      board = Board.new(5, [[:O, :O, :O, :O, :X], [:O, :O, :O, :X, :O], [:O, :O, :X, :O, :O], [:' ', :X, :' ', :' ', :' '], [:X, :O, :O, :O, :O]])
+      board = Board.new(5, {:vals => [[:O, :O, :O, :O, :X], [:O, :O, :O, :X, :O], [:O, :O, :X, :O, :O], [:' ', :X, :' ', :' ', :' '], [:X, :O, :O, :O, :O]]})
       expect(board.game_over?).to be(:X)
     end 
   
     it "returns false for unfinished game" do
-      board = Board.new(3, [[:X, :O, :X], [:O, :X, :O], []])
+      board = Board.new(3, {:vals => [[:X, :O, :X], [:O, :X, :O], []]})
       expect(board.game_over?).to be(false)
     end
   
   it "returns :draw for drawn game" do
-    board = Board.new(3, [[:X, :O, :O], [:O, :O, :X], [:X, :X, :O]])
+    board = Board.new(3, {:vals => [[:X, :O, :O], [:O, :O, :X], [:X, :X, :O]]})
     expect(board.game_over?).to be(:draw)
     end
   end
   
   describe "find_all_possible_moves" do
     it "lists coordinates of all open squares in a board" do
-      board = Board.new(3, [[:X, :O, :' '], [:' ', :X, :O], [:O, :X, :O]])
+      board = Board.new(3, {:vals => [[:X, :O, :' '], [:' ', :X, :O], [:O, :X, :O]]})
       expect(board.find_all_possible_moves).to eq([{:column => 2, :row => 0}, {:column => 0, :row => 1}])
     end
   end
   
   describe "empty_square?" do
     it "returns true for empty square" do
-      board = Board.new(3, [[:X, :X, :X], [:O, :O, :O], []])
+      board = Board.new(3, {:vals => [[:X, :X, :X], [:O, :O, :O], []]})
       expect(board.empty_square?({:column => 0, :row => 2})).to be(true)
     end
   
     it "returns false for square with :X or :O" do
-      board = Board.new(3, [[:X, :X, :X], [:O, :O, :O], []])
+      board = Board.new(3, {:vals => [[:X, :X, :X], [:O, :O, :O], []]})
       expect(board.empty_square?({:column => 0, :row => 0})).to be(false)
       expect(board.empty_square?({:column => 0, :row => 1})).to be(false)
     end
@@ -127,7 +126,7 @@ describe Board do
   
   describe "get_square" do
     it "gets symbol for the square at given coordinates" do
-      board = Board.new(3, [[:X, :X, :X], [:O, :O, :O], []])
+      board = Board.new(3, {:vals => [[:X, :X, :X], [:O, :O, :O], []]})
       expect(board.get_square({:column => 0, :row => 0})).to be(:X)
       expect(board.get_square({:column => 2, :row => 2})).to be(:' ')
     end 
@@ -147,22 +146,19 @@ describe Board do
     let(:output_stream) { StringIO.new }
 
     it "returns true, prints draw message for drawn game" do
-      board = Board.new(3, [[:X, :O, :O], [:O, :O, :X], [:X, :X, :O]])
-      board.instance_variable_set(:@output_stream, output_stream)
+      board = Board.new(3, {:vals => [[:X, :O, :O], [:O, :O, :X], [:X, :X, :O]], :output => output_stream})
       expect(board.check_game_over).to be(true)
       expect(output_stream.string).to eq("GAME OVER. WINNER: NONE.\n")
     end
 
     it "returns true, prints win message for won game" do
-      board = Board.new(3, [[:X, :X, :X], [:X, :O, :O], []])
-      board.instance_variable_set(:@output_stream, output_stream)
+      board = Board.new(3, {:vals => [[:X, :X, :X], [:X, :O, :O], []], :output => output_stream})
       expect(board.check_game_over).to be(true)
       expect(output_stream.string).to eq("GAME OVER. WINNER: X.\n")
     end
 
     it "returns false, prints nothing for unfinished game" do
-      board = Board.new(3, [[:X, :O, :X], [:O, :X, :O], []])
-      board.instance_variable_set(:@output_stream, output_stream)
+      board = Board.new(3, {:vals => [[:X, :O, :X], [:O, :X, :O], []], :output => output_stream})
       expect(board.check_game_over).to be(false)
       expect(output_stream.string).to eq("")
     end
@@ -177,15 +173,14 @@ describe Row do
     end
   
     it "initializes row with values" do
-      row = Row.new(3, [:X, :O, :' '])
+      row = Row.new(3, {:vals => [:X, :O, :' ']})
       expect(row.get_square(0)).to eq(:X)
       expect(row.get_square(1)).to eq(:O)
       expect(row.get_square(2)).to eq(:' ')
     end
   
     it "throws error when initialized with incorrect number of values" do
-      #expect { Row.new(3, [0, 0, 0, 0, 0]) }.to raise_exception(InvalidBoardContents)
-      expect { Board.new(3.0) }.to raise_exception(InvalidBoardSize)
+      expect { Row.new(3, {:vals => [:O]}) }.to raise_exception(InvalidBoardContents)
     end
   end
   
@@ -196,19 +191,19 @@ describe Row do
     end
   
     it "returns :draw for row with mixed symbols" do
-      row = Row.new(3, [:X, :O, :X])
+      row = Row.new(3, {:vals => [:X, :O, :X]})
       expect(row.row_over?).to be(:draw)
     end
   
     it "returns winner's symbol for row with all same symbol" do
-      row = Row.new(3, [:X, :X, :X])
+      row = Row.new(3, {:vals => [:X, :X, :X]})
       expect(row.row_over?).to be(:X)
     end
   end
   
   describe "get_square" do
     it "returns symbol of selected square" do
-      row = Row.new(3, [:X, :O, :' '])
+      row = Row.new(3, {:vals => [:X, :O, :' ']})
       expect(row.get_square(0)).to be(:X)
       expect(row.get_square(1)).to be(:O)
       expect(row.get_square(2)).to be(:' ')
@@ -225,50 +220,92 @@ describe Row do
 end
 
 describe Square do
+  let(:square) { Square.new }
+
+  describe "initialize" do
+    it "sets blank symbol" do
+      expect(square.symbol).to eq(:' ')
+    end
+  end
+
   describe "update square" do
     it "rejects invalid symbols" do
-      square = Square.new
       expect { square.update('x') }.to raise_exception(InvalidSymbol)
     end
   
     it "successfully updates" do
-      square = Square.new
-      expect(square.symbol).to eq(:' ')
       square.update(:X)
       expect(square.symbol).to eq(:X)
+    end
+  end
+
+  describe "valid?" do
+    it "" do
+      arr = [:X, :O, :' ', 3, "X", :a].map { |s| Square.valid?(s) }
+      expect(arr).to eq([true, true, true, false, false, false])
     end
   end
 end
 
 describe Player do
+  let(:player) { Player.new(:manual, :X) }
+
+  describe "initialize" do
+    it "sets mode and symbol" do
+      expect(player.symbol).to be(:X)
+      expect(player.mode).to be(:manual)
+    end
+  end
+
   describe "play" do
+    let(:player) { Player.new(:manual, :X) }
+
     it "successfully makes valid move" do
-      board = Board.new(3, [[:X, :X, :X], [:O, :O, :O], []])
-      player = Player.new(:manual, :X)
+      board = Board.new(3, {:vals => [[:X, :X, :X], [:O, :O, :O], []]})
       player.play({:column => 2, :row => 2}, board)
       expect(board.get_square({:column => 2, :row => 2})).to be(:X)
     end
   
     it "throws InvalidMove for invalid move" do
-      board = Board.new(3, [[:X, :X, :X], [:O, :O, :O], []])
-      player = Player.new(:manual, :X)
+      board = Board.new(3, {:vals => [[:X, :X, :X], [:O, :O, :O], []]})
       expect { player.play({:column => 0, :row => 0}, board) }.to raise_exception(InvalidMove)
     end
   end
   
   describe "choose_best_move" do
     it "chooses the one non-losing option of three" do
-      player = Player.new(:auto, :X)
-      board = Board.new(3, [[:X, :X, :O], [:O, :O, :X], []])
+      board = Board.new(3, {:vals => [[:X, :X, :O], [:O, :O, :X], []]})
       expect(player.choose_best_move(board)).to eq({:column => 0, :row => 2}) # WHY is this nil when it wasn't before?
+    end
+  end
+
+  describe "build_tree" do
+    it "builds a correct tree for the game" do
+       board = Board.new(3, {:vals => [[:X, :X, :O], [:O, :O, :X], []]})
+       tree = player.build_tree(board)
+       expect(tree.class).to be(GameTree)
+       expect(tree.children.length).to be(3)
+       expect(tree.value).to be(0)
     end
   end
 end
 
 describe GameTree do
+  describe "initialize" do
+    it "builds a single-node tree" do
+      board = Board.new(3, {:vals => [[:X, :' ', :' '], [:O, :O, :' '], []]})
+      node = GameTree.new(board, :O, {:column => 1, :row => 1})
+      expect(node.move).to eq({:column => 1, :row => 1})
+      expect(node.board).to be(board)
+      expect(node.symbol).to be(:O)
+      expect(node.value).to be(nil)
+      expect(node.children).to eq([])
+    end
+  end
+
   describe "add_child" do
     it "adds a child to a tree" do
-      board = Board.new(3, [[:X, :' ', :' '], [:O, :O, :' '], []])
+      board = Board.new(3, {:vals => [[:X, :' ', :' '], [:O, :O, :' '], []]})
       node = GameTree.new(board, :O)
       node.add_child({:column => 2, :row => 0})
       expect(node.children[0].evaluate_leaf(:X)).to be(nil)
@@ -277,25 +314,25 @@ describe GameTree do
   
   describe "evaluate_leaf" do
     it "returns 1 when player has won" do
-      board = Board.new(3, [[:X, :X, :X], [:O, :O, :' '], []])
+      board = Board.new(3, {:vals => [[:X, :X, :X], [:O, :O, :' '], []]})
       node = GameTree.new(board, :X)
       expect(node.evaluate_leaf(:X)).to be(1)
     end
   
     it "returns 0 for a draw" do
-      board = Board.new(3, [[:X, :O, :O], [:O, :O, :X], [:X, :X, :O]])
+      board = Board.new(3, {:vals => [[:X, :O, :O], [:O, :O, :X], [:X, :X, :O]]})
       node = GameTree.new(board, :X)
       expect(node.evaluate_leaf(:X)).to be(0)
     end
   
     it "returns -1 when opponent has won" do
-      board = Board.new(3, [[:X, :X, :' '], [:O, :O, :O], []])
+      board = Board.new(3, {:vals => [[:X, :X, :' '], [:O, :O, :O], []]})
       node = GameTree.new(board, :O)
       expect(node.evaluate_leaf(:X)).to be(-1)
     end
   
     it "returns nil when game isn't over" do
-      board = Board.new(3, [[:X, :O, :' '], [:O, :O, :' '], []])
+      board = Board.new(3, {:vals => [[:X, :O, :' '], [:O, :O, :' '], []]})
       node = GameTree.new(board, :X)
       expect(node.evaluate_leaf(:X)).to be(nil)
     end
@@ -303,7 +340,7 @@ describe GameTree do
   
   describe "grow_tree" do
     it "gives correct values" do
-      board = Board.new(3, [[:X, :O, :O], [:O, :X, :X], []])
+      board = Board.new(3, {:vals => [[:X, :O, :O], [:O, :X, :X], []]})
       tree = GameTree.new(board.copy, :X)
       tree.grow_tree(:X)
       expect(tree.children.length).to be(3)
@@ -314,7 +351,7 @@ describe GameTree do
   
   describe "evaluate tree" do
     it "gives 0 when neither side can force a win" do
-      board = Board.new(3, [[:X, :X, :O], [:O, :O, :X], []])
+      board = Board.new(3, {:vals => [[:X, :X, :O], [:O, :O, :X], []]})
       tree = GameTree.new(board, :X)
       tree.grow_tree(:X)
       tree.evaluate(:X)
@@ -322,7 +359,7 @@ describe GameTree do
     end
   
     it "gives 1 when player can force a win" do
-      board = Board.new(3, [[:O, :' ', :' '], [:' ', :X, :O], [:X, :O, :X]])
+      board = Board.new(3, {:vals => [[:O, :' ', :' '], [:' ', :X, :O], [:X, :O, :X]]})
       tree = GameTree.new(board, :X)
       tree.grow_tree(:X)
       tree.evaluate(:X)
@@ -330,7 +367,7 @@ describe GameTree do
     end
   
     it "gives -1 when opponent can force a win" do
-      board = Board.new(3, [[], [:' ', :X, :O], [:X, :O, :X]])
+      board = Board.new(3, {:vals => [[], [:' ', :X, :O], [:X, :O, :X]]})
       tree = GameTree.new(board, :O)
       tree.grow_tree(:O)
       tree.evaluate(:O)
@@ -342,7 +379,16 @@ end
 # misc other methods
 
 describe "create_board" do
-  # TODO
+  it "takes user input to get board size, retrying on invalid input, and creates board of that size" do
+    input = StringIO.new("4\na\n5\n")
+    output = StringIO.new
+    input.rewind
+    io = {:input => input, :output => output}
+    board = create_board(io) # [] not a method on stringio
+    expect(board.size).to be(5)
+    expect(board.class).to be(Board)
+    expect(output.string).to eq("Welcome! First, choose the board size.\nSorry, board size must be a positive odd integer. Let's try this again.\nWelcome! First, choose the board size.\nSorry, board size must be a positive odd integer. Let's try this again.\nWelcome! First, choose the board size.\n")
+  end
 end
 
 describe "opposite" do
@@ -353,13 +399,51 @@ describe "opposite" do
 end
 
 describe "create_player" do
-  # TODO
+  it "takes user input to get player mode, retrying on invalid input, and creates player" do
+    input = StringIO.new("3\nM\na\n")
+    output = StringIO.new
+    input.rewind
+    io = {:input => input, :output => output}
+    player = create_player(0, io)
+    expect(player.mode).to be(:manual)
+    expect(player.symbol).to be(:O)
+    expect(output.string).to eq("Enter 'a' for auto mode or 'm' for manual play for player O.\nInput 3 is not valid. Please enter either 'a' or 'm'.\n")
+  end
 end
 
 describe "get_coordinates" do
-  # TODO
+  it "creates coordinates from user input, retrying as needed" do
+    input = StringIO.new("1\n50\na\n2")
+    output = StringIO.new
+    input.rewind
+    io = {:input => input, :output => output}
+    coords = get_coordinates(:X, 3, io)
+    expect(coords).to eq({:column => 1, :row => 2})
+    expect(output.string).to eq("X: Enter the column of the square where you would like to play.\nX: Enter the row of the square where you would like to play.\nPlease enter an integer from 0 to 2.\nPlease enter an integer from 0 to 2.\n")
+  end
 end
 
 describe "turn" do
-  # TODO
+  it "goes through full turn for one player, retrying as needed" do
+    input = StringIO.new("0\n0\n2\n2\n")
+    output = StringIO.new
+    input.rewind
+    io = {:input => input, :output => output}
+    board = Board.new(3, {:vals => [[:X, :X, :O], [:X, :O, :O], []], :output => output})
+    player = Player.new(:manual, :O)
+    turn(board, player, io)
+    expect(output.string).to eq("O: Enter the column of the square where you would like to play.\nO: Enter the row of the square where you would like to play.\nThe square (, ) is already occupied. Let's try this again.\nO: Enter the column of the square where you would like to play.\nO: Enter the row of the square where you would like to play.\n\nO has played on (2, 2).\n X | X | O\n-----------\n X | O | O\n-----------\n   |   | O\n")
+  end
+end
+
+# slow!
+describe "game" do
+  it "plays a full game" do
+    input = StringIO.new("3\na\na")
+    output = StringIO.new
+    input.rewind
+    io = {:input => input, :output => output}
+    game(io)
+    expect(output.string.split("\n")[-1]).to eq("GAME OVER. WINNER: NONE.")
+  end
 end
