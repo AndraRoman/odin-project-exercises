@@ -1,7 +1,45 @@
 # 2-square border for easy bounds checking
-def set_up_board
-  # empty board
-  board = [Array.new(12, 0)] * 2 + Array.new(8) { [0, 0] + [nil] * 8 + [0, 0] } + [Array.new(12, 0)] * 2
+def empty_board
+  [Array.new(12, 0)] * 2 + Array.new(8) { [0, 0] + [nil] * 8 + [0, 0] } + [Array.new(12, 0)] * 2
+end
+
+# for testing convenience
+def flip_coords(coords)
+  coords.map { |i| 11 - i }
+end
+
+def alg_to_cartesian(coords)
+  letters = ("a"..."i").to_a
+  [letters.index(coords[0]) + 2, coords[1] + 1]
+end
+
+class Array
+
+  def get_by_coords(coords)
+    x, y = coords
+    self[y][x]
+  end
+
+  def set_by_coords(coords, val)
+    x, y = coords
+    self[y][x] = val
+  end
+
+# for test readability
+  def set_by_alg_coords(coords, val)
+    x, y = alg_to_cartesian(coords)
+    self[y][x] = val
+  end
+
+  def place_pieces(pieces_hash)
+    pieces_hash.each do |coords, piece|
+      self.set_by_alg_coords(coords, piece)
+    end
+  end
+end
+
+# pawn => 1, knight => 2, bishop => 3, rook => 4, queen => 5, king => 6
+def populate_board(board)
   # white
   board[2][2...10] = [4, 2, 3, 5, 6, 3, 2, 4]
   board[3].each_with_index do |i, index|
@@ -14,7 +52,20 @@ def set_up_board
 end
 
 def validate_pawn_move(start, finish, board)
-
+  piece = board.get_by_coords(start)
+  other_piece = board.get_by_coords(finish)
+  if other_piece.nil?
+    if finish[0] == start[0]
+      [1, 2].map { |i| i * piece }.include?(finish[1] - start[1])
+    else
+      other_piece = board.get_by_coords([finish[0], finish[1] - piece])
+      other_piece == -1 * piece && (finish[0] - start[0]).abs == 1 && piece * other_piece < 0
+    end
+  elsif piece * other_piece > 0
+    false
+  else
+    (finish[0] - start[0]).abs == 1 && finish[1] - start[1] == piece
+  end
 end
 
 def validate_knight_move(start, finish, board)
@@ -84,7 +135,7 @@ def get_coordinates(io = {:input => $stdin, :output => $stdout})
   loop do
     c = io[:input].gets.chomp
     if c.length == 2 && letters.include?(c[0]) && (1...9).include?(c[1].to_i)
-      coords = [letters.index(c[0]), c[1].to_i - 1]
+      coords = [c[0], c[1].to_i]
       break
     else
       io[:output].puts "Input #{c} is not a valid square. Please try again."
@@ -93,6 +144,8 @@ def get_coordinates(io = {:input => $stdin, :output => $stdout})
   coords
 end
 
-board = set_up_board
-graveyard = []
-display_board(board)
+if __FILE__ == $0
+  board = populate_board(empty_board)
+  graveyard = []
+  display_board(board)
+end
