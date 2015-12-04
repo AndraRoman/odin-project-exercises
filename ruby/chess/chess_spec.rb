@@ -51,6 +51,10 @@ class TestBoardSetup < Minitest::Test
     assert_equal([2, 2], alg_to_cartesian(["a", 1]))
   end
 
+  def test_delta_gives_difference_between_coordinates
+    assert_equal([3, -5], delta([1, 7], [4, 2]))
+  end
+
   def test_place_pieces
     @board.place_pieces({["d", 2] => -1, ["a", 8] => 3})
     assert_equal(-1, @board[3][5])
@@ -99,12 +103,98 @@ class TestBoardSetup < Minitest::Test
     assert_equal([], path(finish, start))
   end
 
+  def test_path_open_true_on_clear_path
+    start = [2, 2]
+    finish = [2, 10]
+    assert(@board.path_open?(path(start, finish)))
+    assert(@board.path_open?(path(finish, start)))
+  end
+
+  def test_path_open_false_on_blocked_path
+    start = [2, 2]
+    finish = [2, 10]
+    @board.place_pieces(["a", 5] => 1)
+    refute(@board.path_open?(path(start, finish)))
+    refute(@board.path_open?(path(finish, start)))
+  end
+
 end
 
 class TestMoveValidations < Minitest::Test
 
   def setup
     @board = empty_board
+  end
+
+  class TestOverallMoveValidation < TestMoveValidations
+
+    def setup
+      super
+      @board.place_pieces({["a", 2] => 5})
+      @start = alg_to_cartesian(["a", 2]) 
+    end
+
+    def test_true_for_valid_move
+      finish = alg_to_cartesian(["a", 4])
+      assert(validate_move(@start, finish, @board, 1, []))
+    end
+
+    def test_false_for_missing_piece
+      start = alg_to_cartesian(["b", 2])
+      finish = alg_to_cartesian(["b", 3])
+      refute(validate_move(start, finish, @board, 1, []))
+    end
+
+    def test_false_for_wrong_piece_color
+      finish = alg_to_cartesian(["a", 4])
+      refute(validate_move(@start, finish, @board, -1, []))
+    end
+
+    # piece validation doesn't fail yet, not implemented for queen
+    def test_false_when_piece_validation_fails
+      finish = alg_to_cartesian(["b", 5])
+      refute(validate_move(@start, finish, @board, 1, []))
+    end
+
+    def test_false_when_out_of_bounds
+      finish = alg_to_cartesian(["a", -1])
+      refute(validate_move(@start, finish, @board, 1, []))
+    end
+
+    def test_false_when_path_blocked
+      @board.place_pieces({["a", 4] => 1})
+      finish = alg_to_cartesian(["a", 5])
+      refute(validate_move(@start, finish, @board, 1, []))
+    end
+
+    def test_false_when_own_piece_is_on_finish
+      @board.place_pieces({["a", 4] => 1})
+      finish = alg_to_cartesian(["a", 4])
+      refute(validate_move(@start, finish, @board, 1, []))
+    end
+
+    def test_true_for_valid_capture
+      @board.place_pieces({["a", 4] => -1})
+      finish = alg_to_cartesian(["a", 4])
+      assert(validate_move(@start, finish, @board, 1, []))
+    end
+
+    def test_false_when_ends_in_check
+      # TODO
+    end
+
+    def test_false_when_castling_from_check
+      # TODO
+    end
+
+    def test_false_when_castling_through_check
+      # TODO
+    end
+
+    def test_false_when_history_validation_fails
+      # TODO
+    end
+
   end
 
   class TestWhitePawnMoveValidation < TestMoveValidations
@@ -133,6 +223,13 @@ class TestMoveValidations < Minitest::Test
       refute(validate_pawn_move(flip_coords(start), flip_coords(finish), @black_board))
     end
 
+    def test_cannot_move_sideways
+      start = alg_to_cartesian(["b", 2])
+      finish = alg_to_cartesian(["c", 2])
+      refute(validate_pawn_move(start, finish, @white_board))
+      refute(validate_pawn_move(flip_coords(start), flip_coords(finish), @black_board))
+    end
+
     def test_cannot_capture_forward
       start = alg_to_cartesian(["b", 2])
       finish = alg_to_cartesian(["b", 3])
@@ -145,13 +242,6 @@ class TestMoveValidations < Minitest::Test
       finish = alg_to_cartesian(["a", 4])
       assert(validate_pawn_move(start, finish, @white_board))
       assert(validate_pawn_move(flip_coords(start), flip_coords(finish), @black_board))
-    end
-
-    def test_cannot_jump_over_a_piece
-      start = alg_to_cartesian(["b", 2])
-      finish = alg_to_cartesian(["b", 5])
-      refute(validate_pawn_move(start, finish, @white_board))
-      refute(validate_pawn_move(flip_coords(start), flip_coords(finish), @black_board))
     end
 
     def test_diagonal_capture
@@ -186,11 +276,25 @@ class TestMoveValidations < Minitest::Test
 
   class TestKnightMoveValidation < TestMoveValidations
 
-    def setup
-      super
+    def test_valid_knight_moves
+      start = alg_to_cartesian(["d", 3])
+      finish = alg_to_cartesian(["e", 5])
+      assert(validate_knight_move(start, finish))
+      assert(validate_knight_move(finish, start))
     end
 
-    def test_knight_move_validation
+    def test_invalid_knight_move_1_1
+      start = alg_to_cartesian(["d", 3])
+      finish = alg_to_cartesian(["e", 4])
+      refute(validate_knight_move(start, finish))
+      refute(validate_knight_move(finish, start))
+    end
+
+    def test_invalid_knight_move_2_2
+      start = alg_to_cartesian(["d", 3])
+      finish = alg_to_cartesian(["f", 5])
+      refute(validate_knight_move(start, finish))
+      refute(validate_knight_move(finish, start))
     end
 
   end

@@ -15,9 +15,13 @@ def alg_to_cartesian(coords)
   [letters.index(coords[0]) + 2, coords[1] + 1]
 end
 
+def delta(start, finish)
+  [finish[0] - start[0], finish[1] - start[1]]
+end
+
 def path(start, finish)
   list = []
-  difference = [finish[0] - start[0], finish[1] - start[1]]
+  difference = delta(start, finish)
   if difference[0].abs == difference[1].abs || difference.include?(0)
     unit = difference.map { |i| i <=> 0 }
     current = start
@@ -39,6 +43,10 @@ class Board < Array
   def set_by_coords(coords, val)
     x, y = coords
     self[y][x] = val
+  end
+
+  def path_open?(path)
+    path.none? { |coords| get_by_coords(coords) }
   end
 
 # for test readability
@@ -67,6 +75,37 @@ def populate_board(board)
   board
 end
 
+def move(start, finish, board, player_sign, history)
+  # TODO
+end
+
+def validate_move(start, finish, board, player_sign, history)
+  piece = board.get_by_coords(start)
+  target_piece = board.get_by_coords(finish)
+  return false unless (!piece.nil? && piece * player_sign > 0) # starting point has a piece of the correct color
+  return false if target_piece == 0 # out of bounds
+
+  path = path(start, finish)
+  return false unless board.path_open?(path)
+
+  return false if !target_piece.nil? && piece * target_piece > 0 # can't capture own piece
+
+  piece_validation = case piece.abs
+                     when 1 then validate_pawn_move(start, finish, board)
+                     when 2 then validate_knight_move(start, finish)
+                     when 3 then validate_bishop_move(start, finish)
+                     when 4 then validate_rook_move(start, finish)
+                     when 5 then validate_queen_move(start, finish)
+                     when 6 then validate_king_move(start, finish, board)
+                     end
+  
+  piece_validation && history_validation(start, finish, board, player_sign, history)
+end
+
+def history_validation(start, finish, board, player_sign, history)
+  true
+end
+
 def validate_pawn_move(start, finish, board)
   piece = board.get_by_coords(start)
   other_piece = board.get_by_coords(finish)
@@ -84,24 +123,25 @@ def validate_pawn_move(start, finish, board)
   end
 end
 
-def validate_knight_move(start, finish, board)
-
+def validate_knight_move(start, finish)
+  difference = delta(start, finish)
+  (difference[0] * difference[1]).abs == 2
 end
 
-def validate_bishop_move(start, finish, board)
-
+def validate_bishop_move(start, finish)
+  true
 end
 
-def validate_rook_move(start, finish, board)
-
+def validate_rook_move(start, finish)
+  true
 end
 
-def validate_queen_move(start, finish, board)
-
+def validate_queen_move(start, finish)
+  true
 end
 
 def validate_king_move(start, finish, board)
-
+  true
 end
 
 # UI methods
