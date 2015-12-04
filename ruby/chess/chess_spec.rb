@@ -150,7 +150,6 @@ class TestMoveValidations < Minitest::Test
       refute(validate_move(@start, finish, @board, -1, []))
     end
 
-    # piece validation doesn't fail yet, not implemented for queen
     def test_false_when_piece_validation_fails
       finish = alg_to_cartesian(["b", 5])
       refute(validate_move(@start, finish, @board, 1, []))
@@ -179,20 +178,48 @@ class TestMoveValidations < Minitest::Test
       assert(validate_move(@start, finish, @board, 1, []))
     end
 
+    def test_false_for_null_move
+      refute(validate_move(@start, @start, @board, 1, []))
+    end
+
     def test_false_when_ends_in_check
-      # TODO
-    end
-
-    def test_false_when_castling_from_check
-      # TODO
-    end
-
-    def test_false_when_castling_through_check
       # TODO
     end
 
     def test_false_when_history_validation_fails
       # TODO
+    end
+
+    class TestThreatDetection < TestOverallMoveValidation
+    
+      def setup
+        super # white queen on a2
+      end
+
+      def test_threatened_true_when_opponent_can_reach_square
+        assert(threatened?(alg_to_cartesian(["g", 8]), -1, @board, []))
+      end
+
+      def test_threatened_false_when_opponent_cannot_reach_square
+        @board.place_pieces({["c", 4] => 2})
+        refute(threatened?(alg_to_cartesian(["g", 8]), -1, @board, []))
+      end
+
+      def test_check_true_when_king_is_threatened
+        @board.place_pieces({["a", 8] => -6})
+        assert(check?(-1, @board))
+      end
+
+      def test_check_false_when_king_is_not_threatened
+        @board.place_pieces({["a", 7] => -1})
+        refute(check?(-1, @board))
+      end
+
+      def test_king_can_threaten
+        @board.place_pieces({["c", 8] => -6})
+        assert(threatened?(alg_to_cartesian(["d", 8]), 1, @board, []))
+      end
+
     end
 
   end
@@ -240,8 +267,16 @@ class TestMoveValidations < Minitest::Test
     def test_double_move_forward
       start = alg_to_cartesian(["a", 2])
       finish = alg_to_cartesian(["a", 4])
+      assert(start[1] == 3)
       assert(validate_pawn_move(start, finish, @white_board))
       assert(validate_pawn_move(flip_coords(start), flip_coords(finish), @black_board))
+    end
+
+    def test_cannot_move_two_squares_except_from_starting_rank
+      start = alg_to_cartesian(["c", 3])
+      finish = alg_to_cartesian(["c", 5])
+      refute(validate_pawn_move(start, finish, @white_board))
+      refute(validate_pawn_move(flip_coords(start), flip_coords(finish), @black_board))
     end
 
     def test_diagonal_capture
@@ -303,12 +338,28 @@ class TestMoveValidations < Minitest::Test
 
     def setup
       super
+      @board.place_pieces({["c", 4] => 3})
+      @start = alg_to_cartesian(["c", 4]) 
     end
 
-    def test_pos_diagonal
+    def test_can_move_on_pos_diagonal
+      finish = alg_to_cartesian(["f", 7])
+      assert(validate_bishop_move(@start, finish))
     end
 
-    def test_neg_diagonal
+    def test_can_move_on_neg_diagonal
+      finish = alg_to_cartesian(["f", 1])
+      assert(validate_bishop_move(@start, finish))
+    end
+
+    def test_cannot_move_horizontally
+      finish = alg_to_cartesian(["h", 4])
+      refute(validate_bishop_move(@start, finish))
+    end
+
+    def test_cannot_move_vertically
+      finish = alg_to_cartesian(["c", 8])
+      refute(validate_bishop_move(@start, finish))
     end
 
   end
@@ -317,12 +368,23 @@ class TestMoveValidations < Minitest::Test
 
     def setup
       super
+      @board.place_pieces({["c", 4] => 4})
+      @start = alg_to_cartesian(["c", 4]) 
     end
 
-    def test_horizontal
+    def test_can_move_horizontally
+      finish = alg_to_cartesian(["h", 4])
+      assert(validate_rook_move(@start, finish))
     end
 
-    def test_vertical
+    def test_can_move_vertically
+      finish = alg_to_cartesian(["c", 8])
+      assert(validate_rook_move(@start, finish))
+    end
+
+    def test_cannot_move_diagonally
+      finish = alg_to_cartesian(["f", 7])
+      refute(validate_rook_move(@start, finish))
     end
 
   end
@@ -331,18 +393,33 @@ class TestMoveValidations < Minitest::Test
 
     def setup
       super
+      @board.place_pieces({["c", 4] => 5})
+      @start = alg_to_cartesian(["c", 4]) 
     end
 
-    def test_horizontal
+    def test_can_move_on_pos_diagonal
+      finish = alg_to_cartesian(["f", 7])
+      assert(validate_queen_move(@start, finish))
     end
 
-    def test_vertical
+    def test_can_move_on_neg_diagonal
+      finish = alg_to_cartesian(["f", 1])
+      assert(validate_queen_move(@start, finish))
     end
 
-    def test_pos_diagonal
+    def test_can_move_horizontally
+      finish = alg_to_cartesian(["h", 4])
+      assert(validate_queen_move(@start, finish))
     end
 
-    def test_neg_diagonal
+    def test_can_move_vertically
+      finish = alg_to_cartesian(["c", 8])
+      assert(validate_queen_move(@start, finish))
+    end
+
+    def test_cannot_move_as_knight
+      finish = alg_to_cartesian(["d", 6])
+      refute(validate_queen_move(@start, finish))
     end
 
   end
@@ -351,19 +428,97 @@ class TestMoveValidations < Minitest::Test
 
     def setup
       super
+      @board.place_pieces({["e", 1] => 6})
+      @board.place_pieces({["d", 8] => -6})
+      @start = alg_to_cartesian(["e", 1]) 
     end
 
-    def test_castling
+    def test_direct_king_move_validation_positive
+      finish = alg_to_cartesian(["d", 2])
+      assert(validate_direct_king_move(@start, finish, @board))
     end
 
-    def test_diagonal
+    def test_direct_king_move_validation_negative
+      finish = alg_to_cartesian(["g", 1])
+      refute(validate_direct_king_move(@start, finish, @board))
     end
 
-    def test_horizontal
+    def test_white_can_castle_kingside
+      finish = alg_to_cartesian(["g", 1])
+      assert(validate_king_move(@start, finish, @board))
     end
 
-    def test_vertical
+    def test_black_can_castle_kingside
+      start = alg_to_cartesian(["d", 8])
+      finish = alg_to_cartesian(["b", 8])
+      assert(validate_king_move(start, finish, @board))
     end
+
+    def test_white_can_castle_queenside
+      finish = alg_to_cartesian(["c", 1])
+      assert(validate_king_move(@start, finish, @board))
+    end
+
+    def test_black_can_castle_queenside
+      start = alg_to_cartesian(["d", 8])
+      finish = alg_to_cartesian(["f", 8])
+      assert(validate_king_move(start, finish, @board))
+    end
+
+    def test_cannot_castle_kingside_when_path_to_rook_is_blocked
+      @board.place_pieces({["f", 1] => 2})
+      finish = alg_to_cartesian(["g", 1])
+      refute(validate_king_move(@start, finish, @board))
+    end
+
+    def test_cannot_castle_queenside_when_path_to_rook_is_blocked
+      @board.place_pieces({["b", 1] => 2})
+      finish = alg_to_cartesian(["c", 1])
+      refute(validate_king_move(@start, finish, @board))
+    end
+
+    def test_cannot_castle_through_check
+      @board.place_pieces({["d", 8] => -4})
+      finish = alg_to_cartesian(["c", 1])
+      refute(validate_king_move(@start, finish, @board))
+    end
+
+    def test_cannot_castle_out_of_check
+      @board.place_pieces({["e", 8] => -4})
+      finish = alg_to_cartesian(["c", 1])
+      refute(validate_king_move(@start, finish, @board))
+    end
+
+    def test_can_move_diagonally
+      finish = alg_to_cartesian(["d", 2])
+      assert(validate_king_move(@start, finish, @board))
+    end
+
+    def test_can_move_horizontally
+      finish = alg_to_cartesian(["d", 1])
+      assert(validate_king_move(@start, finish, @board))
+    end
+
+    def test_can_move_vertically
+      finish = alg_to_cartesian(["e", 2])
+      assert(validate_king_move(@start, finish, @board))
+    end
+
+    def test_cannot_move_more_than_one_space_diagonally
+      finish = alg_to_cartesian(["c", 3])
+      refute(validate_king_move(@start, finish, @board))
+    end
+
+    def test_cannot_move_more_than_one_space_horizontally_except_to_castle
+      finish = alg_to_cartesian(["b", 1])
+      refute(validate_king_move(@start, finish, @board))
+    end
+
+    def test_cannot_move_more_than_one_space_vertically
+      finish = alg_to_cartesian(["e", 3])
+      refute(validate_king_move(@start, finish, @board))
+    end
+
   end
 
 end
