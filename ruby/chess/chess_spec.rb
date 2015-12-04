@@ -1,6 +1,23 @@
 require 'minitest/autorun'
 require './chess'
 
+module Minitest::Assertions
+
+  def assert_subarrays_equivalent(expected, actual)
+    assert(subarrays_equivalent(expected, actual), "Expected #{expected} and #{actual} to have equal elements.")
+  end
+
+  def refute_subarrays_equivalent(expected, actual)
+    refute(subarrays_equivalent(expected, actual), "Expected #{expected} and #{actual} not to have equal elements.")
+  end
+
+  private
+  def subarrays_equivalent(expected, actual)
+    expected.length == actual.length && [0..expected.length].all? { |i| actual[i] == expected[i] }
+  end
+
+end
+
 class TestBoardSetup < Minitest::Test
 
   def setup
@@ -40,6 +57,48 @@ class TestBoardSetup < Minitest::Test
     assert_equal(3, @board[9][2])
   end
 
+  def test_path_vertical
+    start = [1, 4]
+    finish = [1, 1]
+    assert_subarrays_equivalent([[1, 3], [1, 2]], path(start, finish))
+    assert_subarrays_equivalent([[1, 2], [1, 3]], path(finish, start))
+  end
+
+  def test_path_horizontal
+    start = [4, 1]
+    finish = [1, 1]
+    assert_subarrays_equivalent([[3, 1], [2, 1]], path(start, finish))
+    assert_subarrays_equivalent([[2, 1], [3, 1]], path(finish, start))
+  end
+
+  def test_path_pos_diagonal
+    start = [2, 1]
+    finish = [5, 4]
+    assert_subarrays_equivalent([[3, 2], [4, 3]], path(start, finish))
+    assert_subarrays_equivalent([[4, 3], [3, 2]], path(finish, start))
+  end
+
+  def test_path_neg_diagonal
+    start = [5, 1]
+    finish = [2, 4]
+    assert_subarrays_equivalent([[4, 2], [3, 3]], path(start, finish))
+    assert_subarrays_equivalent([[3, 3], [4, 2]], path(finish, start))
+  end
+
+  def test_path_knight
+    start = [1, 1]
+    finish = [2, 3]
+    assert_equal([], path(start, finish))
+    assert_equal([], path(finish, start))
+  end
+
+  def test_path_stationary
+    start = [1, 1]
+    finish = [1, 1]
+    assert_equal([], path(start, finish))
+    assert_equal([], path(finish, start))
+  end
+
 end
 
 class TestMoveValidations < Minitest::Test
@@ -56,7 +115,8 @@ class TestMoveValidations < Minitest::Test
       black_pawn = {["d", 5] => -1}
       black_knight = {["b", 3] => -2}
       @white_board.place_pieces(white_pawns.merge(black_pawn).merge(black_knight))
-      @black_board = @white_board.reverse.map { |row| row.reverse.map { |val| val ? -1 * val : nil } }
+      @black_board = Board.new(@white_board.reverse.map { |row| row.reverse.map { |val| val ? -1 * val : nil } })
+      @black_board[0].flatten!
     end
 
     def test_single_move_forward

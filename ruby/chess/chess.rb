@@ -1,6 +1,8 @@
 # 2-square border for easy bounds checking
 def empty_board
-  [Array.new(12, 0)] * 2 + Array.new(8) { [0, 0] + [nil] * 8 + [0, 0] } + [Array.new(12, 0)] * 2
+  board = Board.new([Array.new(12, 0)] * 2 + Array.new(8) { [0, 0] + [nil] * 8 + [0, 0] } + [Array.new(12, 0)] * 2)
+  board[0].flatten!
+  board
 end
 
 # for testing convenience
@@ -13,7 +15,21 @@ def alg_to_cartesian(coords)
   [letters.index(coords[0]) + 2, coords[1] + 1]
 end
 
-class Array
+def path(start, finish)
+  list = []
+  difference = [finish[0] - start[0], finish[1] - start[1]]
+  if difference[0].abs == difference[1].abs || difference.include?(0)
+    unit = difference.map { |i| i <=> 0 }
+    current = start
+    while current != finish
+      list.push(current) unless current == start
+      current = [current[0] + unit[0], current[1] + unit[1]]
+    end
+  end
+  list
+end
+
+class Board < Array
 
   def get_by_coords(coords)
     x, y = coords
