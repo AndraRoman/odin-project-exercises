@@ -1,5 +1,8 @@
+gem 'minitest'
 require 'minitest/autorun'
+require 'minitest/reporters'
 require './chess'
+Minitest::Reporters.use!
 
 module Minitest::Assertions
 
@@ -21,7 +24,7 @@ end
 class TestBoardSetup < Minitest::Test
 
   def setup
-    @board = empty_board
+    @board = Board.empty_board
   end
 
   def test_empty_board
@@ -30,8 +33,15 @@ class TestBoardSetup < Minitest::Test
     assert_equal([0, 0] + [nil] * 8 + [0, 0], @board[8])
   end
 
+  def test_copy_board
+    copied = @board.copy
+    assert_subarrays_equivalent(copied, @board)
+    @board.place_pieces({["a", 2] => 1})
+    refute_subarrays_equivalent(copied, @board)
+  end
+
   def test_populated_board
-    @board = populate_board(@board)
+    @board = @board.populate
     assert_equal(12, @board.length) 
     assert_equal([0] * 12, @board[0])
     assert_equal([0, 0] + [-1] * 8 + [0, 0], @board[8])
@@ -121,9 +131,11 @@ class TestBoardSetup < Minitest::Test
 end
 
 class TestMoveValidations < Minitest::Test
+    
+  include MoveValidations
 
   def setup
-    @board = empty_board
+    @board = Board.empty_board
   end
 
   class TestOverallMoveValidation < TestMoveValidations
@@ -172,10 +184,10 @@ class TestMoveValidations < Minitest::Test
       refute(validate_move(@start, finish, @board, 1, []))
     end
 
-    def test_true_for_valid_capture
+    def test_returns_captured_piece_coords_for_valid_capture
       @board.place_pieces({["a", 4] => -1})
       finish = alg_to_cartesian(["a", 4])
-      assert(validate_move(@start, finish, @board, 1, []))
+      assert_equal(finish, validate_move(@start, finish, @board, 1, []))
     end
 
     def test_false_for_null_move
@@ -186,9 +198,21 @@ class TestMoveValidations < Minitest::Test
       # TODO
     end
 
-    def test_false_when_history_validation_fails
+    # TODO use a flag
+    def test_false_when_history_prevents_en_passant
       # TODO
     end
+
+    # TODO use a flag
+    def test_cannot_castle_if_king_has_moved
+      # TODO
+    end
+
+    # TODO use a flag
+    def test_cannot_castle_if_rook_has_moved
+      # TODO
+    end
+
 
     class TestThreatDetection < TestOverallMoveValidation
     
@@ -227,7 +251,7 @@ class TestMoveValidations < Minitest::Test
   class TestWhitePawnMoveValidation < TestMoveValidations
 
     def setup
-      @white_board = empty_board
+      @white_board = Board.empty_board
       white_pawns = {["a", 2] => 1, ["b", 2] => 1, ["c", 3] => 1, ["e", 5] => 1}
       black_pawn = {["d", 5] => -1}
       black_knight = {["b", 3] => -2}
@@ -282,8 +306,8 @@ class TestMoveValidations < Minitest::Test
     def test_diagonal_capture
       start = alg_to_cartesian(["a", 2])
       finish = alg_to_cartesian(["b", 3])
-      assert(validate_pawn_move(start, finish, @white_board))
-      assert(validate_pawn_move(flip_coords(start), flip_coords(finish), @black_board))
+      assert_equal(finish, validate_pawn_move(start, finish, @white_board))
+      assert_equal(flip_coords(finish), validate_pawn_move(flip_coords(start), flip_coords(finish), @black_board))
     end
 
     def test_cannot_move_diagonally_without_capture
@@ -296,8 +320,8 @@ class TestMoveValidations < Minitest::Test
     def test_en_passant
       start = alg_to_cartesian(["e", 5])
       finish = alg_to_cartesian(["d", 6])
-      assert(validate_pawn_move(start, finish, @white_board))
-      assert(validate_pawn_move(flip_coords(start), flip_coords(finish), @black_board))
+      assert_equal([finish[0], finish[1] - 1], validate_pawn_move(start, finish, @white_board))
+      assert_equal(flip_coords([finish[0], finish[1] - 1]), validate_pawn_move(flip_coords(start), flip_coords(finish), @black_board))
     end
 
     def test_en_passant_only_captures_pawns
@@ -531,8 +555,8 @@ class TestUIMethods < Minitest::Test
   end
 
   def test_display_board
-    board = populate_board(empty_board)
-    display_board(board, @output)
+    board = Board.empty_board.populate
+    board.display(@output)
     expected = "   ⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽
   ⎹\e[7m ♜ \e[27m ♞ \e[7m ♝ \e[27m ♚ \e[7m ♛ \e[27m ♝ \e[7m ♞ \e[27m ♜ ⎸
   ⎹ ♟ \e[7m ♟ \e[27m ♟ \e[7m ♟ \e[27m ♟ \e[7m ♟ \e[27m ♟ \e[7m ♟ \e[27m⎸
@@ -553,3 +577,4 @@ class TestUIMethods < Minitest::Test
   end
 
 end
+
