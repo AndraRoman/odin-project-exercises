@@ -9,4 +9,15 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+    def assert_raise_with_partial_message exception_class, message
+    assert_raise exception_class do
+      begin
+        yield
+      rescue Exception => e
+        assert_match(message, e.message)
+        raise e
+      end
+    end
+  end
+
 end

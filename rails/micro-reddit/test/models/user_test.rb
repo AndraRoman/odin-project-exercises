@@ -19,7 +19,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   def test_user_cannot_have_blank_or_empty_username
-    @user.username = ""
+    @user.username = "	 "
     refute @user.valid?
 
     @user.username = nil
@@ -35,18 +35,14 @@ class UserTest < ActiveSupport::TestCase
   def test_db_enforces_username_uniqueness
     @user.save
     duplicate_user = User.create(email: "foo@example.com", username: "dup_user")
-    assert_raise ActiveRecord::RecordNotUnique do
-      begin
-        duplicate_user.update_attribute(:username, @user.username)
-      rescue Exception => e
-        assert_match(/^PG::UniqueViolation: ERROR:  duplicate key value violates unique constraint/, e.message)
-        raise e
-      end
+    assert_raise_with_partial_message ActiveRecord::RecordNotUnique,
+      /^PG::UniqueViolation.*duplicate key value violates unique constraint/ do
+      duplicate_user.update_attribute(:username, @user.username)
     end
   end
 
   def test_user_cannot_have_blank_or_empty_email
-    @user.email = ""
+    @user.email = " 	"
     refute @user.valid?
 
     @user.email = nil
