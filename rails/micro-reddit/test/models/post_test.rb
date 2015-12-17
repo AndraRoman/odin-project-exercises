@@ -32,12 +32,21 @@ class PostTest < ActiveSupport::TestCase
     assert_equal(2, @user.posts.length)
   end
 
-  def test_db_enforces_user_id_constraint_on_save
+  def test_ar_enforces_user_existence
+    @post.user_id = 999
+    refute @post.valid?
+  end
+
+  def test_db_enforces_user_existence
     @post.user_id = 999
     assert_raise_with_partial_message ActiveRecord::InvalidForeignKey,
       /^PG::ForeignKeyViolation.*insert or update on table "posts" violates foreign key constraint "user_id"/ do
-     @post.save
+     @post.update_attribute(:user_id, 999)
    end
+  end
+
+  def test_ar_forbids_destroying_user_with_existing_posts
+    assert_equal(false, @user.destroy)
   end
 
   def test_db_forbids_deleting_user_with_existing_posts
@@ -47,11 +56,15 @@ class PostTest < ActiveSupport::TestCase
    end
   end
 
-  def test_db_forbids_null_user_id
+  def test_ar_forbids_null_user_id
     @post.user_id = nil
+    refute @post.valid?
+  end
+
+  def test_db_forbids_null_user_id
     assert_raise_with_partial_message ActiveRecord::StatementInvalid,
       /^PG::NotNullViolation.*null value in column "user_id" violates not-null constraint/ do
-     @post.save
+     @post.update_attribute(:user_id, nil)
    end
   end
 

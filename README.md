@@ -34,3 +34,8 @@ In which I work through, and sometimes overthink, the exercises in [http://www.t
 ###[Testing Ruby with RSpec](http://www.theodinproject.com/ruby-programming/testing-ruby)
 * Added more tests for Building Blocks, Advanced Building Blocks, and Tic-Tac-Toe projects
 * TDD Connect Four
+
+##[Ruby on Rails](http://www.theodinproject.com/ruby-on-rails)##
+
+###[Building with Active Record](http://www.theodinproject.com/ruby-on-rails/building-with-active-record)
+* "Micro-Reddit", a rails app with no front end. Has appropriately associated user, post, and comment models; tests in Test::Unit; and uniqueness and foreign key contraints at ActiveRecord and database levels.

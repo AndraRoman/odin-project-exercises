@@ -37,20 +37,32 @@ class CommentTest < ActiveSupport::TestCase
     assert_equal(2, @post.comments.length)
   end
 
-  def test_db_enforces_user_id_constraint_on_save
+  def test_ar_enforces_user_existence
     @comment.user_id = 999
+    refute @comment.valid?
+  end
+
+  def test_db_enforces_user_existence
     assert_raise_with_partial_message ActiveRecord::InvalidForeignKey,
       /^PG::ForeignKeyViolation.*insert or update on table "comments" violates foreign key constraint "user_id"/ do
-     @comment.save
+     @comment.update_attribute(:user_id, 999)
    end
   end
 
-  def test_db_enforces_post_id_constraint_on_save
+  def test_ar_enforces_post_existence
     @comment.post_id = 999
+    refute @comment.valid?
+  end
+
+  def test_db_enforces_post_id_constraint_on_save
     assert_raise_with_partial_message ActiveRecord::InvalidForeignKey,
       /^PG::ForeignKeyViolation.*insert or update on table "comments" violates foreign key constraint "post_id"/ do
-     @comment.save
+     @comment.update_attribute(:post_id, 999)
    end
+  end
+
+  def test_ar_forbids_destroying_user_with_existing_comments
+    assert_equal(false, @commenter.destroy)
   end
 
   def test_db_forbids_deleting_user_with_existing_comments
@@ -60,6 +72,10 @@ class CommentTest < ActiveSupport::TestCase
    end
   end
 
+  def test_ar_forbids_destroying_post_with_existing_comments
+    assert_equal(false, @post.destroy)
+  end
+
   def test_db_forbids_deleting_post_with_existing_comments
     assert_raise_with_partial_message ActiveRecord::InvalidForeignKey,
       /^PG::ForeignKeyViolation.*update or delete on table "posts" violates foreign key constraint "post_id" on table "comments"/ do
@@ -67,19 +83,27 @@ class CommentTest < ActiveSupport::TestCase
    end
   end
 
-  def test_db_forbids_null_user_id
+  def test_ar_forbids_null_user_id
     @comment.user_id = nil
+    refute @comment.valid?
+  end
+
+  def test_db_forbids_null_user_id
     assert_raise_with_partial_message ActiveRecord::StatementInvalid,
       /^PG::NotNullViolation.*null value in column "user_id" violates not-null constraint/ do
-     @comment.save
+     @comment.update_attribute(:user_id, nil)
    end
   end
 
-  def test_db_forbids_null_post_id
+  def test_ar_forbids_null_post_id
     @comment.post_id = nil
+    refute @comment.valid?
+  end
+
+  def test_db_forbids_null_post_id
     assert_raise_with_partial_message ActiveRecord::StatementInvalid,
       /^PG::NotNullViolation.*null value in column "post_id" violates not-null constraint/ do
-     @comment.save
+     @comment.update_attribute(:post_id, nil)
    end
   end
 end

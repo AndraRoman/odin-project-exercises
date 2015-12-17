@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
-  has_many :posts
-  has_many :comments
+  has_many :posts, inverse_of: :user, dependent: :restrict_with_error
+  has_many :comments, inverse_of: :user, dependent: :restrict_with_error
 
   validates :username, presence: true, length: {maximum: 255}, uniqueness: true
 
