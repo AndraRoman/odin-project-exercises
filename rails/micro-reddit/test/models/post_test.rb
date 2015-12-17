@@ -47,4 +47,12 @@ class PostTest < ActiveSupport::TestCase
    end
   end
 
+  def test_db_forbids_null_user_id
+    @post.user_id = nil
+    assert_raise_with_partial_message ActiveRecord::StatementInvalid,
+      /^PG::NotNullViolation.*null value in column "user_id" violates not-null constraint/ do
+     @post.save
+   end
+  end
+
 end
