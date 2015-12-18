@@ -1,0 +1,3 @@
+== README
+
+Part 1 of the forms project in The Odin Project's RoR curriculum
