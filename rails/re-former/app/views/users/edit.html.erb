@@ -1,0 +1,13 @@
+<p>Hello!</p>
+<%= form_for @user, url: {action: "update"} do |user_form| %>
+  <%= user_form.label "Enter a username." %>
+  <%= user_form.text_field :username %>
+  <br/>
+  <%= user_form.label "Enter your email address." %>
+  <%= user_form.text_field :email %>
+  <br/>
+  <%= user_form.label "Enter a password." %>
+  <%= user_form.text_field :password, type: "password" %>
+  <br/>
+  <%= user_form.submit "Save changes to user." %>
+<% end %>
