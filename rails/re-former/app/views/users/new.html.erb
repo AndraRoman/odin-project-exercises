@@ -1,13 +1,11 @@
 <h1>Sign up</h1>
 <p>Hello!</p>
-<form accept-charset="UTF-8" action="create" method="post">
-  <input type="hidden" name="authenticity_token" value="">
-  <input id="username" name="user[username]" type="text"/>
-  <label for "username">Enter a username.</label>
-  <input id="email" name="user[email]" type="email"/>
-  <label for "email">Enter your email address.</label>
-  <input id="password" name="user[password]" type="password"/>
-  <label for "username">Enter a password.</label>
-  <input name="create" type="submit" value="Create"/>
-  <label for "create">Create user.</label>
-</form>
+<%= form_tag("create", method: "post") do %>
+  <%= label_tag("user[username]", "Enter a username.") %>
+  <%= text_field_tag("user[username]") %>
+  <%= label_tag("user[email]", "Enter your email address.") %>
+  <%= text_field_tag("user[email]") %>
+  <%= label_tag("user[password]", "Enter a password.") %>
+  <%= text_field_tag("user[password]") %>
+  <%= submit_tag("Create user.") %>
+<% end %>
