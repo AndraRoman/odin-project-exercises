@@ -1,11 +1,14 @@
 <h1>Sign up</h1>
 <p>Hello!</p>
-<%= form_tag("create", method: "post") do %>
-  <%= label_tag("user[username]", "Enter a username.") %>
-  <%= text_field_tag("user[username]") %>
-  <%= label_tag("user[email]", "Enter your email address.") %>
-  <%= text_field_tag("user[email]") %>
-  <%= label_tag("user[password]", "Enter a password.") %>
-  <%= text_field_tag("user[password]") %>
-  <%= submit_tag("Create user.") %>
+<%= form_for @user, url: {action: "create"} do |user_form| %>
+  <%= user_form.label "Enter a username." %>
+  <%= user_form.text_field :username, value: "J. R. Mole" %>
+  <br/>
+  <%= user_form.label "Enter your email address." %>
+  <%= user_form.text_field :email, value: "user@example.com" %>
+  <br/>
+  <%= user_form.label "Enter a password." %>
+  <%= user_form.text_field :password, type: "password" %>
+  <br/>
+  <%= user_form.submit "Create user." %>
 <% end %>
