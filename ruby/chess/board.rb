@@ -1,4 +1,3 @@
-
 class Board < Array
 
 # 2-square border for easy bounds checking
@@ -54,9 +53,9 @@ class Board < Array
   end
 
   def display(output = $stdout)
-    output.print("   " + "\u23bd" * 24)
+    output.print("     " + "\u23bd" * 24)
     self[2...10].reverse.each_with_index do |row, i|
-      output.print("\n  \u23b9")
+      output.print("\n #{8 - i}  \u23b9")
       row[2...10].each_with_index do |sq, j|
         piece = " " + num_to_piece(sq) + " "
         piece = piece.reverse_color if i % 2 == j % 2
@@ -64,7 +63,61 @@ class Board < Array
       end
       output.print("\u23b8")
     end
-    output.print("\n   " + "\u23ba" * 24 + "\n")
+    output.print("\n     " + "\u23ba" * 24 + "\n")
+    letters = ""
+    ("a"..."i").each do |i|
+      letters += " #{i} "
+    end
+    output.print("     #{letters}\n" )
   end
 
 end
+
+# COORDINATES
+
+def flip_coords(coords)
+  coords.map { |i| 11 - i }
+end
+
+def alg_to_cartesian(coords)
+  letters = ("a"..."i").to_a
+  [letters.index(coords[0]) + 2, coords[1] + 1]
+end
+
+def delta(start, finish)
+  [finish[0] - start[0], finish[1] - start[1]]
+end
+
+def path(start, finish)
+  list = []
+  difference = delta(start, finish)
+  if difference[0].abs == difference[1].abs || difference.include?(0)
+    unit = difference.map { |i| i <=> 0 }
+    current = start
+    while current != finish
+      list.push(current) unless current == start
+      current = [current[0] + unit[0], current[1] + unit[1]]
+    end
+  end
+  list
+end
+
+class String
+  def reverse_color
+    "\e[7m#{self}\e[27m"
+  end
+end
+
+def num_to_piece(n)
+  char = "\u2654".ord
+  if (1...7).include? n 
+    char += (6 - n)
+    char.chr("UTF-8")
+  elsif (-6...0).include? n
+    char += (12 + n)
+    char.chr("UTF-8")
+  else
+    " "
+  end
+end
+

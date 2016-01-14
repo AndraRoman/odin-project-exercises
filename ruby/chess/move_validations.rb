@@ -1,3 +1,9 @@
+class InvalidMove < Exception; end
+class BasicValidationFailed < InvalidMove; end
+class PieceValidationFailed < InvalidMove; end
+class HistoryValidationFailed < InvalidMove; end
+class PlayerLeftInCheck < InvalidMove; end
+
 module MoveValidationHelpers
   
   # history only needed for en passant
@@ -5,10 +11,14 @@ module MoveValidationHelpers
     board.each_with_index do |row, y|
       row.each_with_index do |piece, x|
         if !piece.nil? && piece * sign < 0
-           if piece.abs == 6 # special case to prevent infinite loop between kings
-             return true if validate_direct_king_move([x, y], square, board)
-           else
-             return true if validate_move([x, y], square, board, sign * -1, history)
+           begin
+             if piece.abs == 6 # special case to prevent infinite loop between kings
+               return true if validate_direct_king_move([x, y], square, board)
+             else
+               return true if validate_move([x, y], square, board, sign * -1, history)
+             end
+           rescue InvalidMove
+             return false
            end
         end
       end
@@ -119,18 +129,23 @@ module MoveValidations
     if basic_validation_result
       captured_piece_coords = basic_validation_result if basic_validation_result.class == Array
     else
-      return false
+      raise BasicValidationFailed
     end
   
     piece_validation_result = validate_move_by_piece(piece, start, finish, board)
     if piece_validation_result
       captured_piece_coords = piece_validation_result if piece_validation_result.class == Array # en passant
     else
-      return false
+      raise PieceValidationFailed
     end
   
-    return false unless validate_move_by_history(piece, start, finish, board, history)
-    return false unless validate_not_left_in_check(piece, start, finish, board)
+    unless validate_move_by_history(piece, start, finish, board, history)
+      raise HistoryValidationFailed
+    end
+
+    unless validate_not_left_in_check(piece, start, finish, board)
+      raise PlayerLeftInCheck
+    end
   
     captured_piece_coords || true
   end
@@ -168,4 +183,3 @@ module MoveValidations
     true
   end
 end
-

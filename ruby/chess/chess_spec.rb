@@ -154,34 +154,34 @@ class TestMoveValidations < Minitest::Test
     def test_false_for_missing_piece
       start = alg_to_cartesian(["b", 2])
       finish = alg_to_cartesian(["b", 3])
-      refute(validate_move(start, finish, @board, 1, []))
+      assert_raises(BasicValidationFailed) { validate_move(start, finish, @board, 1, []) }
     end
 
     def test_false_for_wrong_piece_color
       finish = alg_to_cartesian(["a", 4])
-      refute(validate_move(@start, finish, @board, -1, []))
+      assert_raises(BasicValidationFailed) { validate_move(@start, finish, @board, -1, []) }
     end
 
     def test_false_when_piece_validation_fails
       finish = alg_to_cartesian(["b", 5])
-      refute(validate_move(@start, finish, @board, 1, []))
+      assert_raises(PieceValidationFailed) { validate_move(@start, finish, @board, 1, []) }
     end
 
     def test_false_when_out_of_bounds
       finish = alg_to_cartesian(["a", -1])
-      refute(validate_move(@start, finish, @board, 1, []))
+      assert_raises(BasicValidationFailed) { validate_move(@start, finish, @board, 1, []) }
     end
 
     def test_false_when_path_blocked
       @board.place_pieces({["a", 4] => 1})
       finish = alg_to_cartesian(["a", 5])
-      refute(validate_move(@start, finish, @board, 1, []))
+      assert_raises(BasicValidationFailed) { validate_move(@start, finish, @board, 1, []) }
     end
 
     def test_false_when_own_piece_is_on_finish
       @board.place_pieces({["a", 4] => 1})
       finish = alg_to_cartesian(["a", 4])
-      refute(validate_move(@start, finish, @board, 1, []))
+      assert_raises(BasicValidationFailed) { validate_move(@start, finish, @board, 1, []) }
     end
 
     def test_returns_captured_piece_coords_for_valid_capture
@@ -191,15 +191,15 @@ class TestMoveValidations < Minitest::Test
     end
 
     def test_false_for_null_move
-      refute(validate_move(@start, @start, @board, 1, []))
+      assert_raises(BasicValidationFailed) { validate_move(@start, @start, @board, 1, []) }
     end
 
-    def test_false_when_ends_in_check
+    def xtest_false_when_ends_in_check
       # TODO
     end
 
     # TODO use a flag
-    def test_false_when_history_prevents_en_passant
+    def xtest_false_when_history_prevents_en_passant
       # TODO
     end
 
@@ -550,30 +550,41 @@ end
 class TestUIMethods < Minitest::Test
   
   def setup
-    @input = StringIO.new("i0\nc0\na1")
+    @input = StringIO.new("0x\na4") # invalid followed by valid
     @output = StringIO.new
+  end
+
+  def test_get_coordinates
+    coords = get_coordinates("Test message", {:input => @input, :output => @output})
+    assert_equal("Test message\nInput '0x' is not a valid square. Try again and make sure to use algebraic notation (eg 'b5').\n", @output.string)
+    assert_equal([2, 5], coords)
   end
 
   def test_display_board
     board = Board.empty_board.populate
     board.display(@output)
-    expected = "   ⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽
-  ⎹\e[7m ♜ \e[27m ♞ \e[7m ♝ \e[27m ♚ \e[7m ♛ \e[27m ♝ \e[7m ♞ \e[27m ♜ ⎸
-  ⎹ ♟ \e[7m ♟ \e[27m ♟ \e[7m ♟ \e[27m ♟ \e[7m ♟ \e[27m ♟ \e[7m ♟ \e[27m⎸
-  ⎹\e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   ⎸
-  ⎹   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m⎸
-  ⎹\e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   ⎸
-  ⎹   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m⎸
-  ⎹\e[7m ♙ \e[27m ♙ \e[7m ♙ \e[27m ♙ \e[7m ♙ \e[27m ♙ \e[7m ♙ \e[27m ♙ ⎸
-  ⎹ ♖ \e[7m ♘ \e[27m ♗ \e[7m ♕ \e[27m ♔ \e[7m ♗ \e[27m ♘ \e[7m ♖ \e[27m⎸
-   ⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺
+    expected = "     ⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽
+ 8  ⎹\e[7m ♜ \e[27m ♞ \e[7m ♝ \e[27m ♚ \e[7m ♛ \e[27m ♝ \e[7m ♞ \e[27m ♜ ⎸
+ 7  ⎹ ♟ \e[7m ♟ \e[27m ♟ \e[7m ♟ \e[27m ♟ \e[7m ♟ \e[27m ♟ \e[7m ♟ \e[27m⎸
+ 6  ⎹\e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   ⎸
+ 5  ⎹   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m⎸
+ 4  ⎹\e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   ⎸
+ 3  ⎹   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m⎸
+ 2  ⎹\e[7m ♙ \e[27m ♙ \e[7m ♙ \e[27m ♙ \e[7m ♙ \e[27m ♙ \e[7m ♙ \e[27m ♙ ⎸
+ 1  ⎹ ♖ \e[7m ♘ \e[27m ♗ \e[7m ♕ \e[27m ♔ \e[7m ♗ \e[27m ♘ \e[7m ♖ \e[27m⎸
+     ⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺⎺
+      a  b  c  d  e  f  g  h 
 "
     assert_equal(expected, @output.string)
   end
 
-  def test_get_alg_coordinates
-    coords = get_coordinates({:input => @input, :output => @output})
-    assert_equal(["a", 1], coords)
+end
+
+class TestMiscHelpers < Minitest::Test
+
+  def test_num_to_piece
+    assert_equal("\u2655", num_to_piece(5))
+    assert_equal("\u265b", num_to_piece(-5))
   end
 
 end
