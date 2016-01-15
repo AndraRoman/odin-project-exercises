@@ -2,8 +2,7 @@ class Board < Array
 
 # 2-square border for easy bounds checking
   def self.empty_board
-    board = Board.new([Array.new(12, 0)] * 2 + Array.new(8) { [0, 0] + [nil] * 8 + [0, 0] } + [Array.new(12, 0)] * 2)
-    board[0].flatten!
+    board = Board.new(Array.new(8) { [nil] * 8 })
     board
   end
 
@@ -34,7 +33,7 @@ class Board < Array
   end
 
   def copy
-    result = []
+    result = Board.new
     self.each { |i| result.push(i.clone) }
     result
   end
@@ -42,21 +41,19 @@ class Board < Array
   # pawn => 1, knight => 2, bishop => 3, rook => 4, queen => 5, king => 6
   def populate
     # white
-    self[2][2...10] = [4, 2, 3, 5, 6, 3, 2, 4]
-    self[3].each_with_index do |i, index|
-      self[3][index] = 1 if i.nil?
-    end
+    self[0] = [4, 2, 3, 5, 6, 3, 2, 4]
+    self[1] = [1] * 8
     # black
-    self[8] = self[3].reverse.map { |i| i * -1 }
-    self[9] = self[2].reverse.map { |i| i * -1 }
+    self[6] = self[1].map { |i| i * -1 }
+    self[7] = self[0].map { |i| i * -1 }
     self
   end
 
   def display(output = $stdout)
     output.print("     " + "\u23bd" * 24)
-    self[2...10].reverse.each_with_index do |row, i|
+    self.reverse.each_with_index do |row, i|
       output.print("\n #{8 - i}  \u23b9")
-      row[2...10].each_with_index do |sq, j|
+      row.each_with_index do |sq, j|
         piece = " " + num_to_piece(sq) + " "
         piece = piece.reverse_color if i % 2 == j % 2
         output.print(piece)
@@ -75,13 +72,14 @@ end
 
 # COORDINATES
 
+# rotates 180 degrees
 def flip_coords(coords)
-  coords.map { |i| 11 - i }
+  coords.map { |i| 7 - i }
 end
 
 def alg_to_cartesian(coords)
   letters = ("a"..."i").to_a
-  [letters.index(coords[0]) + 2, coords[1] + 1]
+  [letters.index(coords[0]), coords[1] - 1]
 end
 
 def delta(start, finish)
@@ -121,3 +119,11 @@ def num_to_piece(n)
   end
 end
 
+def get_sign(square, board)
+  piece = board.get_by_coords(square)
+  piece && piece != 0 ? piece / piece.abs : 0
+end
+
+def in_bounds(coords)
+  coords.all? { |i| (0...8).include? i }
+end

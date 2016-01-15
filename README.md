@@ -35,6 +35,9 @@ In which I work through, and sometimes overthink, the exercises in [http://www.t
 * Added more tests for Building Blocks, Advanced Building Blocks, and Tic-Tac-Toe projects
 * [TDD Connect Four](ruby/testing-ruby/connect-four/)
 
+###[Final Project](http://www.theodinproject.com/ruby-programming/ruby-final-project)
+* [Chess](https://github.com/cdouglass/odin-project-exercises/tree/master/ruby/chess) Two-player command-line chess program, in progress. Not implemented yet: history-based move validations, pawn promotion, mate detection, or draws.
+
 ##[Ruby on Rails](http://www.theodinproject.com/ruby-on-rails/)##
 
 ###[Building with Active Record](http://www.theodinproject.com/ruby-on-rails/building-with-active-record/)

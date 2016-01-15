@@ -3,19 +3,16 @@ require './board'
 
 include MoveValidations # does this help?
 
-# TODO castling
-# TODO TEST FOR CAPTURING incl en passant
-# TODO test
-# passes on exception with message for invalid move
-def move(start, finish, board, graveyard, history)
+# passes on exception for invalid move
+def move(start, finish, player_sign, board, graveyard, history)
   piece = board.get_by_coords(start)
-  move_valid = MoveValidations::validate_move(start, finish, board, piece / piece.abs, history)
+  move_valid = MoveValidations::validate_move(start, finish, board, player_sign, history)
   board.set_by_coords(finish, piece)
   board.set_by_coords(start, nil)
-  if move_valid.class == Array
+  if move_valid.class == Array # ie if move makes a capture
     captured_piece = board.get_by_coords(move_valid)
     graveyard.push(captured_piece)
-    board.set_by_coords(move_valid)
+    board.set_by_coords(move_valid, piece)
   end
 end
 
@@ -36,29 +33,27 @@ def get_coordinates(message, io = {:input => $stdin, :output => $stdout})
   alg_to_cartesian(coords)
 end
 
-# TODO later pass on other needed info
-# TODO test
-# TODO print nicer error msg
-def play(player, board)
-  color = (player == 1) ? "White" : "Black"
+def play(player_sign, board)
+  color = (player_sign == 1) ? "White" : "Black"
   begin
-    start_coords = get_coordinates("#{color}, enter the coordinates of the piece you would like to move.")
-    end_coords = get_coordinates("Enter the coordinates of the square you would like to move to.")
-    move(start_coords, end_coords, board, [], [])
+    start = get_coordinates("#{color}, enter the coordinates of the piece you would like to move.")
+    finish = get_coordinates("Enter the coordinates of the square you would like to move to.")
+    move(start, finish, player_sign, board, [], [])
   rescue InvalidMove => e
     puts "#{e}. Try again."
     retry
   end
 end
 
-# TODO test
 def run
   board = Board.empty_board.populate
   board.display
-  play(1, board)
-  board.display
-  play(-1, board)
-  board.display
+  while true
+    play(1, board)
+    board.display
+    play(-1, board)
+    board.display
+  end
 end
 
 if __FILE__ == $0

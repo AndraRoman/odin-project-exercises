@@ -28,9 +28,10 @@ class TestBoardSetup < Minitest::Test
   end
 
   def test_empty_board
-    assert_equal(12, @board.length) 
-    assert_equal([0] * 12, @board[0])
-    assert_equal([0, 0] + [nil] * 8 + [0, 0], @board[8])
+    assert_equal(8, @board.length) 
+    @board.each do |row|
+      assert_equal([nil] * 8, row)
+    end
   end
 
   def test_copy_board
@@ -42,23 +43,26 @@ class TestBoardSetup < Minitest::Test
 
   def test_populated_board
     @board = @board.populate
-    assert_equal(12, @board.length) 
-    assert_equal([0] * 12, @board[0])
-    assert_equal([0, 0] + [-1] * 8 + [0, 0], @board[8])
-    assert_equal([0, 0, -4, -2, -3, -6, -5, -3, -2, -4, 0, 0], @board[9])
+    assert_equal([-1] * 8, @board[6])
+    assert_equal([-4, -2, -3, -5, -6, -3, -2, -4], @board[7])
   end
 
   def test_set_by_alg_coords
     @board.set_by_alg_coords(["c", 4], 5)
-    assert_equal(5, @board[5][4])
+    assert_equal(5, @board[3][2])
   end
 
   def test_flip_coords
-    assert_equal([11, 2], flip_coords([0, 9]))
+    assert_equal([7, 2], flip_coords([0, 5]))
   end
 
   def test_alg_to_cartesian
-    assert_equal([2, 2], alg_to_cartesian(["a", 1]))
+    assert_equal([2, 3], alg_to_cartesian(["c", 4]))
+  end
+
+  def test_get_sign
+    @board.place_pieces({["d", 6] => -3})
+    assert_equal(-1, get_sign(alg_to_cartesian(["d", 6]), @board))
   end
 
   def test_delta_gives_difference_between_coordinates
@@ -67,8 +71,8 @@ class TestBoardSetup < Minitest::Test
 
   def test_place_pieces
     @board.place_pieces({["d", 2] => -1, ["a", 8] => 3})
-    assert_equal(-1, @board[3][5])
-    assert_equal(3, @board[9][2])
+    assert_equal(-1, @board[1][3])
+    assert_equal(3, @board[7][0])
   end
 
   def test_path_vertical
@@ -114,15 +118,15 @@ class TestBoardSetup < Minitest::Test
   end
 
   def test_path_open_true_on_clear_path
-    start = [2, 2]
-    finish = [2, 10]
+    start = [0, 0]
+    finish = [0, 7]
     assert(@board.path_open?(path(start, finish)))
     assert(@board.path_open?(path(finish, start)))
   end
 
   def test_path_open_false_on_blocked_path
-    start = [2, 2]
-    finish = [2, 10]
+    start = [0, 0]
+    finish = [0, 7]
     @board.place_pieces(["a", 5] => 1)
     refute(@board.path_open?(path(start, finish)))
     refute(@board.path_open?(path(finish, start)))
@@ -194,12 +198,15 @@ class TestMoveValidations < Minitest::Test
       assert_raises(BasicValidationFailed) { validate_move(@start, @start, @board, 1, []) }
     end
 
-    def xtest_false_when_ends_in_check
-      # TODO
+    def test_false_when_ends_in_check
+      @board.place_pieces({["b", 7] => -6})
+      start = alg_to_cartesian(["b", 7])
+      finish = alg_to_cartesian(["a", 7])
+      assert_raises(PlayerLeftInCheck) { validate_move(start, finish, @board, -1, []) }
     end
 
     # TODO use a flag
-    def xtest_false_when_history_prevents_en_passant
+    def test_false_when_history_prevents_en_passant
       # TODO
     end
 
@@ -212,7 +219,6 @@ class TestMoveValidations < Minitest::Test
     def test_cannot_castle_if_rook_has_moved
       # TODO
     end
-
 
     class TestThreatDetection < TestOverallMoveValidation
     
@@ -257,7 +263,6 @@ class TestMoveValidations < Minitest::Test
       black_knight = {["b", 3] => -2}
       @white_board.place_pieces(white_pawns.merge(black_pawn).merge(black_knight))
       @black_board = Board.new(@white_board.reverse.map { |row| row.reverse.map { |val| val ? -1 * val : nil } })
-      @black_board[0].flatten!
     end
 
     def test_single_move_forward
@@ -291,7 +296,6 @@ class TestMoveValidations < Minitest::Test
     def test_double_move_forward
       start = alg_to_cartesian(["a", 2])
       finish = alg_to_cartesian(["a", 4])
-      assert(start[1] == 3)
       assert(validate_pawn_move(start, finish, @white_board))
       assert(validate_pawn_move(flip_coords(start), flip_coords(finish), @black_board))
     end
@@ -557,14 +561,14 @@ class TestUIMethods < Minitest::Test
   def test_get_coordinates
     coords = get_coordinates("Test message", {:input => @input, :output => @output})
     assert_equal("Test message\nInput '0x' is not a valid square. Try again and make sure to use algebraic notation (eg 'b5').\n", @output.string)
-    assert_equal([2, 5], coords)
+    assert_equal([0, 3], coords)
   end
 
   def test_display_board
     board = Board.empty_board.populate
     board.display(@output)
     expected = "     ⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽⎽
- 8  ⎹\e[7m ♜ \e[27m ♞ \e[7m ♝ \e[27m ♚ \e[7m ♛ \e[27m ♝ \e[7m ♞ \e[27m ♜ ⎸
+ 8  ⎹\e[7m ♜ \e[27m ♞ \e[7m ♝ \e[27m ♛ \e[7m ♚ \e[27m ♝ \e[7m ♞ \e[27m ♜ ⎸
  7  ⎹ ♟ \e[7m ♟ \e[27m ♟ \e[7m ♟ \e[27m ♟ \e[7m ♟ \e[27m ♟ \e[7m ♟ \e[27m⎸
  6  ⎹\e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   ⎸
  5  ⎹   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m   \e[7m   \e[27m⎸

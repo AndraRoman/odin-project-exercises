@@ -7,6 +7,7 @@ class PlayerLeftInCheck < InvalidMove; end
 module MoveValidationHelpers
   
   # history only needed for en passant
+  # needs sign as arg to check whether position is legal for king to move to
   def threatened?(square, sign, board, history)
     board.each_with_index do |row, y|
       row.each_with_index do |piece, x|
@@ -28,16 +29,16 @@ module MoveValidationHelpers
   
   # passes empty history to threatened? since it won't affect the outcome
   def check?(sign, board)
-    square = [0, 0]
     board.each_with_index do |row, y|
       row.each_with_index do |piece, x|
         if piece == 6 * sign
           square = [x, y]
+          return true if threatened?(square, sign, board, [])
           break
         end
       end
     end
-    threatened?(square, sign, board, [])
+    false
   end
 end
 
@@ -49,19 +50,30 @@ module PieceMoveValidations
     difference = delta(start, finish)
     piece = board.get_by_coords(start)
     other_piece = board.get_by_coords(finish)
-    if other_piece.nil?
+    if piece.nil?
+      return false
+    elsif other_piece.nil?
       if difference == [0, piece]
-        true
+        return true
       elsif difference == [0, 2 * piece]
-        [3, 8].include? start[1] # must be in rank 2 or 7 to move two squares
-      else
-        other_piece = board.get_by_coords([finish[0], finish[1] - piece])
-      [finish[0], finish[1] - piece] if other_piece == -1 * piece && (difference[0]).abs == 1 && piece * other_piece < 0 # en passant
+        return [1, 6].include? start[1] # must be in rank 2 or 7 to move two squares
+      else # en passant
+        en_passant_target_coords = ([finish[0], finish[1] - piece])
+        if in_bounds(en_passant_target_coords)
+           other_piece = board.get_by_coords(en_passant_target_coords)
+           if other_piece && difference[0].abs == 1 && piece * other_piece == -1
+             return en_passant_target_coords
+           end
+        end
       end
-    elsif piece * other_piece > 0
-      false
+    elsif piece * other_piece < 0 
+      if (difference[0]).abs == 1 && difference[1] == piece # normal capture
+        return finish
+      else
+        return false
+      end
     else
-      finish if (difference[0]).abs == 1 && difference[1] == piece # normal capture
+      false
     end
   end
 
@@ -87,26 +99,27 @@ module PieceMoveValidations
   # king/rook position validation is done in calling fn, using history
   def validate_king_move(start, finish, board)
     difference = delta(start, finish)
-    piece = board.get_by_coords(start)
+    sign = get_sign(start, board)
     squares_passed_through = path(start, finish)
     squares_passed_through.each do |square|
-      return false if threatened?(square, piece / piece.abs, board, [])
+      return false if threatened?(square, sign, board, [])
     end
     if validate_direct_king_move(start, finish, board)
       true
     else
-      if check?(piece / piece.abs, board)
+      if check?(sign, board)
         false
       elsif difference == [2, 0]
-        board.path_open?(path(start, [10, start[1]]))
+        board.path_open?(path(start, [7, start[1]]))
       elsif difference == [-2, 0]
-        board.path_open?(path(start, [2, start[1]]))
+        board.path_open?(path(start, [0, start[1]]))
       else
         false
       end
     end
   end
   
+  # only used for testing whether king prevents other king from moving to a square
   def validate_direct_king_move(start, finish, board)
     difference = delta(start, finish)
     difference.none? { |i| i.abs > 1 } && difference.any? { |i| i != 0 }
@@ -119,8 +132,14 @@ module MoveValidations
   include PieceMoveValidations
 
   # returns false if invalid, coordinates of captured piece if valid and capture is made, else true
+  # player_sign is needed for threat detection (which checks whether *opponent* could move from given square)
   def validate_move(start, finish, board, player_sign, history)
     piece = board.get_by_coords(start)
+
+    unless piece && player_sign # silly
+      raise BasicValidationFailed # TODO combine with rest of basic validation
+    end
+
     target_piece = board.get_by_coords(finish)
   
     captured_piece_coords = nil
@@ -138,13 +157,13 @@ module MoveValidations
     else
       raise PieceValidationFailed
     end
-  
-    unless validate_move_by_history(piece, start, finish, board, history)
-      raise HistoryValidationFailed
-    end
 
     unless validate_not_left_in_check(piece, start, finish, board)
       raise PlayerLeftInCheck
+    end
+  
+    unless validate_move_by_history(piece, start, finish, board, history)
+      raise HistoryValidationFailed
     end
   
     captured_piece_coords || true
@@ -152,8 +171,9 @@ module MoveValidations
   
   # TODO test
   def validate_move_basics(piece, target_piece, start, finish, board, player_sign)
+    return false unless in_bounds(finish)
     return false unless (!piece.nil? && piece * player_sign > 0) # starting point has a piece of the correct color
-    return false if target_piece == 0 # out of bounds
+      # above fails!
     path = path(start, finish)
     return false unless board.path_open?(path)
     return false if !target_piece.nil? && piece * target_piece > 0 # can't capture own piece
@@ -177,9 +197,11 @@ module MoveValidations
     true
   end
   
-  # TODO
-  # piece not needed - just used to get player sign
   def validate_not_left_in_check(piece, start, finish, board)
-    true
+    sign = piece / piece.abs # should never get nil piece
+    temp_board = board.copy
+    temp_board.set_by_coords(finish, piece)
+    temp_board.set_by_coords(start, nil)
+    !check?(sign, temp_board)
   end
 end
