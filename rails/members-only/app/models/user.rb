@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   has_many :posts, inverse_of: :user, dependent: :restrict_with_error
 
   # wait this makes NO SENSE
-  before_create { self.remember }
+  before_create { self.memorize }
   before_save { self.email = email.downcase }
 
   # not validating format for now
@@ -29,9 +29,16 @@ class User < ActiveRecord::Base
     Digest::SHA1.hexdigest(string)
   end
 
-  def remember
+  # used in before_create callback for user, so can't save to db
+  def memorize
     self.remember_token = User.new_token
     self.remember_digest = User.digest(remember_token.to_s)
+  end
+
+  # for known user but new session
+  def remember
+    self.remember_token = User.new_token
+    update_attribute(:remember_digest, User.digest(remember_token.to_s))
   end
 
 end
