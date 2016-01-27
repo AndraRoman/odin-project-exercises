@@ -1,9 +1,15 @@
 class User < ActiveRecord::Base
 
+  attr_accessor :remember_token
+
   # inverse_of keeps different in-memory representations of data for a user in sync (load only one copy of the user object)
   # depenent: if you try to destroy a user who has any posts associated, the operation will fail and an error will be added to the user. this error will only be accessible from within the destroy method in the controller.
   # the double colons here are necessary
+
   has_many :posts, inverse_of: :user, dependent: :restrict_with_error
+
+  # wait this makes NO SENSE
+  before_create { self.remember }
   before_save { self.email = email.downcase }
 
   # not validating format for now
@@ -14,5 +20,18 @@ class User < ActiveRecord::Base
 
   # adds methods to set and authenticate against a bcrypt password
   has_secure_password
+
+  def User.new_token
+    SecureRandom.urlsafe_base64
+  end
+
+  def User.digest(string)
+    Digest::SHA1.hexdigest(string)
+  end
+
+  def remember
+    self.remember_token = User.new_token
+    self.remember_digest = User.digest(remember_token.to_s)
+  end
 
 end
