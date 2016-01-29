@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  attr_accessor :remember_token
+  attr_accessor :remember_token # virtual attribute
 
   # inverse_of keeps different in-memory representations of data for a user in sync (load only one copy of the user object)
   # depenent: if you try to destroy a user who has any posts associated, the operation will fail and an error will be added to the user. this error will only be accessible from within the destroy method in the controller.
@@ -8,8 +8,6 @@ class User < ActiveRecord::Base
 
   has_many :posts, inverse_of: :user, dependent: :restrict_with_error
 
-  # wait this makes NO SENSE
-  before_create { self.memorize }
   before_save { self.email = email.downcase }
 
   # not validating format for now
@@ -25,20 +23,26 @@ class User < ActiveRecord::Base
     SecureRandom.urlsafe_base64
   end
 
+  # This (rather than TOP's recommended SHA1) is necessary for authenticated? to work (at least in tests)
   def User.digest(string)
-    Digest::SHA1.hexdigest(string)
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST : BCrypt::Engine.cost
+    BCrypt::Password.create(string, cost: cost)
   end
 
-  # used in before_create callback for user, so can't save to db
-  def memorize
-    self.remember_token = User.new_token
-    self.remember_digest = User.digest(remember_token.to_s)
-  end
-
-  # for known user but new session
+  # TOP wants this to be done in a before_create callback but I'd rather not
   def remember
     self.remember_token = User.new_token
-    update_attribute(:remember_digest, User.digest(remember_token.to_s))
+    self.remember_digest = User.digest(self.remember_token)
+    update_attribute(:remember_digest, self.remember_digest) #for new user, this creates record
+  end
+
+  def forget
+    update_attribute(:remember_digest, nil)
+  end
+
+  # taken from Hartl
+  def authenticated?(remember_token)
+    BCrypt::Password.new(remember_digest).is_password?(remember_token)
   end
 
 end

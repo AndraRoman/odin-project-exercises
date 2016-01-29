@@ -12,10 +12,10 @@ class UserTest < ActiveSupport::TestCase
   def test_create_valid_user
     assert(@user.valid?)
     @user.save
-    remember_token = @user.remember_token
-    assert(remember_token)
+    #remember_token = @user.remember_token
+    #assert(remember_token)
     assert_equal("user@example.com", @user.email)
-    assert_equal(@user.remember_digest, User.digest(remember_token))
+    #assert_equal(@user.remember_digest, User.digest(remember_token))
   end
 
   def test_email_presence_and_length_validations
@@ -59,6 +59,19 @@ class UserTest < ActiveSupport::TestCase
   def test_authenticate_user
     assert_equal(@user, @user.authenticate("password"))
     refute(@user.authenticate("password1"))
+  end
+
+  def test_authenticated?
+    @user.remember
+    assert(@user.authenticated?(@user.remember_token))
+  end
+
+  def test_remember_user_changes_rt 
+    @user.remember
+    rt, rd = [@user.remember_token, @user.remember_digest]
+    @user.remember
+    refute_equal(rt, @user.remember_token)
+    refute_equal(rd, @user.remember_digest)
   end
 
 end

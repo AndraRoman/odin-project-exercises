@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  include SessionsHelper
 
   def new
   end
@@ -7,6 +8,7 @@ class SessionsController < ApplicationController
     user = User.find_by_name(params[:session][:name])
     if user && user.authenticate(params[:session][:password])
       log_in user
+      remember user
       redirect_to user
     else
       render 'new'
@@ -14,7 +16,8 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    log_out
+    log_out if logged_in?
+    render 'new' # just to avoid errors
   end
 
 end
