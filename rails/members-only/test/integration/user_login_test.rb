@@ -21,7 +21,7 @@ class UserLoginTestTest < ActionDispatch::IntegrationTest
 
   def test_successful_login_followed_by_logout
     get login_path
-    post login_path, session: {name: @user.name, password: "password"}
+    log_in_as(@user)
     assert(@user.authenticate("password"))
     assert(is_logged_in?)
 

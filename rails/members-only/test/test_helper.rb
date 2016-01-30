@@ -11,12 +11,11 @@ class ActiveSupport::TestCase
     defined?(post_via_redirect)
   end
 
-  # TODO
-  def log_in_as(user, options = {})
+  def log_in_as(user)
     if integration_test?
-      # TODO log in by posting to sessions path
+      post login_path, session: {name: user.name, password: user.password}
     else
-      # TODO log in using the session
+      log_in(user)
     end
   end
 
