@@ -13,7 +13,7 @@ class ActiveSupport::TestCase
 
   def log_in_as(user)
     if integration_test?
-      post login_path, session: {name: user.name, password: user.password}
+      post_via_redirect login_path, session: {name: user.name, password: user.password || "password"}
     else
       log_in(user)
     end

@@ -6,9 +6,11 @@ class PostsController < ApplicationController
   end
 
   def show
+    @post = Post.find(params[:id])
   end
 
   def index
+     @posts = Post.all
   end
 
   def create
@@ -17,7 +19,7 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to posts_path
     else
-      render 'new' # TODO test
+      render 'new'
     end
   end
 

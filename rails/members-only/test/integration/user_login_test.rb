@@ -4,11 +4,7 @@ class UserLoginTestTest < ActionDispatch::IntegrationTest
 
   # creating a user instead of using one from fixture because bcrypt is using a different hash function here so digests don't match otherwise
   def setup
-    @user = User.new(name:  "M. plicatulus",
-                     email: "User@example.com",
-                     password: "password",
-                     password_confirmation: "password")
-    @user.save
+    @user = users(:jrmole)
   end
 
   def test_unsuccessful_login
@@ -24,6 +20,7 @@ class UserLoginTestTest < ActionDispatch::IntegrationTest
     log_in_as(@user)
     assert(@user.authenticate("password"))
     assert(is_logged_in?)
+    assert_template 'posts/index'
 
     delete logout_path
     refute(is_logged_in?)

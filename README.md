@@ -1,6 +1,6 @@
-#The Odin Project Exercises#
+#The Odin Project Exercises
 
-In which I work through, and sometimes overthink, the exercises in [http://www.theodinproject.com/](http://www.theodinproject.com/) starting with the Ruby Programming course.
+In which I work through the exercises in [http://www.theodinproject.com/](http://www.theodinproject.com/) starting with the Ruby Programming course. Some but not all of the exercises have been modified to keep things interesting.
 
 ##[Ruby Programming](http://www.theodinproject.com/ruby-programming/)##
 
@@ -41,4 +41,7 @@ In which I work through, and sometimes overthink, the exercises in [http://www.t
 ##[Ruby on Rails](http://www.theodinproject.com/ruby-on-rails/)##
 
 ###[Building with Active Record](http://www.theodinproject.com/ruby-on-rails/building-with-active-record/)
-* ["Micro-Reddit"](rails/micro-reddit/), a rails app with no front end. Has appropriately associated user, post, and comment models; tests in Test::Unit; and uniqueness and foreign key contraints at ActiveRecord and database levels.
+* ["Micro-Reddit"](rails/micro-reddit/), a Rails app with no front end. Has appropriately associated user, post, and comment models; tests in Test::Unit; and uniqueness and foreign key contraints at ActiveRecord and database levels.
+
+###[Forms and Authentication](http://www.theodinproject.com/ruby-on-rails/authentication/)
+* ["Members Only"](rails/members-only/), a Rails app in which users can make and see posts. Only logged-in users may make posts or view a post's author.
