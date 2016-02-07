@@ -1,7 +1,10 @@
 require 'test_helper'
 
 class SessionsControllerTest < ActionController::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+
+  def test_gets_new_session
+    get :new
+    assert_response(:success)
+  end
+
 end

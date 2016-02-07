@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
 
-  validates :name, uniqueness: true
+  before_save { self.name = name.downcase }
+  validates :name, presence: true, uniqueness: { case_sensitive: false }
 
 end

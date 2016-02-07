@@ -6,8 +6,13 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    @user.save
-    redirect_to @user
+    if @user.save
+      log_in @user
+      redirect_to @user
+    else
+      flash.now[:danger] = "You need to enter a name that nobody else has used."
+      render 'new'
+    end
   end
 
   def show
