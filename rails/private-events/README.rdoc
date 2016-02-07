@@ -1,0 +1,5 @@
+== README
+
+A practice app in which users can create events and invite others to these events. No real sign-in as the focus here is ActiveRecord associations. Assignment page at http://www.theodinproject.com/ruby-on-rails/associations?ref=lnav.
+
+
