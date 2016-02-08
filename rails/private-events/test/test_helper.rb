@@ -1,17 +1,18 @@
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
+require 'minitest/reporters'
+Minitest::Reporters.use!
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
 
   # not using user object as arg, just a string
-  def log_in_as(name)
+  def log_in_as(user)
     if integration_test?
-      post login_path, session: { name: name }
+      post login_path, session: { name: user.name }
     else
-      user = User.find_by(name: name)
       session[:user_id] = user.id
     end
   end

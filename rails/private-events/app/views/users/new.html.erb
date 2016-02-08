@@ -6,7 +6,7 @@
     <%= form_for(@user) do |f| %>
 
       <%= f.label :name %>
-      <%= f.text_field :name %>
+      <%= f.text_field :name, class: 'form-control' %>
 
       <%= f.submit "Register!", class: "btn btn-primary" %>
 
