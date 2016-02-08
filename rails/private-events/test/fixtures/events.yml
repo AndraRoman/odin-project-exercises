@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+breakfast:
+  name: breakfast
+  start_time: 2016-02-07 14:23:44
+  location: kitchen
+  creator: douglass
+
+dinner:
+  name: dinner
+  start_time: 2016-02-07 14:23:44
+  location: living_room
+  creator: example_user

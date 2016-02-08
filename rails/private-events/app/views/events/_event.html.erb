@@ -1,0 +1,8 @@
+<li class="event-<% event.id %>">
+  <h3><%= event.name %></h3>
+  <ul>
+    <li>Where: <%= event.location %></li>
+    <li>When: <%= event.start_time.strftime('%A, %b %d, %Y') %></li>
+    <li>Who: <%= event.creator.name %></li>
+  </ul>
+</li>

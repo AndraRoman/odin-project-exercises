@@ -17,6 +17,8 @@ class UserLoginTest < ActionDispatch::IntegrationTest
     assert flash.empty?
     assert_template 'users/show'
 
+    assert_select 'h3', text: 'breakfast', count: 1
+
     delete logout_path
     refute is_logged_in?
     assert_template 'sessions/new'
