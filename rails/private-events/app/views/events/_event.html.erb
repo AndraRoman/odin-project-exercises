@@ -1,4 +1,4 @@
-<li class="event-<% event.id %>">
+<div class="event-<% event.id %>">
   <h3><%= event.name %></h3>
   <ul>
     <li>What: <%= event.description %></li>
@@ -6,4 +6,4 @@
     <li>When: <%= event.start_time.strftime('%A, %b %d, %Y') %></li>
     <li>Who: <%= event.creator.name %></li>
   </ul>
-</li>
+</div>

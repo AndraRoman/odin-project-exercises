@@ -8,7 +8,7 @@ class EventsController < ApplicationController
 
   # has to be @event, not just event, so else case has an @event object to pass to form
   def create
-    @event = current_user.events.build(event_params)
+    @event = current_user.created_events.build(event_params)
     if @event.save
       flash[:success] = "Event created!"
       redirect_to @event
@@ -20,6 +20,11 @@ class EventsController < ApplicationController
 
   def show
     @event = Event.find_by_id(params[:id])
+    if @event
+      @invitees = @event.invitees
+    else
+      render text: "404 ERROR: Could not find event with ID #{params[:id]}.", status: 404
+    end
   end
 
   def index

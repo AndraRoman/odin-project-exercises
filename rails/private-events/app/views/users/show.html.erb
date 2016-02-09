@@ -1,6 +1,11 @@
-<h1>Profile</h1>
+<h1><%= render @user %>'s Profile</h1>
 
 <h2>Events you have created:</h2>
 <ol class="created-events">
-  <%= render @events %>
+  <%= render @created_events %>
+</ol>
+
+<h2>Events you have been invited to:</h2>
+<ol class="invited-events">
+  <%= render @invited_events %>
 </ol>

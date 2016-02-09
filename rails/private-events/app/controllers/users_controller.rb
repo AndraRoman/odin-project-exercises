@@ -17,7 +17,12 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find_by_id(params[:id])
-    @events = @user.events
+    if @user
+      @created_events = @user.created_events
+      @invited_events = @user.invited_events
+    else
+      render text: "404 ERROR: Could not find user with ID #{params[:id]}.", status: '404'
+    end
   end
 
   private

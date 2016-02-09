@@ -10,7 +10,6 @@ class EventCreationTest < ActionDispatch::IntegrationTest
   def test_create_invalid_event
     get '/events/new'
     assert_no_difference 'Event.count' do
-      #post_via_redirect events_path, event: { name: "my event", location: "", start_time: nil, description: ""}
       post_via_redirect events_path, event: { name: "my event", location: " ", start_time: DateTime.tomorrow, description: "fun!!!" }
     end
     assert_template 'new'

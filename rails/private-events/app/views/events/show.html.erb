@@ -1,5 +1,13 @@
-<h1>Event Page</h1>
+<h1>Event Homepage</h1>
 
-<ol class="created-events">
+<h2>Event</h2>
+<ol class="event">
   <%= render @event %>
 </ol>
+
+<h2>Invitees</h2>
+<ul class="invitees">
+  <% @invitees.each do |invitee| %>
+    <li><%= render invitee %></li>
+  <% end %>
+</ul>
