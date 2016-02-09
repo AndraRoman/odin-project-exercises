@@ -1,9 +1,10 @@
 <% if logged_in? %>
-  <%= link_to "Log out", logout_path, method: :delete %>
-  <p> Welcome, <%= current_user.name %>! </p>
+  <%= link_to "Log out (#{current_user.name})", logout_path, method: :delete %>
+  <%= link_to "Create an event", '/events/new' %>
 <% else %>
   <%= link_to "Log in", login_path %>
   <%= link_to "Sign up", signup_path %>
 <% end %>
+<%= link_to "View all events", events_path %>
 
 <h1>Private Events</h1>
