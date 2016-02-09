@@ -45,3 +45,6 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 
 ###[Forms and Authentication](http://www.theodinproject.com/ruby-on-rails/authentication/)
 * ["Members Only"](rails/members-only/), a Rails app in which users can make and see posts. Only logged-in users may make posts or view a post's author.
+
+###[Active Record Associations](http://www.theodinproject.com/ruby-on-rails/associations)
+* ["Private Events"](rails/private-events), a Rails app in which users can create and be invited to events (so are associated with events in two distinct capacities).
