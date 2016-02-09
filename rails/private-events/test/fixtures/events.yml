@@ -6,8 +6,14 @@ breakfast:
   location: kitchen
   creator: douglass
 
+lunch:
+  name: lunch
+  start_time: 2016-02-07 14:23:44
+  location: earth
+  creator: example_user
+
 dinner:
   name: dinner
-  start_time: 2016-02-07 14:23:44
+  start_time: 2116-02-07 14:23:44
   location: living_room
   creator: example_user

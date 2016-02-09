@@ -30,8 +30,16 @@ class UsersShowTest < ActionDispatch::IntegrationTest
   def test_user_page_shows_invited_events
     get "/users/#{@user.id}"
     assert_select ".invited-events", count: 1 do
-      assert_select 'h3', text: 'breakfast', count: 0
-      assert_select 'h3', text: 'dinner', count: 1
+      assert_select ".upcoming-events", count: 1 do
+        assert_select 'h3', text: 'breakfast', count: 0
+        assert_select 'h3', text: 'lunch', count: 0
+        assert_select 'h3', text: 'dinner', count: 1
+      end
+      assert_select ".past-events", count: 1 do
+        assert_select 'h3', text: 'breakfast', count: 0
+        assert_select 'h3', text: 'lunch', count: 1
+        assert_select 'h3', text: 'dinner', count: 0
+      end
     end
   end
 

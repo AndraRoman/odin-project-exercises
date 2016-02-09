@@ -8,3 +8,7 @@
 dinner_invitation:
   event: dinner
   invitee: douglass
+
+lunch_invitation:
+  event: lunch
+  invitee: douglass

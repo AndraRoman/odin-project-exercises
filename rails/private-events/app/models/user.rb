@@ -7,4 +7,14 @@ class User < ActiveRecord::Base
   before_save { self.name = name.downcase }
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 
+  # invited only, not created
+  def upcoming_events
+    self.invited_events.where("start_time > ?", DateTime.now)
+  end
+
+  # invited only, not created
+  def past_events
+    self.invited_events.where("start_time < ?", DateTime.now)
+  end
+
 end

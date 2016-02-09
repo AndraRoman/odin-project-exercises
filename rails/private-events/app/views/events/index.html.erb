@@ -1,5 +1,13 @@
 <h1>All events</h1>
 
-<ol class="created-events">
-  <%= render @events %>
+<h2>Upcoming</h2>
+<ol class="upcoming-events">
+  <%= render @upcoming_events %>
+</ol>
+
+<hr />
+
+<h2>Past</h2>
+<ol class="past-events">
+  <%= render @past_events %>
 </ol>

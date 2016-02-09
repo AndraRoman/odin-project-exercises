@@ -7,5 +7,12 @@
 
 <h2>Events you have been invited to:</h2>
 <ol class="invited-events">
-  <%= render @invited_events %>
+  <h3>Upcoming </h3>
+  <ol class="upcoming-events">
+    <%= render @upcoming_events %>
+  </ol>
+  <h3>Past </h3>
+  <ol class="past-events">
+    <%= render @past_events %>
+  </ol>
 </ol>

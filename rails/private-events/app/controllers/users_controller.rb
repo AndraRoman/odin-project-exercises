@@ -19,7 +19,8 @@ class UsersController < ApplicationController
     @user = User.find_by_id(params[:id])
     if @user
       @created_events = @user.created_events
-      @invited_events = @user.invited_events
+      @upcoming_events = @user.upcoming_events
+      @past_events = @user.past_events
     else
       render text: "404 ERROR: Could not find user with ID #{params[:id]}.", status: '404'
     end
