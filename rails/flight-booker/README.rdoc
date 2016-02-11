@@ -4,9 +4,13 @@ A toy app for practicing nested forms, following http://www.theodinproject.com/r
 
 A user can select origin and destination airports and a date in the future and view a list of all flights meeting these conditions. The user can then select one flight and create a booking for up to four passengers.
 
+== Extra features
+* Supports partial searches (only mandatory field is origin), so user can search for all flights from LAX to anywhere on any date, or all flights from LAX on a given date, or all flights from LAX to SFO on any date.
+
 == Limitations
 
 * Each passenger object has exactly one booking, so if one person wishes to make multiple flights they will have multiple passenger objects.
 * The app does not account for flights having finite capacity. 
 * Search returns only single flights, not combinations with transfers.
 * Once a booking is made, there is no way to cancel it.
+* Only Pacific Time is supported.

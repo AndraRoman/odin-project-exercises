@@ -5,4 +5,8 @@ class Airport < ActiveRecord::Base
 
   validates :code, presence: true, uniqueness: true
 
+  def Airport.airport_options
+    Airport.all.map {|i| [i.code, i.id]}.sort
+  end
+
 end

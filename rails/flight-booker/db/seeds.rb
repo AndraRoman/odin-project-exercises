@@ -15,9 +15,9 @@ end
   Airport.create(code: code) # could be invalid
 end
 
-20.times do
+2000.times do
   origin, destination = Airport.limit(2).order("RANDOM()")
-  departure_time = rand(6.months).seconds.from_now
-  duration = (100..5000)
+  departure_time = rand(2.months).seconds.from_now
+  duration = rand(100..5000)
   flight = Flight.create!(origin_id: origin.id, destination_id: destination.id, departure_time: departure_time, duration: duration)
 end

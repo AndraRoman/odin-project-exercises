@@ -43,4 +43,11 @@ class FlightTest < ActiveSupport::TestCase
     refute @flight.valid?
   end
 
+  def test_all_dates
+    dates = Flight.all_dates
+    assert_equal(2, dates.length)
+    assert dates.include?(Date.tomorrow)
+    assert dates.include?(Date.yesterday)
+  end
+
 end

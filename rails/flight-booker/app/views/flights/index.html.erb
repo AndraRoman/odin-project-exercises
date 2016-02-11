@@ -1,0 +1,27 @@
+<h1>Pick a flight!</h1>
+
+<%= form_tag("/", method: "get") do %>
+  Origin:
+  <%= select_tag(:origin_id, options_for_select(@airport_options, @origin_id)) %>
+  <br />
+  <br />
+  Destination:
+  <%= select_tag(:destination_id, options_for_select([nil] + @airport_options, @destination_id)) %>
+  <br />
+  <br />
+  Departure date:
+  <%= select_tag(:date, options_for_select([nil] + @dates.zip(@dates), @date)) %>
+  <br />
+  <br />
+  Number of passengers:
+  <%= select_tag(:passenger_count, options_for_select((1..4).zip(1..4), @passenger_count)) %>
+  <br />
+  <br />
+  <%= submit_tag("Find flights!") %>
+<% end %>
+
+<% if @flights %>
+  <% @flights.each do |flight| %>
+    <%= render flight %>
+  <% end %>
+<% end %>
