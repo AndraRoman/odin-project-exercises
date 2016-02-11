@@ -1,0 +1,17 @@
+north:
+  origin: lax
+  destination: sfo
+  duration: 1000
+  departure_time: <%= DateTime.tomorrow %>
+
+south:
+  origin: sfo
+  destination: lax
+  duration: 1200
+  departure_time: <%= DateTime.tomorrow %>
+
+north_past:
+  origin: lax
+  destination: sfo
+  duration: 1000
+  departure_time: <%= DateTime.yesterday %>
