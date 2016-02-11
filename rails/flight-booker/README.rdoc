@@ -1,0 +1,12 @@
+== Flight Picker
+
+A toy app for practicing nested forms, following http://www.theodinproject.com/ruby-on-rails/building-advanced-forms.
+
+A user can select origin and destination airports and a date in the future and view a list of all flights meeting these conditions. The user can then select one flight and create a booking for up to four passengers.
+
+== Limitations
+
+* Each passenger object has exactly one booking, so if one person wishes to make multiple flights they will have multiple passenger objects.
+* The app does not account for flights having finite capacity. 
+* Search returns only single flights, not combinations with transfers.
+* Once a booking is made, there is no way to cancel it.
