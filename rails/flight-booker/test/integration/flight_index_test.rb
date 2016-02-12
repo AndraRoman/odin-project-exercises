@@ -52,12 +52,4 @@ class FlightIndexTest < ActionDispatch::IntegrationTest
     assert_select '.flight', count: 1
   end
 
-  def test_select_flight
-    # TODO (incl confirm is radio button so mutually exclusive)
-  end
-
-  def test_cannot_submit_flight_selection_without_any_flight_options
-    # TODO
-  end
-
 end

@@ -20,8 +20,19 @@
   <%= submit_tag("Find flights!") %>
 <% end %>
 
+<hr />
+
 <% if @flights %>
-  <% @flights.each do |flight| %>
-    <%= render flight %>
+  <div>Your search matches the following <b id="result-count"><%= @flights.count %></b> flights. Pick one to make your booking for <b id="passenger-count"><%= @passenger_count || 1 %></b> passengers.</div>
+  <br />
+  <%= form_for(:booking, url: 'bookings/new', method: 'get') do |f| %>
+    <%= hidden_field_tag :passenger_count, @passenger_count || 1 %>
+    <% @flights.each do |flight| %>
+      <%= radio_button_tag(:flight_id, flight.id) %>
+      <%= render flight %>
+      <% #lack of label means clicking on flight description won't select flight. oh well. %>
+      <br />
+    <% end %>
+    <%= f.submit "Book flight!" %>
   <% end %>
 <% end %>
