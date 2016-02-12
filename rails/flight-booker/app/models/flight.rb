@@ -16,8 +16,10 @@ class Flight < ActiveRecord::Base
     Flight.all.map { |f| f.departure_time.to_date }.uniq.sort
   end
 
+  # not tested
   def display_duration
-    display_time(self.duration)
+    time = Time.at(self.duration).utc
+    time.strftime("%I:%M")
   end
 
   private

@@ -3,7 +3,6 @@ class FlightsController < ApplicationController
   def index
     @dates = Flight.all_dates
     @airport_options = Airport.airport_options
-    @airport_options = Airport.airport_options
     if search_params[:origin_id] # no results shown without specifying origin - would be slow to load without any filtering
       @origin_id = search_params[:origin_id]
       @destination_id = search_params[:destination_id]

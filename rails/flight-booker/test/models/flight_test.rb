@@ -46,8 +46,10 @@ class FlightTest < ActiveSupport::TestCase
   def test_all_dates
     dates = Flight.all_dates
     assert_equal(2, dates.length)
-    assert dates.include?(Date.tomorrow)
-    assert dates.include?(Date.yesterday)
+    assert dates.include?(DateTime.tomorrow.to_date)
+    assert_equal(dates, [Date.current, Date.tomorrow] )
+    assert dates.include?(Date.current) # accounts for time zone, while today doesn't
+    refute dates.include?(Date.yesterday)
   end
 
 end
