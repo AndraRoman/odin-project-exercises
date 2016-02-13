@@ -1,0 +1,23 @@
+<h1>Finish booking your flight!</h1>
+
+<h2>Your flight details:</h2>
+<%= render @flight %>
+
+<h2>Passenger information:</h2>
+<%= form_for @booking do |f| %>
+  <%= hidden_field_tag "booking[passenger_count]", @passengers.length %>
+  <%= hidden_field_tag "booking[flight_id]", @flight.id %>
+  <% @passengers.each do |passenger| %>
+  <%= f.fields_for passenger, index: passenger.id do |passengers_form| %>
+      <li>
+        <%= passengers_form.label :name %>
+        <%= passengers_form.text_field :name %>
+
+        <%= passengers_form.label :email %>
+        <%= passengers_form.text_field :email %>
+      </li>
+    <% end %>
+  <% end %>
+  <br />
+  <%= f.submit "Finalize booking!" %>
+<% end %>

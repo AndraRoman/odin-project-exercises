@@ -1,0 +1,11 @@
+<h1>Your booking</h1>
+
+<h2>Your flight:</h2>
+<%= render @booking.flight %>
+
+<h2>Passengers:</h2>
+<ul>
+  <% @booking.passengers.each_with_index do |passenger, index| %>
+    <%= render passenger %>
+  <% end %>
+</ul>

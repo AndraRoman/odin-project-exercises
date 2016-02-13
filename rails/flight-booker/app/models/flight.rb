@@ -4,6 +4,7 @@ class Flight < ActiveRecord::Base
 
   belongs_to :origin, class_name: "Airport", inverse_of: :departing_flights
   belongs_to :destination, class_name: "Airport", inverse_of: :arriving_flights
+  has_many :bookings, inverse_of: :flight
 
   validates :origin, presence: true
   validates :destination, presence: true

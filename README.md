@@ -44,7 +44,10 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 * ["Micro-Reddit"](rails/micro-reddit/), a Rails app with no front end. Has appropriately associated user, post, and comment models; tests in Test::Unit; and uniqueness and foreign key contraints at ActiveRecord and database levels.
 
 ###[Forms and Authentication](http://www.theodinproject.com/ruby-on-rails/authentication/)
-* ["Members Only"](rails/members-only/), a Rails app in which users can make and see posts. Only logged-in users may make posts or view a post's author.
+* ["Members Only"](rails/members-only/), a Rails app in which users can create and see posts. Only logged-in users may make posts or view a post's author.
 
 ###[Active Record Associations](http://www.theodinproject.com/ruby-on-rails/associations)
 * ["Private Events"](rails/private-events), a Rails app in which users can create and be invited to events (so are associated with events in two distinct capacities).
+
+###[Advanced Forms](http://www.theodinproject.com/ruby-on-rails/building-advanced-forms)
+* ["Flight Picker](rails/flight-picker), a Rails app in which users can filter flights by origin, destination, and departure date and create a booking for one or more passengers on that flight. (No login, payment, etc; all data is randomly seeded.)
