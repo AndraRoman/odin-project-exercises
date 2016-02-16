@@ -6,6 +6,7 @@ A user can select origin and destination airports and a date in the future and v
 
 == Extra features
 * Supports partial searches (only mandatory field is origin), so user can search for all flights from LAX to anywhere on any date, or all flights from LAX on a given date, or all flights from LAX to SFO on any date.
+* Booking and passenger creation are wrapped in a transaction, so a booking will only be saved if the passenger information submitted in the booking creation form is valid.
 
 == Limitations
 

@@ -32,7 +32,7 @@ class Flight < ActiveRecord::Base
   end
 
   # any arg may be nil
-  # int, int, str -> [Flight]
+  # int, int, str -> [Flight] (actually AR association)
   def Flight.filter_by_search_params(origin_id, destination_id, date_str)
     destination_id = nil if destination_id.blank?
     date = date_str.in_time_zone('Pacific Time (US & Canada)') unless date_str.blank? # being lazy here

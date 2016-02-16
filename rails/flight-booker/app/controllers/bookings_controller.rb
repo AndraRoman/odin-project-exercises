@@ -16,13 +16,16 @@ class BookingsController < ApplicationController
 
   def create
     @booking = Booking.new(booking_create_params)
-    if @booking.save
-      @passengers = passenger_create_params[:passenger].map { |passenger_params| @booking.passengers.build(passenger_params)  }
-      @passengers.each { |p| p.save }
+    @passengers = passenger_create_params[:passenger].map { |passenger_params| @booking.passengers.build(passenger_params) }
+    if handle_transaction(@booking, @passengers)
       redirect_to @booking
+      flash[:now] = "SUCCESSFULLY SAVED BOOKING"
+    elsif @passengers.any? { |p| p.invalid? }
+      flash[:danger] = "Please re-enter passenger information. It looks like something was missing."
+      redirect_to :back
     else
-      flash[:danger] = "Something went wrong in saving your booking. Maybe the flight has been canceled? Try again from the top."
-      redirect_to root_path and return # TODO why is the 'and return' needed when the redirect is already the last action on this branch? also not giving redirect response code in tests, but does render correct thing so going to ignore it for now
+      flash[:danger] = "Something was wrong with your booking. You'll have to begin again from the start."
+      redirect_to root_url
     end
   end
 
@@ -42,6 +45,19 @@ class BookingsController < ApplicationController
 
   def passenger_create_params
     params.require(:booking).permit(passenger: [:name, :email])
+  end
+
+  # might belong in model instead? unsure
+  def handle_transaction(booking, passengers)
+    booking.transaction do
+      begin
+        booking.save
+        passengers.each {|p| p.save}
+      rescue ActiveRecord::StatementInvalid
+        raise ActiveRecord::Rollback
+      end
+    end
+    !booking.new_record?
   end
 
 end
