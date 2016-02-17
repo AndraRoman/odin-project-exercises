@@ -1,11 +1,11 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+siamese:
+  softness: 2
+  cuteness: 8
+  age: 1
+  name: Iris
 
-# This model initially had no columns defined.  If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-#  column: value
+persian:
+  softness: 10
+  cuteness: 2
+  age: 3
+  name: Princess
