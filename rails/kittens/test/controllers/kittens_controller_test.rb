@@ -1,7 +1,10 @@
 require 'test_helper'
 
 class KittensControllerTest < ActionController::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+
+  def test_gets_new
+    get :new
+    assert_response :success
+  end
+
 end

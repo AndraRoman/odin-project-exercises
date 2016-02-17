@@ -6,7 +6,13 @@ class KittensController < ApplicationController
 
   def create
     @kitten = Kitten.create(kitten_params)
-    # TODO
+    if @kitten.save
+      flash[:success] = "You have registered your kitten!"
+      redirect_to @kitten
+    else
+      flash.now[:danger] = "Try that again. Your kitten needs a name."
+      render 'new'
+    end
   end
 
   def edit
@@ -14,7 +20,14 @@ class KittensController < ApplicationController
   end
 
   def update
-    # TODO
+    @kitten = Kitten.find_by(id: params[:id])
+    if @kitten.update_attributes name: kitten_params[:name], age: kitten_params[:age], cuteness: kitten_params[:cuteness], softness: kitten_params[:softness]
+      flash.now[:success] = "You have updated your kitten!"
+      render :show
+    else
+      flash.now[:danger] = "Try that again. Your kitten needs a name."
+      render :edit
+    end
   end
 
   def show
@@ -26,7 +39,10 @@ class KittensController < ApplicationController
   end
 
   def destroy
-    # TODO
+    @kitten = Kitten.find_by(id: params[:id])
+    @kitten.destroy
+    flash[:danger] = "YOU MONSTER!"
+    redirect_to root_path
   end
 
   private

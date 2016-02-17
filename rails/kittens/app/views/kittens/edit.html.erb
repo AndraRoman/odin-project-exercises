@@ -1,0 +1,24 @@
+<%= form_for @kitten do |f| %>
+
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+  <br />
+
+  <%= f.label :age %>
+  <%= f.number_field :age, in: 0..20 %>
+  <br />
+
+  <%= f.label :cuteness %>
+  <%= f.number_field :cuteness, in: 1..10 %>
+  <br />
+
+  <%= f.label :softness %>
+  <%= f.number_field :softness, in: 1..10 %>
+  <br />
+
+  <%= f.submit "Update kitten!" %>
+
+<% end %>
+
+<%= link_to "delete", @kitten, method: :delete %>
+
