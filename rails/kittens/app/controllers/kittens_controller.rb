@@ -32,10 +32,20 @@ class KittensController < ApplicationController
 
   def show
     @kitten = Kitten.find_by(id: params[:id])
+    respond_to do |format|
+      format.html # defaults to index.html.erb
+      format.xml { render :xml => @kitten }
+      format.json { render :json => @kitten }
+    end
   end
 
   def index
     @kittens = Kitten.all
+    respond_to do |format|
+      format.html # defaults to index.html.erb
+      format.xml { render :xml => @kittens }
+      format.json { render :json => @kittens }
+    end
   end
 
   def destroy
