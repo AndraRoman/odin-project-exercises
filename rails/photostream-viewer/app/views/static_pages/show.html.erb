@@ -1,0 +1,12 @@
+<h1>Home</h1>
+
+<% if @user_id && !@user_id.blank? %>
+  <h2>Showing pictures for <%= @user_id %><h2>
+  <%= render_flickr_sidebar_widget(@user_id) %>
+<% end %>
+
+<%= form_tag(root_path, method: "get") do %>
+  <%= label_tag "user_id" %>
+  <%= text_field_tag "user_id" %>
+  <%= submit_tag "Check out another user!" %>
+<% end %>

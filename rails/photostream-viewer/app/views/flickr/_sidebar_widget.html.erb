@@ -1,0 +1,7 @@
+<div class="flickr">
+  <ul>
+    <% photos.each do |photo| %>
+      <%= link_to(image_tag(url(photo), :class => 'flickr_photo')) %>
+    <% end %>
+  </ul>
+</div>
