@@ -16,7 +16,7 @@ class BookingsController < ApplicationController
 
   def create
     @booking = Booking.new(booking_create_params)
-    @passengers = passenger_create_params[:passenger].map { |passenger_params| @booking.passengers.build(passenger_params) }
+    @passengers = passenger_create_params[:passenger].map { |index, passenger_params| @booking.passengers.build(passenger_params) }
     if handle_transaction(@booking, @passengers)
       redirect_to @booking
       flash[:now] = "SUCCESSFULLY SAVED BOOKING"

@@ -7,8 +7,8 @@
 <%= form_for @booking do |f| %>
   <%= hidden_field_tag "booking[passenger_count]", @passengers.length %>
   <%= hidden_field_tag "booking[flight_id]", @flight.id %>
-  <% @passengers.each do |passenger| %>
-  <%= f.fields_for passenger, index: passenger.id do |passengers_form| %>
+  <% @passengers.each_with_index do |passenger, index| %>
+    <%= f.fields_for passenger, index: index do |passengers_form| %>
       <li>
         <%= passengers_form.label :name %>
         <%= passengers_form.text_field :name %>
