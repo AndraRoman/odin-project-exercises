@@ -18,6 +18,9 @@ class BookingsController < ApplicationController
     @booking = Booking.new(booking_create_params)
     @passengers = passenger_create_params[:passenger].map { |index, passenger_params| @booking.passengers.build(passenger_params) }
     if handle_transaction(@booking, @passengers)
+      @passengers.each do |passenger|
+        PassengerMailer.thank_you_email(passenger).deliver_later
+      end
       redirect_to @booking
       flash[:now] = "SUCCESSFULLY SAVED BOOKING"
     elsif @passengers.any? { |p| p.invalid? }

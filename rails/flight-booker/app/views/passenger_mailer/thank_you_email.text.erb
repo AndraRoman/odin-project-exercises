@@ -1,0 +1,7 @@
+Thank you for choosing us, <%= @passenger.name %>!
+
+Your flight from <%= @passenger.booking.flight.origin.code %> to <%= @passenger.booking.flight.destination.code %> will depart at <%= @passenger.booking.flight.departure_time %>.
+
+<%= link_to 'Review your booking.', booking_url(@passenger.booking, host: 'localhost:3000') %>
+
+Enjoy your travels!

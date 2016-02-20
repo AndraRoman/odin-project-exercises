@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>Thank you for choosing us, <%= @passenger.name %>!</h1>
+    <p>
+      Your flight from <%= @passenger.booking.flight.origin.code %> to <%= @passenger.booking.flight.destination.code %> will depart at <%= @passenger.booking.flight.departure_time %>.
+    </p>
+    <p>
+      <%= link_to 'Review your booking.', booking_url(@passenger.booking, host: 'localhost:3000') %>
+    </p>
+    <p>
+      Enjoy your travels!
+    </p>
+  </body>
+</html>
