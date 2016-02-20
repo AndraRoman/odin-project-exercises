@@ -1,0 +1,8 @@
+Thank you for choosing us, <%= passengers(:a_user).name %>!
+
+Your flight from LAX to SFO will depart at <%= flights(:north).departure_time %>.
+
+<%= link_to 'Review your booking.', booking_url(bookings(:first), host: 'localhost:3000') %>
+
+Enjoy your travels!
+

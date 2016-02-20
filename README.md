@@ -50,4 +50,4 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 * ["Private Events"](rails/private-events), a Rails app in which users can create and be invited to events (so are associated with events in two distinct capacities).
 
 ###[Advanced Forms](http://www.theodinproject.com/ruby-on-rails/building-advanced-forms)
-* ["Flight Picker](rails/flight-picker), a Rails app in which users can filter flights by origin, destination, and departure date and create a booking for one or more passengers on that flight. (No login, payment, etc; all data is randomly seeded.)
+* ["Flight Booker"](rails/flight-booker), a Rails app in which users can filter flights by origin, destination, and departure date and create a booking for one or more passengers on that flight. (No login, payment, etc; all data is randomly seeded.)
