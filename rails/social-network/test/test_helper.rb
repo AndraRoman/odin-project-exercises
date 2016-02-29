@@ -10,4 +10,15 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Add more helper methods to be used by all tests here...
+
+  # sign_in is a Devise helper method, not available in integration tests
+  # password isn't part of table so can't pull from user fixture
+  def my_sign_in(user)
+    password = user.password || "password"
+    post_via_redirect user_session_path, user: {email: user.email, password: password}
+  end
+
+  def my_sign_out # likewise with sign_out
+    delete_via_redirect destroy_user_session_path
+  end
 end
