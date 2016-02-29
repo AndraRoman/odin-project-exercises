@@ -6,12 +6,12 @@ class UserIndexTest < ActionDispatch::IntegrationTest
     @user = users(:a_user)
   end
 
-  def test_user_index_requires_login
-    # TODO
-  end
-
   def test_user_index_shows_all_users
-    # TODO
+    my_sign_in users(:a_user)
+    assert_template 'users/index'
+    User.all.each do |user|
+      assert_match user.email, response.body
+    end
   end
 
 end

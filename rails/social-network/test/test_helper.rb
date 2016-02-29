@@ -21,4 +21,14 @@ class ActiveSupport::TestCase
   def my_sign_out # likewise with sign_out
     delete_via_redirect destroy_user_session_path
   end
+
+  def my_current_user_id
+    key = session.fetch("warden.user.user.key", [])
+    key[0][0] if key[0]
+  end
+
+  def is_logged_in?
+    !my_current_user_id.nil?
+  end
+
 end
