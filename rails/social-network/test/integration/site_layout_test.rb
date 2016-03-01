@@ -3,7 +3,7 @@ require 'test_helper'
 class SiteLayoutTest < ActionDispatch::IntegrationTest
 
   def setup
-    @user = users(:a_user)
+    @user = users(:active_user)
   end
 
   def test_login_page
@@ -27,7 +27,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
 
   def test_header_when_logged_in
 
-    my_sign_in users(:a_user)
+    my_sign_in @user
 
     assert_template 'users/index'
 

@@ -3,7 +3,7 @@ require 'test_helper'
 class UserShowTest < ActionDispatch::IntegrationTest
 
   def setup
-    @user = users(:a_user)
+    @user = users(:active_user)
     my_sign_in @user
   end
 

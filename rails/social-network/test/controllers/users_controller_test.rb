@@ -4,27 +4,32 @@ class UsersControllerTest < ActionController::TestCase
 
   include Devise::TestHelpers
 
+  def setup
+    @user = users(:active_user)
+    @second_user = users(:passive_user)
+  end
+
   def test_index_requires_login
     get :index
     assert_redirected_to new_user_session_path
   end
 
   def test_show_requires_login
-    user = users(:a_user)
-    get :show, {id: user.id}
+    get :show, {id: @user.id}
     assert_redirected_to new_user_session_path
   end
 
   def test_show_succeeds
-    user = users(:a_user)
-    sign_in user
-    get :show, {id: user.id}
+    sign_in @user
+    get :show, {id: @user.id} # can get own profile
+    assert_response :success
+
+    get :show, {id: @second_user.id} # can get own profile
     assert_response :success
   end
 
   def test_index_succeeds
-    user = users(:a_user)
-    sign_in user
+    sign_in @user
     get :index
     assert_response :success
   end

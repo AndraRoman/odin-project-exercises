@@ -1,0 +1,11 @@
+active_passive:
+  initiator: active_user
+  recipient: passive_user
+
+active_mixed:
+  initiator: active_user
+  recipient: mixed_user
+
+mixed_passive:
+  initiator: mixed_user
+  recipient: passive_user

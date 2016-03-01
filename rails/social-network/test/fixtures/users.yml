@@ -1,9 +1,19 @@
-a_user:
-  email: user@example.com
-  name:  A User
+active_user:
+  email: active_user@example.com
+  name:  A. User
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
 
-another_user:
-  email:    user_2@example.com
-  name:     Another User
+passive_user:
+  email:    passive_user@example.com
+  name:     P. User
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+
+lonely_user:
+  email:    lonely_user@example.com
+  name:     L. User
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+
+mixed_user:
+  email:    mixed_user@example.com
+  name:     M. User
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>

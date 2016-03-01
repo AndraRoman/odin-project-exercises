@@ -12,7 +12,7 @@ class UserLoginTest < ActionDispatch::IntegrationTest
   # shouldn't really be needed because this is testing Devise's functionality more than mine, but want to see that I can do it anyway
   def test_valid_login_followed_by_logout
     get new_user_session_path
-    post_via_redirect user_session_path, user: {email: users(:a_user).email, password: "password"}
+    post_via_redirect user_session_path, user: {email: users(:active_user).email, password: "password"}
     assert_template 'users/index'
     assert is_logged_in?
 
