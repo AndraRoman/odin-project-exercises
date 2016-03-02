@@ -1,12 +1,16 @@
 class Friendship < ActiveRecord::Base
 
-  belongs_to :initiator, class_name: "User", inverse_of: :initiated_friendships
-  belongs_to :recipient, class_name: "User", inverse_of: :received_friendships
+  belongs_to :initiator, class_name: "User", inverse_of: :active_friendships
+  belongs_to :recipient, class_name: "User", inverse_of: :passive_friendships
 
   validates :initiator, presence: true
   validates :recipient, presence: true
 
   validate :cannot_friend_self, :must_be_unique
+
+  def confirm
+    update_attributes(confirmed: true)
+  end
 
   private
 
@@ -16,10 +20,10 @@ class Friendship < ActiveRecord::Base
       end
     end
 
-    # TODO this reproduces some logic that will go in user #friend? method - too closely coupled, should pull out somewhere
-    # named placeholders
+    # TODO too closely coupled to user model
     def must_be_unique
-      unless Friendship.where("(initiator_id = :initiator_id AND recipient_id = :recipient_id) OR (initiator_id = :recipient_id AND recipient_id = :initiator_id)", initiator_id: initiator_id, recipient_id: recipient_id).empty?
+      relationship = (recipient && initiator) ? recipient.relationship(initiator) : nil
+      if relationship.instance_of?(Friendship) && relationship.id != id
         errors.add(:recipient, "friendship already exists")
       end
     end

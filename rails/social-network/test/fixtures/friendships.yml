@@ -1,11 +1,19 @@
 active_passive:
-  initiator: active_user
-  recipient: passive_user
+  initiator: active
+  recipient: passive
+  confirmed: true
 
 active_mixed:
-  initiator: active_user
-  recipient: mixed_user
+  initiator: active
+  recipient: mixed
+  confirmed: true
 
 mixed_passive:
-  initiator: mixed_user
-  recipient: passive_user
+  initiator: mixed
+  recipient: passive
+  confirmed: true
+
+unconfirmed:
+  initiator: lonely
+  recipient: passive
+  confirmed: false

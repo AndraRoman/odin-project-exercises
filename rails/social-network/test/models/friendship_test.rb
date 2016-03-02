@@ -3,9 +3,7 @@ require 'test_helper'
 class FriendshipTest < ActiveSupport::TestCase
 
   def setup
-    @active_user = users(:active_user)
-    @passive_user = users(:passive_user)
-    @friendship = Friendship.new(initiator: @active_user, recipient: users(:lonely_user))
+    @friendship = Friendship.new(initiator: users(:active), recipient: users(:lonely))
     @bad_user_id = 0
     refute User.find_by(id: @bad_user_id) # not great - confusing if setup assertion fails
   end
@@ -67,6 +65,14 @@ class FriendshipTest < ActiveSupport::TestCase
     duplicate = Friendship.new(initiator: original.initiator, recipient: original.recipient)
     refute duplicate.valid?
     assert_match "friendship already exists", duplicate.errors.messages[:recipient][0]
+  end
+
+  def test_confirm_unconfirmed_friendship
+    friendship = friendships(:unconfirmed)
+    refute friendship.confirmed
+
+    friendship.confirm
+    assert friendship.confirmed
   end
 
 end

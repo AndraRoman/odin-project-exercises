@@ -3,4 +3,11 @@
   <ul>
     <li> Contact: <%= user.email %> </li>
   </ul>
+  <% if current_user %>
+    <% if current_user.stranger?(user) %>
+      <%= render 'add_friend', user: user %>
+    <% elsif current_user.friend?(user) %>
+      <%= render 'remove_friend', user: user %>
+    <% end %>
+  <% end %>
 </div>

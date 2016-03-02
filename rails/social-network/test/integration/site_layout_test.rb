@@ -3,7 +3,7 @@ require 'test_helper'
 class SiteLayoutTest < ActionDispatch::IntegrationTest
 
   def setup
-    @user = users(:active_user)
+    @user = users(:active)
   end
 
   def test_login_page

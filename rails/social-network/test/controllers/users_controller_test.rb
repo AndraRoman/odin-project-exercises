@@ -5,8 +5,8 @@ class UsersControllerTest < ActionController::TestCase
   include Devise::TestHelpers
 
   def setup
-    @user = users(:active_user)
-    @second_user = users(:passive_user)
+    @user = users(:active)
+    @second_user = users(:passive)
   end
 
   def test_index_requires_login

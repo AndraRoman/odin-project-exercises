@@ -3,7 +3,7 @@ require 'test_helper'
 class UserIndexTest < ActionDispatch::IntegrationTest
 
   def setup
-    @user = users(:active_user)
+    @user = users(:active)
   end
 
   def test_user_index_shows_all_users
