@@ -5,7 +5,7 @@
   </ul>
   <% if current_user %>
     <% if current_user.stranger?(user) %>
-      <%= render 'add_friend', user: user %>
+      <%= render 'users/add_friend', user: user %>
     <% elsif current_user.friend?(user) %>
       <%= render 'users/remove_friend', user: user %>
     <% end %>

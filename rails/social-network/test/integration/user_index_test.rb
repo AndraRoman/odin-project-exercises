@@ -23,7 +23,9 @@ class UserIndexTest < ActionDispatch::IntegrationTest
   end
 
   def test_user_index_shows_unfriend_buttons_for_friends
-    assert_select 'input[value=Unfriend]', count: @user.friends.count
+    assert_select '#user_index' do
+      assert_select 'input[value=Unfriend]', count: @user.friends.count
+    end
   end
 
 end

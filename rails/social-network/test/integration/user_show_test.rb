@@ -19,24 +19,24 @@ class UserShowTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  def test_shows_friend_button_for_stranger
+  def test_shows_friend_button_on_stranger
     get user_path(users(:lonely))
     assert_select 'input[value="Send friend request"]'
     assert_select '.btn', count: 1 # no other buttons
   end
 
-  def test_shows_unfriend_button_for_friend
+  def test_shows_unfriend_button_on_friend
     get user_path(users(:passive))
     assert_select 'input[value="Unfriend"]'
     assert_select '.btn', count: 1
   end
 
-  def test_shows_no_button_for_self
+  def test_shows_no_button_on_self
     get user_path(@user)
     assert_select '.btn', count: 0
   end
 
-  def test_shows_no_button_for_recipient_of_pending_friendship
+  def test_shows_no_button_on_recipient_of_pending_friendship
     friendship = friendships(:unconfirmed)
     my_sign_out
     my_sign_in friendship.initiator
@@ -44,12 +44,14 @@ class UserShowTest < ActionDispatch::IntegrationTest
     assert_select '.btn', count: 0
   end
 
-  def test_shows_no_button_for_initiator_of_pending_friendship
+  def test_shows_no_button_on_initiator_of_pending_friendship
     friendship = friendships(:unconfirmed)
     my_sign_out
     my_sign_in friendship.recipient
     get user_path(friendship.initiator)
-    assert_select '.btn', count: 0
+    assert_select '.user' do
+      assert_select '.btn', count: 0
+    end
   end
 
 end
