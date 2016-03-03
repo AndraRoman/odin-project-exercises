@@ -17,3 +17,8 @@ mixed:
   email:    mixed_user@example.com
   name:     M. User
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+
+stranger:
+  email:    stranger_user@example.com
+  name:     S. User
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>

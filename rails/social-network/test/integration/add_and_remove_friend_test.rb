@@ -10,9 +10,10 @@ class AddAndRemoveFriendTest < ActionDispatch::IntegrationTest
     friend = friendship.recipient
     get user_path friend
     assert_difference '@user.friends.count', -1 do
-      delete friendship_path(friendship)
+      delete friendship_path(friendship), {}, {'HTTP_REFERER' => user_path(friend)}
     end
     assert_match "removed", flash[:success]
+    assert_redirected_to friend
   end
 
   def test_remove_active_friend
@@ -23,9 +24,10 @@ class AddAndRemoveFriendTest < ActionDispatch::IntegrationTest
     friend = friendship.initiator
     get user_path friend
     assert_difference '@user.friends.count', -1 do
-      delete friendship_path(friendship)
+      delete friendship_path(friendship), {}, {'HTTP_REFERER' => user_path(friend)}
     end
     assert_match "removed", flash[:success]
+    assert_redirected_to friend
   end
 
   def test_reject_request
