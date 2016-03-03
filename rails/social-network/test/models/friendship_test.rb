@@ -75,4 +75,8 @@ class FriendshipTest < ActiveSupport::TestCase
     assert friendship.confirmed
   end
 
+  def test_confirm_requires_logged_in_user
+    # TODO
+  end
+
 end

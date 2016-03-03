@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   # TODO I don't like these either
   # named placeholders
   def relationship(user) # 
-    return :self if user.id == id
+    return :self if user.id == id # TODO will I use this value?
     friendship_association = Friendship.where("(initiator_id = :own_id AND recipient_id = :other_id) OR (initiator_id = :other_id AND recipient_id = :own_id)", own_id: id, other_id: user.id)
     if friendship_association.empty?
       return nil
