@@ -3,7 +3,8 @@ require 'test_helper'
 class PostInterfaceTest < ActionDispatch::IntegrationTest
 
   def setup
-    @user = users(:active)
+    @post = posts(:first)
+    @user = @post.user
     my_sign_in @user
   end
 
@@ -28,11 +29,19 @@ class PostInterfaceTest < ActionDispatch::IntegrationTest
     assert_template 'posts/show'
   end
 
-  def test_delete_post
-    @post = posts(:first)
-    my_sign_out
-    my_sign_in @post.user
+  def test_update_post
+    get edit_post_path(@post)
+    assert_response :success
+    assert_template 'posts/edit'
+    patch post_path(@post), post: {content: "new text goes here"}
 
+    assert_redirected_to @post
+    follow_redirect!
+    refute flash.empty?
+    assert_match "new text goes here", response.body
+  end
+
+  def test_delete_post
     assert_difference 'Post.count', -1 do
       delete post_path(@post)
     end

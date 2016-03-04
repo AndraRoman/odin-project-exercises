@@ -25,8 +25,10 @@ class UserLoginTest < ActionDispatch::IntegrationTest
     user = users(:passive)
     get user_path(user)
     assert_redirected_to new_user_session_path
-    post_via_redirect user_session_path, user: {email: users(:active).email, password: "password"}
-    # devise does something weird so this gives a 200 instead of a redirect in test environment. so only testing the template, not the redirect itself.
+    post user_session_path, user: {email: users(:active).email, password: "password"}
+    
+    assert_redirected_to user
+    follow_redirect!
     assert_template 'users/show'
   end
 
