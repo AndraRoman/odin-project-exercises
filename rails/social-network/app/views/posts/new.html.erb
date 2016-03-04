@@ -1,0 +1,17 @@
+<h1>Create a post</h1>
+
+<%= form_for @post do |f| %>
+
+  <%= render 'shared/error_messages', object: f.object %>
+
+  <%= f.label :title %>
+  <%= f.text_field :title %>
+  </br>
+
+  <%= f.label :content %>
+  <%= f.text_area :content %>
+  </br>
+
+  <%= f.submit "Create post", class: "btn" %>
+
+<% end %>

@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   has_many :active_friends, class_name: "User", through: :active_friendships, source: :recipient, inverse_of: :passive_friends # friends where self initiated friendship
   has_many :passive_friends, class_name: "User", through: :passive_friendships, source: :initiator, inverse_of: :active_friends # friends where friend initiated friendship
 
+  has_many :posts, inverse_of: :user
+
   validates :email, presence: true, uniqueness: true
   validates :password, presence: true
 
