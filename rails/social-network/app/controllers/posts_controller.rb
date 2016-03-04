@@ -18,7 +18,10 @@ class PostsController < ApplicationController
   end
 
   def show
-    # TODO
+    @post = Post.find_by(id: params[:id])
+    unless @post
+      render text: "404 ERROR: Could not find post with ID #{params[:id]}.", status: "404"
+    end
   end
 
   def index
@@ -26,7 +29,10 @@ class PostsController < ApplicationController
   end
 
   def edit
-    # TODO
+    @post = Post.find_by(id: params[:id])
+    unless @post
+      render text: "404 ERROR: Could not find post with ID #{params[:id]}.", status: "404"
+    end
   end
 
   def update
@@ -34,7 +40,10 @@ class PostsController < ApplicationController
   end
 
   def destroy
-    # TODO
+    @post = Post.find_by(id: params[:id])
+    @post.destroy
+    flash[:success] = "Post deleted"
+    redirect_to root_url
   end
 
   private
@@ -45,7 +54,7 @@ class PostsController < ApplicationController
 
     def correct_user
       post = Post.find_by(id: params[:id])
-      redirect_to post unless post.user.id == current_user.id
+      redirect_to post unless current_user?(post.user)
     end
 
 end

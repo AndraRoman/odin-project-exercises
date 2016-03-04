@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  helper_method :current_user? # makes available to views
+
   def logged_in_user
     unless user_signed_in? # devise helper method
       flash[:danger] = "You have to be logged in to do that."
@@ -11,6 +13,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def current_user?(user)
+    current_user && current_user.id == user.id
+  end
 
   def store_location
     if request.get?

@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class PostCreationTest < ActionDispatch::IntegrationTest
+class PostInterfaceTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = users(:active)
@@ -26,6 +26,18 @@ class PostCreationTest < ActionDispatch::IntegrationTest
     end
     refute flash.empty?
     assert_template 'posts/show'
+  end
+
+  def test_delete_post
+    @post = posts(:first)
+    my_sign_out
+    my_sign_in @post.user
+
+    assert_difference 'Post.count', -1 do
+      delete post_path(@post)
+    end
+    refute flash.empty?
+    assert_redirected_to root_path
   end
 
 end
