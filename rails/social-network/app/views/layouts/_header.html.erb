@@ -3,7 +3,10 @@
   <% if user_signed_in? %>
     <%= link_to "Edit your profile", edit_user_registration_path %>
     <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+    </br>
     <%= link_to "New post", new_post_path %>
+    <%= link_to "Timeline", posts_path %>
+    <%= link_to "All users", users_path %>
     <% current_user.waiting_friend_requests.each do |request| %>
       <%= render 'users/respond_to_friend_request', user: request.initiator, friendship: request %>
     <% end %>

@@ -75,7 +75,7 @@ class PostsControllerTest < ActionController::TestCase
   def test_redirects_destroy_when_logged_in_as_wrong_user
     sign_in @user
     assert_no_difference 'Post.count' do
-      delete :destroy, id: Post.first.id
+      delete :destroy, id: @post.id
     end
     assert_redirected_to @post
   end

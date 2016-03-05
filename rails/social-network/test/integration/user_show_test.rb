@@ -54,4 +54,13 @@ class UserShowTest < ActionDispatch::IntegrationTest
     end
   end
 
+  def test_shows_users_posts
+    get user_path(@user)
+    assert_select ".post", count: @user.posts.count
+    @user.posts.each do |post|
+      assert_match post.title, response.body
+      assert_match post.content, response.body
+    end
+  end
+
 end

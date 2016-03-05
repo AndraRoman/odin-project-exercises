@@ -2,3 +2,18 @@ first:
   title: "First post!"
   content: "Hello, world!"
   user: passive
+
+second:
+  title: "Second post!"
+  content: "lorem ipsum"
+  user: active
+
+third:
+  title: "Third post!"
+  content: "testing testing"
+  user: active
+
+stranger:
+  title: "Second post!"
+  content: "lorem ipsum"
+  user: stranger

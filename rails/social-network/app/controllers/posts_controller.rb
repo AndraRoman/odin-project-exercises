@@ -24,8 +24,10 @@ class PostsController < ApplicationController
     end
   end
 
+  # TODO yuck
+  # TODO paginate
   def index
-    # TODO
+    @posts = Post.where(user_id: current_user.friends.map {|f| f.id} + [current_user.id]).order(created_at: :desc)
   end
 
   def edit

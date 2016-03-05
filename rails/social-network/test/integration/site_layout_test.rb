@@ -36,7 +36,10 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
 
     assert_select "a[href=?]", edit_user_registration_path, count: 1
     assert_select "a[href=?]", destroy_user_session_path, count: 1
+
     assert_select "a[href=?]", new_post_path, count: 1
+    assert_select "a[href=?]", posts_path, count: 1
+    assert_select "a[href=?]", users_path, count: 1
   end
 
 end
