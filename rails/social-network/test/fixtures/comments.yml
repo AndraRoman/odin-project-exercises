@@ -1,0 +1,4 @@
+passive_comments_on_stranger_post:
+  user: passive
+  post: stranger
+  content: "Hello!"

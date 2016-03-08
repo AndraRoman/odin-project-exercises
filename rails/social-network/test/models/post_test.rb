@@ -34,4 +34,11 @@ class PostTest < ActiveSupport::TestCase
     end
   end
 
+  def test_destroying_post_destroys_likes_and_comments
+    delendus = posts(:stranger)
+    assert_difference ['Liking.count', 'Post.count', 'Comment.count'], -1 do
+      delendus.destroy
+    end
+  end
+
 end
