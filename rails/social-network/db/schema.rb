@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160304191400) do
+ActiveRecord::Schema.define(version: 20160307200308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,6 +26,15 @@ ActiveRecord::Schema.define(version: 20160304191400) do
 
   add_index "friendships", ["initiator_id"], name: "index_friendships_on_initiator_id", using: :btree
   add_index "friendships", ["recipient_id"], name: "index_friendships_on_recipient_id", using: :btree
+
+  create_table "likings", force: :cascade do |t|
+    t.integer  "user_id",    null: false
+    t.integer  "post_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "likings", ["post_id", "user_id"], name: "index_likings_on_post_id_and_user_id", unique: true, using: :btree
 
   create_table "posts", force: :cascade do |t|
     t.string   "title"
@@ -48,5 +57,7 @@ ActiveRecord::Schema.define(version: 20160304191400) do
 
   add_foreign_key "friendships", "users", column: "initiator_id"
   add_foreign_key "friendships", "users", column: "recipient_id"
+  add_foreign_key "likings", "posts", name: "post_id"
+  add_foreign_key "likings", "users", name: "user_id"
   add_foreign_key "posts", "users", name: "user_id"
 end

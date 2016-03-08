@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
 
   has_many :posts, inverse_of: :user
 
+  has_many :likings, inverse_of: :user
+
   validates :email, presence: true, uniqueness: true
   validates :password, presence: true
 

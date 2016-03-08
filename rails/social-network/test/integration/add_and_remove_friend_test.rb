@@ -2,7 +2,7 @@ require 'test_helper'
 
 class AddAndRemoveFriendTest < ActionDispatch::IntegrationTest
 
-  def test_remove_active_friendship
+  def test_remove_passive_friend
     @user = users(:mixed)
     my_sign_in @user
 
@@ -86,6 +86,17 @@ class AddAndRemoveFriendTest < ActionDispatch::IntegrationTest
     patch friendship_path(friendship)
 
     refute friendship.confirmed
+  end
+
+  def test_request_friendship
+    @user = users(:active)
+    my_sign_in @user
+    other_user = users(:stranger)
+
+    get user_path(other_user)
+    assert_difference 'Friendship.count', 1 do
+      post friendships_path, recipient_id: other_user.id
+    end
   end
 
 end

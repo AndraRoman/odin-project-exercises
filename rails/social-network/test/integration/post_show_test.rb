@@ -15,9 +15,13 @@ class PostShowTest < ActionDispatch::IntegrationTest
     assert_select ".post-title", text: @post.title, count: 1
     assert_select ".post-content", text: @post.content, count: 1
     assert_match @post.created_at.to_s, response.body
+    assert_select ".like-count", text: '0 likes', count: 1
 
     assert_select "a[href=?]", edit_post_path(@post), count: 1
     assert_select "a", text: "Delete post", count: 1
+
+    assert_select 'input[value="Like this post"]', count: 0
+    assert_select 'input[value="Unlike this post"]', count: 0
   end
 
   def test_display_for_other_user
@@ -27,9 +31,19 @@ class PostShowTest < ActionDispatch::IntegrationTest
     assert_select ".post-title", text: @post.title, count: 1
     assert_select ".post-content", text: @post.content, count: 1
     assert_match @post.created_at.to_s, response.body
+    assert_select ".like-count", text: '0 likes', count: 1
 
     assert_select "a[href=?]", edit_post_path(@post), count: 0
     assert_select "a", text: "Delete post", count: 0
+
+    assert_select 'input[value="Like this post"]', count: 1
+    assert_select 'input[value="Unlike this post"]', count: 0
+
+    Liking.create(post: @post, user: @user)
+    get post_path(@post)
+    assert_select 'input[value="Like this post"]', count: 0
+    assert_select 'input[value="Unlike this post"]', count: 1
+    assert_select ".like-count", text: '1 like', count: 1
   end
 
 end

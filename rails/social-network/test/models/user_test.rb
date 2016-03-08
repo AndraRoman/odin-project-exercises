@@ -24,6 +24,18 @@ class UserTest < ActiveSupport::TestCase
     refute @user.valid?
   end
 
+  def test_email_must_be_unique
+    @user.email = users(:active).email
+    refute @user.valid?
+  end
+
+  def test_db_enforces_email_is_unique
+    @user.save
+    assert_raise ActiveRecord::StatementInvalid do
+      @user.update_attribute(:email, users(:active).email)
+    end
+  end
+
   def test_friends_returns_union_of_initiated_and_received_friends
     [users(:active), users(:mixed), users(:passive)].each do |user|
       assert_equal 2, user.friends.count
