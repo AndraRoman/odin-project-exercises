@@ -68,7 +68,6 @@ class LikingTest < ActiveSupport::TestCase
     refute new_liking.valid?
   end
 
-  # TODO fails: looks like uniqueness constraint on multicolumn index is enforced in dev environment but not in test. Fix it!
   def test_db_enforces_user_post_combination_is_unique
     new_liking = Liking.new(post: @liking.post, user: users(:stranger))
     @liking.save

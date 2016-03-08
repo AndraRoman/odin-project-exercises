@@ -51,7 +51,7 @@ class PostsController < ApplicationController
     @post = Post.find_by(id: params[:id])
     @post.destroy
     flash[:success] = "Post deleted"
-    redirect_to root_url
+    redirect_to root_url # TODO friendly forward (in case deleting from eg own profile)
   end
 
   private
