@@ -31,9 +31,10 @@ class UserShowTest < ActionDispatch::IntegrationTest
     assert_select 'input[value="Unfriend"]', count: 1
   end
 
-  def test_shows_no_button_on_self
+  def test_shows_no_friend_or_unfriend_on_self
     get user_path(@user)
-    assert_select '.btn', count: 0
+    assert_select 'input[value="Send friend request"]', count: 0
+    assert_select 'input[value="Unfriend"]', count: 0
   end
 
   def test_shows_no_button_on_recipient_of_pending_friendship

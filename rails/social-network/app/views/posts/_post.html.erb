@@ -14,4 +14,9 @@
   <% else %>
     <%= render 'posts/like', post: post %>
   <% end %>
+
+  <div class="comments"><%= render post.comments %></div>
+
+  <%= render 'comments/new', post: post %>
+
 </div>

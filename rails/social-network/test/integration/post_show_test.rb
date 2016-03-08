@@ -22,6 +22,11 @@ class PostShowTest < ActionDispatch::IntegrationTest
 
     assert_select 'input[value="Like this post"]', count: 0
     assert_select 'input[value="Unlike this post"]', count: 0
+
+    assert_select ".comments", count: 1
+    assert_select ".comment", count: 1
+    assert_select ".comment-info", count: 1
+    assert_select "a", text: "Delete comment", count: 0 # not author of comment
   end
 
   def test_display_for_other_user
@@ -44,6 +49,11 @@ class PostShowTest < ActionDispatch::IntegrationTest
     assert_select 'input[value="Like this post"]', count: 0
     assert_select 'input[value="Unlike this post"]', count: 1
     assert_select ".like-count", text: '1 like', count: 1
+
+    assert_select ".comments", count: 1
+    assert_select ".comment", count: 1
+    assert_select ".comment-info", count: 1
+    assert_select "a", text: "Delete comment", count: 1
   end
 
 end

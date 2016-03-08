@@ -1,0 +1,6 @@
+<div class="comment"><%= comment.content %></div>
+<div class="comment-info">--<%= comment.user.email %> at <%= comment.created_at %></div>
+<% if current_user?(comment.user) %>
+  <%= link_to "Delete comment", comment, method: :delete %>
+<% end %>
+</br>
