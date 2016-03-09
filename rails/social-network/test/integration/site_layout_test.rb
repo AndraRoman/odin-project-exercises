@@ -11,6 +11,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_template 'sessions/new'
     assert_select "a[href=?]", new_user_registration_path, count: 2
     assert_select "a[href=?]", new_user_session_path, count: 1
+    assert_select "a[href=?]", user_omniauth_authorize_path(:facebook), count: 2
     assert_select "a[href=?]", edit_user_registration_path, count: 0
     assert_select "a[href=?]", destroy_user_session_path, count: 0
   end
@@ -20,6 +21,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
     assert_template 'registrations/new'
     assert_select "a[href=?]", new_user_registration_path, count: 1
     assert_select "a[href=?]", new_user_session_path, count: 2
+    assert_select "a[href=?]", user_omniauth_authorize_path(:facebook), count: 2
     assert_select "a[href=?]", edit_user_registration_path, count: 0
     assert_select "a[href=?]", destroy_user_session_path, count: 0
     assert_select "a[href=?]", new_post_path, count: 0
@@ -33,6 +35,7 @@ class SiteLayoutTest < ActionDispatch::IntegrationTest
 
     assert_select "a[href=?]", new_user_registration_path, count: 0
     assert_select "a[href=?]", new_user_session_path, count: 0
+    assert_select "a[href=?]", user_omniauth_authorize_path(:facebook), count: 0
 
     assert_select "a[href=?]", edit_user_registration_path, count: 1
     assert_select "a[href=?]", destroy_user_session_path, count: 1

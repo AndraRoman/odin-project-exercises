@@ -11,7 +11,7 @@
       <%= render 'users/respond_to_friend_request', user: request.initiator, friendship: request %>
     <% end %>
   <% else %>
-    <%= link_to "Sign in", new_user_session_path %> or <%= link_to "create an account", new_user_registration_path %> to see more.
+    <%= link_to "Sign in", new_user_session_path %>, <%= link_to "create an account", new_user_registration_path %>, or <%= link_to "sign in with Facebook", user_omniauth_authorize_path(:facebook) %> to see more.
   <% end %>
 </div>
 <hr>

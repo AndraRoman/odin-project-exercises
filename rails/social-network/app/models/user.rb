@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  devise :database_authenticatable, :rememberable, :registerable
+  devise :database_authenticatable, :rememberable, :registerable, :omniauthable, :omniauth_providers => [:facebook]
 
   # not sure I'll actually be using these associations
   has_many :active_friendships, class_name: "Friendship", inverse_of: :initiator, foreign_key: "initiator_id"
@@ -15,6 +15,25 @@ class User < ActiveRecord::Base
 
   validates :email, presence: true, uniqueness: true
   validates :password, presence: true
+
+  # copied straight from https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0, 20]
+      user.name = auth.info.name
+    end
+  end
+
+  # copied straight from https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview
+  # copies data from session when user is initialized before signing up
+  def self.new_with_session(params, session)
+    super.tap do |user|
+      if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
+        user.email = data["email"] if user.email.blank?
+      end
+    end
+  end
 
   # TODO consolidate into single SQL query. This is awful.
   def friends
