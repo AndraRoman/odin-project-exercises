@@ -3,6 +3,7 @@ require File.expand_path('../../config/environment', __FILE__)
 require 'rails/test_help'
 require 'minitest'
 require 'minitest/rails/capybara'
+require 'hashie'
 Minitest::Reporters.use!
 
 class ActiveSupport::TestCase
@@ -29,6 +30,10 @@ class ActiveSupport::TestCase
 
   def is_logged_in?
     !my_current_user_id.nil?
+  end
+
+  class MyPseudoHash < Hash
+    include Hashie::Extensions::MethodAccess
   end
 
 end

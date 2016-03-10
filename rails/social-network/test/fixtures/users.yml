@@ -22,3 +22,9 @@ stranger:
   email:    stranger_user@example.com
   name:     S. User
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+
+facebook_user:
+  email:    fb_user@example.com
+  name:     F. B. User
+  uid:      abc1234
+  provider: "facebook"
