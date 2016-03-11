@@ -3,6 +3,9 @@
   <ul>
     <li> Contact: <%= user.email %> </li>
   </ul>
+  <% if user.profile_pic %>
+    <%= image_tag user.profile_pic.url(:thumb) %>
+  <% end %>
   <% if current_user %>
     <% if current_user.stranger?(user) %>
       <%= render 'users/add_friend', user: user %>

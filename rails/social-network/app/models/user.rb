@@ -1,5 +1,5 @@
 class User < ActiveRecord::Base
-  devise :database_authenticatable, :rememberable, :registerable, :omniauthable, :omniauth_providers => [:facebook]
+  devise :database_authenticatable, :rememberable, :registerable, :validatable, :omniauthable, :omniauth_providers => [:facebook] # using validatable instead of rolling own password/email presence requirements. when I did the latter, edit page required password field to be filled as well as current_password in order to make any update - virtual attribute conflict
 
   # not sure I'll actually be using these associations
   has_many :active_friendships, class_name: "Friendship", inverse_of: :initiator, foreign_key: "initiator_id"
@@ -13,8 +13,9 @@ class User < ActiveRecord::Base
   has_many :likings, inverse_of: :user
   has_many :comments, inverse_of: :user
 
-  validates :email, presence: true, uniqueness: true
-  validates :password, presence: true
+  # paperclip
+  has_attached_file :profile_pic, styles: { medium: "300x300", thumb: "100x100" }, default_url: "/images/:style/missing.png"
+  validates_attachment_content_type :profile_pic, content_type: ["image/jpeg", "image/gif", "image/png"]
 
   # copied straight from https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview
   def self.from_omniauth(auth)
