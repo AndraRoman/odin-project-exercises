@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
 
   root to: "users#index"
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks", :registrations => "social_network_registrations" } # TODO
+  #devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
   resources :users, only: [:show, :index]
   resources :friendships, only: [:create, :update, :destroy]
   resources :likings, only: [:create, :destroy]

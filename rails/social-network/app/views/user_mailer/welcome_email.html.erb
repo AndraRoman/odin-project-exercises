@@ -1,0 +1,9 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>Welcome to our social network, <%= @user.name %>!</h1>
+    <p><%= link_to "Click here", posts_url %> to see what your friends have been talking about.</p>
+    <p>Or <%= link_to "update your profile", edit_user_registration_url(@user) %>.</p>
+  </body>
+</html>
+
