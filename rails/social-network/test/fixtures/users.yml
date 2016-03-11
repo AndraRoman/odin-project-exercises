@@ -28,3 +28,10 @@ facebook_user:
   name:     F. B. User
   uid:      abc1234
   provider: "facebook"
+
+with_image:
+  email:    image@example.com
+  name:     User W Image
+  profile_pic_file_name: "TEST_IMAGE.JPG"
+  profile_pic_content_type: "image/jpeg"
+  profile_pic_file_size: 1024

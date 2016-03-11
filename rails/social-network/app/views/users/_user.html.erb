@@ -1,10 +1,10 @@
 <div class="user">
-  <h2> Name: <%= user.name %></h2>
+  <h2><%= link_to "#{user.name}", user %></h2>
   <ul>
     <li> Contact: <%= user.email %> </li>
   </ul>
-  <% if user.profile_pic %>
-    <%= image_tag user.profile_pic.url(:thumb) %>
+  <% if user.profile_pic? %>
+    <div class="profile_pic"><%= image_tag user.profile_pic.url(:thumb) %></div>
   <% end %>
   <% if current_user %>
     <% if current_user.stranger?(user) %>

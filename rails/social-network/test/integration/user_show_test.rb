@@ -17,6 +17,7 @@ class UserShowTest < ActionDispatch::IntegrationTest
   def test_gets_user_profile
     get user_path(@user)
     assert_response :success
+    assert_select 'h2', text: @user.name
   end
 
   def test_shows_friend_button_on_stranger
@@ -64,6 +65,16 @@ class UserShowTest < ActionDispatch::IntegrationTest
       assert_match post.title, response.body
       assert_match post.content, response.body
     end
+  end
+
+  def test_shows_profile_pic_when_present
+    get user_path(@user)
+    assert_template 'users/show'
+    assert_select '.profile_pic', count: 0
+
+    get user_path(users(:with_image))
+    assert_template 'users/show'
+    assert_select '.profile_pic', count: 1
   end
 
 end

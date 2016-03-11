@@ -49,6 +49,15 @@ class AddAndRemoveFriendTest < ActionDispatch::IntegrationTest
     assert_select ".friend_request", count: 0
   end
 
+  def test_header_shows_notification_of_request
+    @user = users(:passive)
+    my_sign_in @user
+
+    assert_select "#header" do
+      assert_select "a[href=?]", user_path(users(:lonely)), count: 1
+    end
+  end
+
   def test_confirm_request
     @user = users(:passive)
     my_sign_in @user
