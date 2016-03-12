@@ -10,7 +10,7 @@ class UserSignupTest < ActionDispatch::IntegrationTest
 
   def test_valid_user_signup
     get new_user_registration_path
-    assert_difference 'User.count', 1 do
+    assert_difference ['User.count', 'ActionMailer::Base.deliveries.size'], 1 do
       post_via_redirect users_path, user: {email: @email, password: "password", name: "A Human", profile_pic: @image}
     end
 
@@ -28,7 +28,7 @@ class UserSignupTest < ActionDispatch::IntegrationTest
 
   def test_invalid_user_signup
     get new_user_registration_path
-    assert_no_difference 'User.count' do
+    assert_no_difference ['User.count', 'ActionMailer::Base.deliveries.size'] do
       post_via_redirect users_path, user: {email: users(:active).email, password: "password"} # email must be unique
       post_via_redirect users_path, user: {email: @email, password: ""} # password can't be blank
       post_via_redirect users_path, user: {email: "", password: "password"} # email can't be blank
