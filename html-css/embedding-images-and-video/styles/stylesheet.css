@@ -1,53 +1,4 @@
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
-
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
-body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-/* My work */
+@import url("reset.css");
 
 * {
   -webkit-box-sizing: border-box;
@@ -55,6 +6,7 @@ table {
   -box-sizing: border-box;
 }
 
+/* Temporary styles to distinguish elements */
 footer, header {
   background-color: silver;
   border: 2px solid gray;
@@ -77,43 +29,109 @@ aside {
   border: 2px solid darkblue;
 }
 
+.grid {
+  background-color: green;
+  border: 2px solid darkgreen;
+}
+
 video {
   background-color: black;
   border: 2px solid gray;
 }
 
-.grid {
-  background-color: green;
-  border: 2px solid darkgreen;
-  margin: 0 auto;
-  width: 964px; /* TODO cut to 960 on removing borders */
+.comment, .video-thumbnail {
+  background-color: darkorchid;
+  border: 2px solid purple;
 }
 
-.main-header {
-  position: fixed;
-  width: 100%; /* needed because position: fixed by itself sets width to 0 */
+.comment {
+  height: 20px;
 }
 
-.wide-column, .narrow-column {
-  display: inline-block;
-  vertical-align: top; /* TODO not sure why this is needed, but otherwise columns are vertically offset despite height being 100% */
-  height: 100%;
-  padding: 10px;
+.comments {
+  height: 20px;
+}
+
+.up-next {
+  background-color: brown;
+  border: 2px solid maroon;
 }
 
 .wide-column {
   background-color: red;
   border: 2px solid darkred;
-  width: 560px;
 }
 
-.narrow-column {
-  background-color: darkblue;
-  border: 2px solid blue;
-  width: 400px;
+
+/* SHARED ELELENTS */
+
+.footer {
+}
+
+.header {
+}
+
+/* MAJOR ELEMENTS */
+
+.grid {
+  width: 1070px; /* TODO cut on removing borders */
+  margin: 0 auto;
+  padding: 5px;
+  position: relative;
+  top: 45px;
+  width: 100%;
+  min-width: 800; /* TODO cut on removing borders. For now, 1007 though. */
+  max-width: 1070px; /* TODO cut on removing borders. For now, 1070 though. */
+}
+
+.main-header {
+  position: fixed;
+  width: 100%; /* needed because position: fixed makes width default to being set by content */
+  height: 45px;
+  z-index: 1000;
 }
 
 .main-footer {
+  width: 100%;
+}
+
+aside, .wide-column {
+  display: inline-block;
+  height: 100%;
+  padding: 5px;
+}
+
+@media (max-width: 1000px) {
+  aside {
+    position: relative;
+    left: 0px;
+    width: 426px;
+  }
+}
+
+@media (min-width: 1001px) {
+  aside {
+    position: absolute;
+    right: 5px;
+    left: 660px;
+    width: unset;
+    min-width: 300px;
+    max-width: 400px;
+  }
+}
+
+/* SUB-ELEMENTS */
+
+/* Header/footer */
+
+nav {
+}
+
+/* Main section */
+
+video {
+  width: 640px;
+  height: 360px;
 }
 
 .video-info {
@@ -125,22 +143,17 @@ video {
 }
 
 .comments {
-  height: 20px;
 }
 
 .comment {
-  background-color: darkorchid;
-  border: 2px solid purple;
-  height: 20px;
 }
 
+/* Sidebar */
+
 .video-thumbnail {
-  background-color: darkorchid;
-  border: 2px solid purple;
-  height: 20px;
+  height: 83px;
+  margin-bottom: 15px;
 }
 
 .up-next {
-  background-color: brown;
-  border: 2px solid maroon;
 }
