@@ -51,3 +51,6 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 
 ###[Advanced Forms](http://www.theodinproject.com/ruby-on-rails/building-advanced-forms)
 * ["Flight Booker"](rails/flight-booker), a Rails app in which users can filter flights by origin, destination, and departure date and create a booking for one or more passengers on that flight. (No login, payment, etc; all data is randomly seeded.)
+
+###[Final Project](http://www.theodinproject.com/ruby-on-rails/final-project)
+* ["Social Network](rails/social-network), a Rails app implementing a basic social network with friendships, posts, comments, etc. Uses Devise and `omniauth-facebook` for sign-in. Uses Paperclip for user profile photo upload. Demo on [Heroku](https://pure-meadow-87105.herokuapp.com/). All features in the assignment are done but it's still unstyled and rough around the edges. Test suite is extensive.
