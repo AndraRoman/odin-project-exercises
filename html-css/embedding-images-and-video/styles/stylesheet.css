@@ -4,42 +4,16 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -box-sizing: border-box;
+  background-color: white;
 }
 
 /* Temporary styles to distinguish elements */
-footer, header {
-  background-color: silver;
-  border: 2px solid gray;
-  height: 20px;
-}
-
 nav {
-  background-color: gray;
-  border: 2px solid black;
-  height: 20px;
+  height: 40px;
+  border-bottom: 1px solid #D3D3D3;
 }
 
-section {
-  background-color: blue;
-  border: 2px solid darkblue;
-}
-
-aside {
-  background-color: blue;
-  border: 2px solid darkblue;
-}
-
-.grid {
-  background-color: green;
-  border: 2px solid darkgreen;
-}
-
-video {
-  background-color: black;
-  border: 2px solid gray;
-}
-
-.comment, .video-thumbnail {
+.comment {
   background-color: darkorchid;
   border: 2px solid purple;
 }
@@ -52,36 +26,75 @@ video {
   height: 20px;
 }
 
-.up-next {
-  background-color: brown;
-  border: 2px solid maroon;
+li {
+  list-style-type: none;
 }
-
-.wide-column {
-  background-color: red;
-  border: 2px solid darkred;
-}
-
 
 /* SHARED ELELENTS */
 
-.footer {
+footer {
+  border-top: 1px solid #D3D3D3;
+  padding: 10px;
+  color: gray;
+  font-size: 10pt;
 }
 
-.header {
+footer * {
+  margin-bottom: 5px;
+  margin: auto;
+  width: 100%;
+  text-align: center;
+}
+
+header {
+}
+
+.button {
+  background-color: #F8F8F8;
+  border: 1px solid #D3D3D3;
+  padding: 8px;
+  border-radius: 2px;
+  font-size: 8pt;
+}
+
+.button-emphasized {
+  background-color: blue;
+  border: none;
+  color: #F8F8F8;
+}
+
+img {
+  height: 100%;
+  display: inline-block;
+  float: left;
+  vertical-align: bottom;
+}
+
+p {
+  padding: 10px;
+  display: inline-block;
+  font-size: 10pt;
+  max-width: 280px;
+  min-width: 200px;
+  position: absolute;
 }
 
 /* MAJOR ELEMENTS */
 
+body {
+  background-color: #F8F8F8;
+}
+
 .grid {
   width: 1070px; /* TODO cut on removing borders */
-  margin: 0 auto;
-  padding: 5px;
+  margin: 0 auto 85px auto; /* TODO why is 55px margin needed to create much smaller space before main footer? */
   position: relative;
-  top: 45px;
+  top: 60px;
   width: 100%;
-  min-width: 800; /* TODO cut on removing borders. For now, 1007 though. */
+  min-width: 1007; /* TODO cut on removing borders. For now, 1007 though. */
   max-width: 1070px; /* TODO cut on removing borders. For now, 1070 though. */
+  min-height: 2040; /* can't auto-size to fit sidebar because it's absolutely positioned */
+  background-color: #F8F8F8;
 }
 
 .main-header {
@@ -89,34 +102,54 @@ video {
   width: 100%; /* needed because position: fixed makes width default to being set by content */
   height: 45px;
   z-index: 1000;
+  border-bottom: 1px solid #D3D3D3;
+  padding: 8px;
+}
+
+.main-header * {
+  display: inline-block;
+  margin: auto;
 }
 
 .main-footer {
   width: 100%;
+  height: 146px;
 }
 
 aside, .wide-column {
   display: inline-block;
-  height: 100%;
-  padding: 5px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  vertical-align: top;
+  border: 1px solid #D3D3D3;
 }
 
-@media (max-width: 1000px) {
+.wide-column {
+  position: relative;
+  top: 0;
+  width: 640px;
+  margin-right: 15px;
+  border-left: none;
+}
+
+
+@media (max-width: 1006px) {
   aside {
     position: relative;
-    left: 0px;
+    left: 0;
     width: 426px;
   }
 }
 
-@media (min-width: 1001px) {
+@media (min-width: 1007px) {
   aside {
-    position: absolute;
-    right: 5px;
+    position: absolute; /* PROBLEM: this removes element from the flow, so grid cannot adjust its height to fit, and main-footer cannot adjust its position to fit either. */
+    right: 0;
     left: 660px;
-    width: unset;
-    min-width: 300px;
-    max-width: 400px;
+    min-width: 353px;
+    max-width: 415px;
+    max-width: 615px;
+    border-right: none;
   }
 }
 
@@ -129,31 +162,42 @@ nav {
 
 /* Main section */
 
-video {
-  width: 640px;
-  height: 360px;
+.wide-column * {
+  width: 100%;
+  margin-bottom: 10px;
 }
 
 .video-info {
-  height: 20px;
+  height: 151px;
+  padding: 15px 15px 5px 15px;
 }
 
 .blurb {
-  height: 20px;
+  height: 130px;
+  padding: 15px;
 }
 
 .comments {
+  height: auto;
 }
 
 .comment {
+  margin: 0 10px 26px 0;
 }
 
 /* Sidebar */
 
+ul {
+}
+
 .video-thumbnail {
   height: 83px;
   margin-bottom: 15px;
+  padding-left: 15px;
 }
 
 .up-next {
+  border-bottom: 1px solid #D3D3D3;
+  height: 98px;
+  padding-bottom: 15px;
 }

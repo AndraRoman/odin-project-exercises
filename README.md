@@ -54,3 +54,8 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 
 ###[Final Project](http://www.theodinproject.com/ruby-on-rails/final-project)
 * ["Social Network](rails/social-network), a Rails app implementing a basic social network with friendships, posts, comments, etc. Uses Devise and `omniauth-facebook` for sign-in. Uses Paperclip for user profile photo upload. Demo on [Heroku](https://pure-meadow-87105.herokuapp.com/). All features in the assignment are done but it's still unstyled and rough around the edges. Test suite is extensive.
+
+##[HTML5 and CSS3](http://www.theodinproject.com/html5-and-css3)##
+
+###[Embedding Video](http://www.theodinproject.com/html5-and-css3/embedding-images-and-video)
+* ["Fake YouTube"](html-css/embedding-images-and-video), a rough imitation of YouTube's video page with embedded media elements. Video and sidebar look reasonable and are responsive. Rest of page is left as a skeleton.
