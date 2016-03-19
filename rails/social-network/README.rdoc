@@ -1,3 +1,0 @@
-== Social Network
-
-A practice app implementing the basics of a social network. Assignment page at http://www.theodinproject.com/ruby-on-rails/final-project.
