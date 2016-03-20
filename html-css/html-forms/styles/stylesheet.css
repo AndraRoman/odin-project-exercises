@@ -7,18 +7,21 @@
 .container {
   width: 800px;
   margin: auto;
+  margin-top: -8px; /* compensating for body margin */
 }
 
 .main-header {
   position: relative;
   height: 96px;
   margin-bottom: 15px;
+  font-size: 15px;
+  color: #333;
 }
 
 img {
   width: 89px;
   position: absolute;
-  bottom: 0;
+  bottom: -0.5;
 }
 
 .signin-links {
@@ -30,12 +33,18 @@ img {
 span {
   padding-right: 10px;
   padding-left: 10px;
+  margin-left: -5px;
   text-align: right;
   border-right: 1px solid #D3D3D3;
 }
 
 span:last-of-type {
   border: none;
+}
+
+.selected {
+  font-weight: bold;
+  padding-right: 14px;
 }
 
 a {
