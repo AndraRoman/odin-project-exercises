@@ -48,13 +48,13 @@ span:last-of-type {
   padding-right: 14px;
 }
 
-a {
+footer a {
   text-decoration: none;
 }
 
 .form-container {
   height: 818px;
-  padding: 43px 50px 50px 50px;
+  padding: 43px 25px 50px 50px;
   box-shadow: 1px 3px 8px #D0D0D0;
 }
 
@@ -143,11 +143,34 @@ section footer {
 
 aside {
   float: right;
-  width: 238px;
+  width: 213px;
+  height: 100%;
   background-color: #F5F5F5;
-  margin-left: 25px;
-  padding: 21px 17px 19px 25px;
+  color: #666;
+  padding: 24px 17px 19px 25px;
   font-size: 12px;
+}
+
+aside header h1 {
+  font-size: 20px;
+  font-weight: normal;
+  margin-bottom: 0;
+  padding-bottom: 8px;
+}
+
+aside ul {
+  width: 155px;
+  padding: 0 5px 0 15px;
+  margin-top: 0;
+}
+
+aside li {
+  margin-bottom: 15px;
+}
+
+aside a {
+  color: #666;
+  font-size: 11px;
 }
 
 .main-footer {
