@@ -31,17 +31,20 @@ span {
   padding-right: 10px;
   padding-left: 10px;
   text-align: right;
-  border-right: 1px solid silver;
+  border-right: 1px solid #D3D3D3;
 }
 
 span:last-of-type {
   border: none;
 }
 
+a {
+  text-decoration: none;
+}
+
 .form-container {
-  border: 1px solid silver;
   height: 725px;
-  padding: 43px 0 50px 0;
+  padding: 43px 50px 50px 50px;
   box-shadow: 1px 3px 8px #D0D0D0;
 }
 
@@ -50,16 +53,44 @@ span:last-of-type {
 }
 
 section {
-  border-right: 1px solid gray;
+  border-right: 1px solid #D3D3D3;
   width: 400px;
   height: 100%;
   float: left;
 }
 
+section a {
+  color: #45CAE6;
+}
+
 fieldset {
   border: none;
+  padding: 0;
+  margin: 0;
+}
+
+label {
+  display: block;
+}
+
+input {
+  display: block;
+  border: 1px solid #D3D3D3;
+  border-radius: 3px;
 }
 
 aside {
   float: right;
+  width: 238px;
+  background-color: #F5F5F5;
+  margin-left: 25px;
+  padding: 21px 17px 19px 25px;
+}
+
+.main-footer {
+  color: #A5A5A5;
+}
+
+nav a {
+  color: #A5A5A5;
 }
