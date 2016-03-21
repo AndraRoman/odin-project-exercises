@@ -59,3 +59,6 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 
 ###[Embedding Video](http://www.theodinproject.com/html5-and-css3/embedding-images-and-video)
 * ["Fake YouTube"](html-css/embedding-images-and-video), a rough imitation of YouTube's video page with embedded media elements. Video and sidebar look reasonable and are responsive. Rest of page is left as a skeleton.
+
+###[HTML Forms](http://www.theodinproject.com/html5-and-css3/html-forms)
+* [Clone of Mint.com's signup page](html-css/html-forms). Not implemented: interactivity, checkbox styling, lock icon in password box, and exact position of nav dividers. Otherwise pixel-perfect, at least in Firefox.
