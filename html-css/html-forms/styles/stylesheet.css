@@ -19,7 +19,7 @@
   margin-bottom: 15px;
 }
 
-img {
+.logo {
   width: 89px;
   position: absolute;
   bottom: -0.5;
@@ -31,15 +31,18 @@ img {
   bottom: 0;
 }
 
-span {
+span, nav li {
   padding-right: 10px;
   padding-left: 10px;
-  margin-left: -5px;
   text-align: right;
-  border-right: 1px solid #D3D3D3;
 }
 
-span:last-of-type {
+span {
+  border-right: 1px solid #D3D3D3;
+  margin-left: -5px;
+}
+
+span:last-of-type, nav li:last-of-type {
   border: none;
 }
 
@@ -63,9 +66,8 @@ footer a {
 }
 
 section {
-  border-right: 1px solid #D3D3D3;
-  width: 487px;
-  padding-right: 100px;
+  width: 486px;
+  padding-right: 99px;
   height: 100%;
   display: inline-block;
   font-size: 14px;
@@ -111,9 +113,13 @@ input {
   margin-bottom: 26px;
 }
 
+#checkbox-fieldset {
+  margin-bottom: 0;
+}
+
 .checkbox {
   display: inline;
-  vertical-align: 4px;
+  vertical-align: 3px;
   margin-left: -5px;
 }
 
@@ -141,11 +147,19 @@ section footer {
   line-height: 18px;
 }
 
+.aside-container {
+  display: inline-block;
+  border-left: 1px solid #D3D3D3;
+  margin-right: 0;
+  padding: 0;
+  vertical-align: top;
+}
+
 aside {
   display: inline-block;
   vertical-align: top;
   width: 213px;
-  height: 100%;
+  height: 580px;
   background-color: #F5F5F5;
   color: #666;
   margin-left: 25px;
@@ -177,8 +191,52 @@ aside a {
 
 .main-footer {
   color: #A5A5A5;
+  margin: auto;
+  padding-top: 40px;
+  padding-bottom: 100px;
+  text-align: center;
+}
+
+nav ul {
+  width: 100%;
+  padding-left: 0px;
+  margin-bottom: 24px;
+}
+
+nav li {
+  display: inline-block;
+  font-size: 14px;
+  padding-left: 17px;
+  padding-right: 21px;
+  border-right: 1px solid #D3D3D3;
+  line-height: 10px;
+}
+
+nav li:last-of-type {
+  padding-right: 16px;
 }
 
 nav a {
   color: #A5A5A5;
+}
+
+.certifications img {
+  width: 140px;
+  height: 58px;
+  margin-left: -1px;
+}
+
+.certifications {
+  margin-bottom: 22px;
+}
+
+.fine-print {
+  font-size: 11px;
+  margin-bottom: 1px;
+}
+
+.fine-print * {
+  border: none;
+  margin-right: -6px;
+  margin-left: -6px;
 }
