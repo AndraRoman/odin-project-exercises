@@ -2,6 +2,56 @@
 
 /* background phone: http://touchstonejs.io/images/iphone6-white.png */
 
+body {
+  font-size: 14px;
+}
+
 #main-page {
   background-color: silver;
+}
+
+#container {
+  width: 960px;
+  margin: auto;
+  position: relative;
+}
+
+#main-page {
+  height: 920px;
+  margin-bottom: 100px;
+}
+
+#main-page div {
+  display: inline-block;
+  vertical-align: top;
+}
+
+#demo {
+  position: relative;
+  left: -50px;
+  top: 70px;
+  background-image: url(" http://touchstonejs.io/images/iphone6-white.png");
+  background-repeat: no-repeat;
+  height: 1000px;
+  width: 532px;
+  background-size: 532px;
+}
+
+#intro {
+  width: 400px;
+}
+
+.share-icon {
+  width: 24px;
+}
+
+.logo {
+  width: 80px;
+}
+
+h1 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 2rem;
+  font-weight: 300;
+  text-align: center;
 }
