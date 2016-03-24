@@ -1,0 +1,1 @@
+Clone of [http://touchstonejs.io/](http://touchstonejs.io/) as an exercise in building a page with background images and gradients. Assignment page at [http://www.theodinproject.com/html5-and-css3/building-with-backgrounds-and-gradients](http://www.theodinproject.com/html5-and-css3/building-with-backgrounds-and-gradients).
