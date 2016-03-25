@@ -1,9 +1,16 @@
 @import url("reset.css");
 
-/* background phone: http://touchstonejs.io/images/iphone6-white.png */
+/* TODO consistent units everywhere */
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -box-sizing: border-box;
+}
 
 body {
   font-size: 14px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 #main-page {
@@ -14,6 +21,7 @@ body {
   width: 960px;
   margin: auto;
   position: relative;
+  margin-bottom: 15px;
 }
 
 #main-page {
@@ -50,8 +58,170 @@ body {
 }
 
 h1 {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 2rem;
   font-weight: 300;
   text-align: center;
+  margin-bottom: 41px;
+}
+
+.normal li {
+  display: inline;
+  height: 100%;
+  width: 25%;
+  float: left;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+li div img {
+  height: 90px;
+  margin-bottom: 18px;
+}
+
+.example {
+  width: 30%;
+}
+
+.normal ul {
+  margin: auto;
+  text-align: center; /* works because li are inline */
+  padding-top: 19px;
+}
+
+ul::after {
+  display: block;
+  width: 0;
+  content: "";
+  clear: both;
+}
+
+.normal {
+  padding-bottom: 76px;
+  border-bottom: 1px solid #EEE;
+  margin-bottom: 59px;
+}
+
+a {
+  color: unset;
+  text-decoration: none;
+}
+
+p {
+  color: #333;
+  font-size: 16px;
+  line-height: 22.5px;
+}
+
+h2 {
+  font-size: 18px;
+  color: #222;
+  margin-bottom: 16px;
+}
+
+section {
+  position: relative; /* so that later content can stack on top of demo div with phone background */
+}
+
+.terminal-container {
+  width: 796px;
+  margin: auto;
+}
+
+/* TODO using pre has messed up line height somehow */
+pre {
+  overflow-x: auto;
+  font-family: monospace;
+  font-size: 16px;
+  line-height: 17pt;
+  margin-bottom: 33px;
+  background-color: #333;
+  border-radius: 4px;
+}
+
+.code-wrapper {
+  background-color: #F3F3F3;
+  border: 1px solid #DDD;
+  border-radius: 0.3em;
+  padding-left: 30px;
+  padding-top: 15px;
+  padding-bottom: 16px;
+  width: 100%;
+  margin-right: 29px;
+}
+
+code {
+  vertical-align: center;
+}
+
+footer {
+  font-size: 13px;
+  color: rgba(51, 51, 51, 0.5);
+  padding-bottom: 1px;
+}
+
+#refs {
+  padding-top: 1px;
+  background-color: whitesmoke;
+  padding-bottom: 110px;
+  border: none;
+  margin-bottom: 27px;
+}
+
+#refs img {
+  width: 60px;
+  height: 60px;
+}
+
+#refs img.example {
+  width: 100%;
+  height: 100%;
+}
+
+#refs li {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+#refs h2 {
+  margin-bottom: 11px;
+}
+
+#refs p {
+  line-height: 23.4px;
+  margin-bottom: 19px;
+}
+
+#refs li {
+  width: 33%;
+}
+
+.button {
+  border: 1px solid #71B5EF;
+  border-radius: 4px;
+  color: #1385E5;
+  padding: 8px 12px 7px 12px;
+  font-size: 12px;
+  margin: auto;
+  margin-bottom: 60px;
+  display: inline-block;
+}
+
+.button:hover {
+  background-color: rgba(113, 181, 239, .1);
+  border-color: #1385E5;
+}
+
+footer p {
+  color: inherit;
+  text-align: center;
+  line-height: 39px;
+}
+
+#main-page a:hover, footer a:hover {
+  text-decoration: underline;
+  
+}
+
+footer a:hover {
+  color: rgba(51, 51, 51, 0.4);
 }
