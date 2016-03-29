@@ -1,7 +1,3 @@
-@import url("reset.css");
-
-/* TODO consistent units everywhere */
-
 * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -9,44 +5,104 @@
 }
 
 body {
-  font-size: 14px;
+  font-size: 16px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #FDFDFD;
+  color: #333;
+  line-height: 22.5px; /* for p */
 }
 
-#narrow-container {
+form {
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  padding-bottom: 11px;
+  border-radius: 5px;
+  margin-bottom: 82px;
+}
+
+/* invisible but still present for screen readers */
+label {
+  position: absolute !important;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+li div img {
+  height: 90px;
+  margin-bottom: 12px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h2 {
+  font-size: 1.125rem;
+  color: #222;
+  margin-bottom: 13px;
+}
+
+section {
   width: 960px;
   margin: auto;
-  position: relative;
+  position: relative; /* so that later content can stack on top of demo div with phone background */
 }
+
+section::after, ul::after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+footer p {
+  font-size: 0.8125rem;
+  color: rgba(51, 51, 51, 0.5);
+}
+
+body > footer {
+  margin-bottom: 14px;
+}
+
+body > footer p {
+  padding-bottom: 1px;
+  text-align: center;
+  line-height: 38px;
+  font-size: inherit;
+}
+
+footer a:hover {
+  color: rgba(51, 51, 51, 0.4);
+  text-decoration: underline;
+}
+
+#full-container {
+  background-image: linear-gradient(white, white 86.5%, #F9F9F9);
+}
+
+/* MAIN PAGE */
 
 #main-page {
   height: 920px;
-  margin-bottom: 100px;
+  margin-bottom: 105px;
 }
 
 #main-page-background {
   position: absolute;
-  background-image: linear-gradient(70deg, gray, white);
   background-image: linear-gradient(70deg, #C3299C, #C3292C);
   height: 920px;
   top: 0;
   left: 0;
   right: 0;
-  /* bottom left: #C3299C /*
-  /* top left: #C3298C */
-  /* top right: #C3292C */
-  /* bottom right: #C3293C */
-  /* so the only thing that changes is the amount of blue */
-}
-
-#main-page::after {
-  content: "";
-  clear: both;
 }
 
 #main-page div {
-  display: inline-block;
   vertical-align: top;
 }
 
@@ -55,8 +111,7 @@ body {
   left: -50px;
   top: 70px;
   background-image: url(" http://touchstonejs.io/images/iphone6-white.png");
-  background-repeat: no-repeat;
-  height: 1000px;
+  height: 950px;
   width: 532px;
   background-size: 532px;
 }
@@ -75,71 +130,63 @@ body {
 #intro {
   float: right;
   width: 477px;
-  margin-top: 178px;
+  padding-top: 178px;
 }
 
-#intro * {
+#intro > * {
   text-align: left;
   color: white;
 }
 
 #intro h1 {
-  margin-bottom: 25px;
+  margin-bottom: 29px;
 }
 
 #intro h2 {
   line-height: 26px;
-  font-size: 20px;
+  font-size: 1.25rem;
   padding-right: 100px;
   margin-bottom: 20px;
 }
 
-form {
-  background-color: rgba(0, 0, 0, 0.1);
-  display: inline-block;
-  padding: 10px;
-  padding-bottom: 11px;
-  border-radius: 5px;
-  margin-top: 20px; /* TODO get rid of this */
-  margin-bottom: 82px;
+#intro p {
+  color: rgba(255, 255, 255, 0.8);
+  text-align: left;
 }
 
-/* invisible but still present for screen readers */
-label {
-  color: unset;
-  position: absolute !important;
-  clip: rect(1px, 1px, 1px, 1px);
+#intro > p:last-of-type {
+  margin-bottom: 20px;
 }
 
 #intro input {
   border: none;
   border-radius: 3px;
   height: 50px;
-  color: #333;
-  padding-left: 13px;
-  padding-right: 13px;
-  font-size: 12pt;
   font-family: inherit;
   font-weight: 100;
+  font-size: 1rem;
 }
 
 #intro input[type="email"] {
+  padding-left: 13px;
   width: 346px;
   margin-right: 5px;
 }
 
 #intro input[type="submit"] {
+  padding-left: 12px;
+  padding-right: 13px;
   text-align: center;
   background-color: #F3F3F3;
+  color: #333;
 }
 
 #intro li {
   margin-bottom: 23px;
-  font-size: 13pt;
 }
 
 #intro li img {
-  margin-right: 20px;
+  margin-right: 15px;
 }
 
 #intro li * {
@@ -147,82 +194,19 @@ label {
 }
 
 #intro ul {
-  margin-bottom: 168px;
+  margin-bottom: 163px;
+}
+
+#logo {
+  width: 80px;
+  margin-bottom: 24px;
 }
 
 .share-icon {
   width: 24px;
 }
 
-.logo {
-  width: 80px;
-  margin-bottom: 23px;
-}
-
-h1 {
-  font-size: 2rem;
-  font-weight: 300;
-  text-align: center;
-  margin-bottom: 41px;
-}
-
-.normal li {
-  display: inline;
-  height: 100%;
-  width: 25%;
-  float: left;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-
-li div img {
-  height: 90px;
-  margin-bottom: 18px;
-}
-
-.example {
-  width: 30%;
-}
-
-.normal ul {
-  margin: auto;
-  text-align: center; /* works because li are inline */
-  padding-top: 19px;
-}
-
-ul::after {
-  display: block;
-  width: 0;
-  content: "";
-  clear: both;
-}
-
-.normal {
-  padding-bottom: 76px;
-  border-bottom: 1px solid #EEE;
-  margin-bottom: 59px;
-}
-
-a {
-  color: unset;
-  text-decoration: none;
-}
-
-p {
-  color: #333;
-  font-size: 16px;
-  line-height: 22.5px;
-}
-
-h2 {
-  font-size: 18px;
-  color: #222;
-  margin-bottom: 16px;
-}
-
-section {
-  position: relative; /* so that later content can stack on top of demo div with phone background */
-}
+/* CODE */
 
 .terminal-container {
   width: 796px;
@@ -232,10 +216,8 @@ section {
 /* TODO using pre has messed up line height somehow */
 pre {
   overflow-x: auto;
-  font-family: monospace;
-  font-size: 16px;
-  line-height: 17pt;
-  margin-bottom: 33px;
+  font-size: 1rem;
+  margin-bottom: 28px;
   background-color: #333;
   border-radius: 4px;
 }
@@ -245,7 +227,7 @@ pre {
   border: 1px solid #DDD;
   border-radius: 0.3em;
   padding-left: 30px;
-  padding-top: 15px;
+  padding-top: 16px;
   padding-bottom: 16px;
   width: 100%;
   margin-right: 29px;
@@ -253,19 +235,51 @@ pre {
 
 code {
   vertical-align: center;
+  font-family: monospace;
+  line-height: 16pt;
 }
 
-footer {
-  font-size: 13px;
-  color: rgba(51, 51, 51, 0.5);
-  padding-bottom: 1px;
+/* NORMAL SECTIONS */
+
+.normal li {
+  display: inline;
+  width: 25%;
+  float: left;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.normal ul {
+  text-align: center; /* works because li are inline */
+  padding-top: 19px;
+  margin-bottom: 4px;
+}
+
+.normal {
+  border-bottom: 1px solid #EEE;
+  padding-bottom: 72px;
+  margin-bottom: 64px;
+}
+
+.normal li p {
+  line-height: 23px;
+}
+
+/* REFERENCES AND EXAMPLES SECTION */
+
+.example {
+  width: 30%;
 }
 
 #refs {
   padding-top: 1px;
   padding-bottom: 110px;
   border: none;
-  margin-bottom: 27px;
+  margin-bottom: 26px;
+}
+
+#refs h1 {
+  margin-bottom: 46px;
 }
 
 #refs img {
@@ -275,7 +289,7 @@ footer {
 
 #refs img.example {
   width: 100%;
-  height: 100%;
+  height: 482px;
 }
 
 #refs li {
@@ -284,7 +298,7 @@ footer {
 }
 
 #refs h2 {
-  margin-bottom: 11px;
+  margin-bottom: 8px;
 }
 
 #refs p {
@@ -300,8 +314,8 @@ footer {
   border: 1px solid #71B5EF;
   border-radius: 4px;
   color: #1385E5;
-  padding: 8px 12px 7px 12px;
-  font-size: 12px;
+  padding: 3px 12px 2px 12px;
+  font-size: 0.75rem;
   margin: auto;
   margin-bottom: 60px;
   display: inline-block;
@@ -310,27 +324,4 @@ footer {
 .button:hover {
   background-color: rgba(113, 181, 239, .1);
   border-color: #1385E5;
-}
-
-body > footer {
-  margin-bottom: 14px;
-}
-
-footer p {
-  color: inherit;
-  text-align: center;
-  line-height: 39px;
-}
-
-#main-page a:hover, footer a:hover {
-  text-decoration: underline;
-  
-}
-
-footer a:hover {
-  color: rgba(51, 51, 51, 0.4);
-}
-
-#full-container {
-  background-image: linear-gradient(white, white 86.5%, #F9F9F9);
 }

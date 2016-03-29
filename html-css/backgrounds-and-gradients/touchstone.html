@@ -2,138 +2,145 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="styles/reset.css">
     <link rel="stylesheet" type="text/css" href="styles/stylesheet.css">
     <link rel="shortcut icon" href="http://www.touchstonejs.io/images/favicon.ico">
     <title>TouchstoneJS - React.js powered UI framework for developing beautiful hybrid mobile apps.</title>
   </head>
   <body>
     <div id="full-container">
-    <div id="main-page-background"></div>
-    <div id="narrow-container">
-    <section id="main-page">
-      <div id="demo">
-      </div>
-      <div id="screen">
-      </div>
-      <div id="intro">
-      <img class="logo" src="http://touchstonejs.io/images/touchstone-logo.svg">
-      <h1>TouchstoneJS</h1>
-      <h2>React.js powered UI framework for developing beautiful hybrid mobile apps.</h2>
-      <p>Docs, examples and getting started guide coming soon.</p>
-      <p>Get notified when we launch</p>
-      <form>
-        <label for="email">Email address</label>
-        <input type="email" name="email" placeholder="Email address">
-        <input type="submit" value="Notify me">
-      </form>
-      <ul>
-        <li><a href="https://twitter.com/touchstonejs"><img class="share-icon" src="http://touchstonejs.io/images/twitter-logo.svg"><span>Follow @touchstonejs</span></a></li>
-        <li><a href="https://github.com/touchstonejs/touchstonejs"><img class="share-icon" type="image/svg+xml" src="http://touchstonejs.io/images/github-logo.svg"><span>Star on GitHub</span></a></li>
-      </ul>
-      <footer>
-        Current version 0.4.0 - Free and open source (MIT)
-      </footer>
-      </div>
-    </section>
-    <section class="normal">
-      <h1>Touchstone is made with&hellip;</h1>
-      <ul>
-        <li>
-          <div>
-            <a href="http://facebook.github.io/react">
-              <img type="image/png" src="http://touchstonejs.io/images/reactjs.png">
-              <h2>ReactJS</h2>
-              <p>A JavaScript library for building user interfaces</p>
-            </a>
-          </div>
-        </li>
-        <li>
-          <div>
-            <a href="https://cordova.apache.org/">
-              <img type="image/png" src="http://touchstonejs.io/images/cordova.png">
-              <h2>Cordova</h2>
-              <p>Platform for building native mobile apps</p>
-            </a>
-          </div>
-        </li>
-        <li>
-          <div>
-            <a href="http://www.w3.org/html/">
-              <img type="image/png" src="http://touchstonejs.io/images/html5.png">
-              <h2>HTML5</h2>
-              <p>The markup language of the internet</p>
-            </a>
-          </div>
-        </li>
-        <li>
-          <div>
-            <a href="http://www.w3.org/Style/CSS/Overview.en.html">
-              <img type="image/png" src="http://touchstonejs.io/images/css3.png">
-              <h2>CSS3</h2>
-              <p>The presentation language of the internet</p>
-            </a>
-          </div>
-        </li>
-      </ul>
-    </section>
-    <section class="normal">
-      <h1>Getting Started</h1>
-      <div class="terminal-container">
-        <pre><div class="code-wrapper"><code>
+      <div id="main-page-background"></div>
+      <section id="main-page">
+        <div id="demo"></div>
+        <div id="screen"></div>
+        <div id="intro">
+          <img id="logo" src="http://touchstonejs.io/images/touchstone-logo.svg">
+          <h1>TouchstoneJS</h1>
+          <h2>React.js powered UI framework for developing beautiful hybrid mobile apps.</h2>
+          <p>Docs, examples and getting started guide coming soon.</p>
+          <p>Get notified when we launch</p>
+          <form>
+            <label for="email">Email address</label>
+            <input type="email" name="email" placeholder="Email address">
+            <input type="submit" value="Notify me">
+          </form>
+          <ul>
+            <li>
+              <a href="https://twitter.com/touchstonejs">
+                <img class="share-icon" src="http://touchstonejs.io/images/twitter-logo.svg">
+                <span>Follow @touchstonejs</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/touchstonejs/touchstonejs">
+                <img class="share-icon" type="image/svg+xml" src="http://touchstonejs.io/images/github-logo.svg">
+                <span>Star on GitHub</span>
+              </a>
+            </li>
+          </ul>
+          <footer>
+            <p>Current version 0.4.0 - Free and open source (MIT)</p>
+          </footer>
+        </div>
+      </section>
+      <section class="normal">
+        <h1>Touchstone is made with&hellip;</h1>
+        <ul>
+          <li>
+            <div>
+              <a href="http://facebook.github.io/react">
+                <img type="image/png" src="http://touchstonejs.io/images/reactjs.png">
+                <h2>ReactJS</h2>
+                <p>A JavaScript library for building user interfaces</p>
+              </a>
+            </div>
+          </li>
+          <li>
+            <div>
+              <a href="https://cordova.apache.org/">
+                <img type="image/png" src="http://touchstonejs.io/images/cordova.png">
+                <h2>Cordova</h2>
+                <p>Platform for building native mobile apps</p>
+              </a>
+            </div>
+          </li>
+          <li>
+            <div>
+              <a href="http://www.w3.org/html/">
+                <img type="image/png" src="http://touchstonejs.io/images/html5.png">
+                <h2>HTML5</h2>
+                <p>The markup language of the internet</p>
+              </a>
+            </div>
+          </li>
+          <li>
+            <div>
+              <a href="http://www.w3.org/Style/CSS/Overview.en.html">
+                <img type="image/png" src="http://touchstonejs.io/images/css3.png">
+                <h2>CSS3</h2>
+                <p>The presentation language of the internet</p>
+              </a>
+            </div>
+          </li>
+        </ul>
+      </section>
+      <section class="normal">
+        <h1>Getting Started</h1>
+        <div class="terminal-container">
+          <pre><div class="code-wrapper"><code>
 $ git clone https://github.com/touchstonejs/touchstonejs-starter.git
 $ npm install
 $ npm start                                                                    
-        </code></div></pre>
-        <footer>
-          documentation and guide coming soon
-        </footer>
-      </div>
-    </section>
-    <section class="normal" id="refs">
-      <h1>Examples &amp; references</h1>
-      <ul>
-        <li>
-          <div>
-            <img type="image/png" src="http://touchstonejs.io/images/ei8ht.png">
-            <h2>Ei8ht Bitcoin Wallet</h2>
-            <p>The best way to safely send and receive Bitcoin</p>
-            <a href="https://itunes.apple.com/us/app/ei8ht/id975816422?mt=8">
-              <div class="button">
-                Download on the App Store
-              </div>
-            </a>
-            <img class="example" type="image/png" src="http://touchstonejs.io/images/app-ei8ht.png">
-          </div>
-        </li>
-        <li>
-          <div>
-            <img type="image/png" src="http://touchstonejs.io/images/react-europe.png">
-            <h2>React Europe</h2>
-            <p>Open source conference / attendance app</p>
-            <a href="http://thinkmill.com.au/react-europe">
-              <div class="button">
-                Get the App, API, Assets and Source
-              </div>
-            </a>
-            <img class="example" type="image/png" src="http://touchstonejs.io/images/app-react-europe.png">
-          </div>
-        </li>
-        <li>
-          <div>
-            <img type="image/png" src="http://touchstonejs.io/images/touchstone-starter.png">
-            <h2>Touchstone Starter</h2>
-            <p>A great place to start to know TouchstoneJS</p>
-            <a href="https://github.com/touchstonejs/touchstonejs-starter">
-              <div class="button">
-                Clone on GitHub
-              </div>
-            </a>
-            <img class="example" type="image/png" src="http://touchstonejs.io/images/app-touchstone-starter.png">
-          </div>
-        </li>
-      </ul>
-    </section>
-    </div>
+          </code></div></pre>
+          <footer>
+            <p>documentation and guide coming soon</p>
+          </footer>
+        </div>
+      </section>
+      <section class="normal" id="refs">
+        <h1>Examples &amp; references</h1>
+        <ul>
+          <li>
+            <div>
+              <img type="image/png" src="http://touchstonejs.io/images/ei8ht.png">
+              <h2>Ei8ht Bitcoin Wallet</h2>
+              <p>The best way to safely send and receive Bitcoin</p>
+              <a href="https://itunes.apple.com/us/app/ei8ht/id975816422?mt=8">
+                <div class="button">
+                  Download on the App Store
+                </div>
+              </a>
+              <img class="example" type="image/png" src="http://touchstonejs.io/images/app-ei8ht.png">
+            </div>
+          </li>
+          <li>
+            <div>
+              <img type="image/png" src="http://touchstonejs.io/images/react-europe.png">
+              <h2>React Europe</h2>
+              <p>Open source conference / attendance app</p>
+              <a href="http://thinkmill.com.au/react-europe">
+                <div class="button">
+                  Get the App, API, Assets and Source
+                </div>
+              </a>
+              <img class="example" type="image/png" src="http://touchstonejs.io/images/app-react-europe.png">
+            </div>
+          </li>
+          <li>
+            <div>
+              <img type="image/png" src="http://touchstonejs.io/images/touchstone-starter.png">
+              <h2>Touchstone Starter</h2>
+              <p>A great place to start to know TouchstoneJS</p>
+              <a href="https://github.com/touchstonejs/touchstonejs-starter">
+                <div class="button">
+                  Clone on GitHub
+                </div>
+              </a>
+              <img class="example" type="image/png" src="http://touchstonejs.io/images/app-touchstone-starter.png">
+            </div>
+          </li>
+        </ul>
+      </section>
     </div>
     <footer>
       <p>Created by <a href="http://www.thinkmill.com.au/">Thinkmill</a>, and other contributors under the MIT License.</p>
