@@ -1,0 +1,23 @@
+* {
+  box-sizing: border-box;
+}
+
+#calculator {
+  margin: auto;
+  width: 40vw;
+  height: 40vw;
+  background-color: silver;
+  border: 2px solid black;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.key {
+  display: inline-block;
+  width: 25%;
+  height: 25%;
+  border: 1px solid black;
+  border-radius: 2px;
+  font-size: 2rem;
+  padding: 5px;
+}
