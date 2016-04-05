@@ -45,3 +45,7 @@ span {
   padding: 0;
   text-align: center;
 }
+
+.key:focus {
+  background-color: whitesmoke;
+}

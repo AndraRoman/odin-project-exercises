@@ -36,6 +36,7 @@ function higher_precedence(op_1, op_2) {
   return ((op_1 == "*" || op_1 == "/") && (op_2 == "+" || op_2 == "-"));
 }
 
+// negative numbers can only occur as result of a previous computation, which means they're pushed into history as a single item, so no need to handle unary "-"
 function lex(input) {
   var tokens = [];
   var token_in_progress = [];

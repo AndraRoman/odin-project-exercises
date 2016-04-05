@@ -62,3 +62,8 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 
 ###[HTML Forms](http://www.theodinproject.com/html5-and-css3/html-forms)
 * [Clone of Mint.com's signup page](html-css/html-forms). Not implemented: interactivity, checkbox styling, lock icon in password box, and exact position of nav dividers. Otherwise pixel-perfect, at least in Firefox.
+
+##[JavaScript and jQuery](http://www.theodinproject.com/javascript-and-jquery)##
+
+###[On-Screen Calculator](http://www.theodinproject.com/javascript-and-jquery/on-screen-calculator)
+* [Responsive calculator](javascript/calculator/) using jQuery. Parsing done with shunting-yard algorithm.
