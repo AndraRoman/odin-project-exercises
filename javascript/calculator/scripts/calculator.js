@@ -13,20 +13,11 @@ function make_keypad(calculator) {
     var sym = keys[i];
     var key = $(`<div class="key" id="${sym}"><span>${sym}</span></div>`);
     calculator.append(key);
-    console.log(keys[i]);
   }
 }
 
 function listen(display, history, key) {
-  if(key == "CLR") {
-    history.length = 0;
-  } else if(key == "=") {
-    result = evaluate(history);
-    history.length = 0;
-    history.push(result);
-  } else {
-    history.push(key);
-  }
+  process_input(history, key); // mutates history
   update_display(display, history);
 }
 
