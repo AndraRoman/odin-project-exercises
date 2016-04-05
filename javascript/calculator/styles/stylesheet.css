@@ -5,19 +5,43 @@
 #calculator {
   margin: auto;
   width: 40vw;
-  height: 40vw;
-  background-color: silver;
+  height: 50vw;
+  background-color: gray;
   border: 2px solid black;
   border-radius: 5px;
   padding: 10px;
 }
 
+#screen, .key {
+  height: 20%;
+  border: 1px solid black;
+  border-radius: 2px;
+  font-size: 4vw;
+  text-align: right;
+  padding: 0 1vw;
+}
+
+span {
+  line-height: 8vw;
+}
+
+#screen {
+  background-color: whitesmoke;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+#display {
+  margin: 0 auto;
+}
+
 .key {
   display: inline-block;
   width: 25%;
-  height: 25%;
-  border: 1px solid black;
-  border-radius: 2px;
-  font-size: 2rem;
-  padding: 5px;
+  background-color: lightgray;
+}
+
+#CLR {
+  padding: 0;
+  text-align: center;
 }
