@@ -1,0 +1,22 @@
+{
+  "name": "calculator",
+  "version": "1.0.0",
+  "description": "simple in-browser calculator",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "chai": "^3.5.0",
+    "jslint": "^0.9.6",
+    "mocha": "^2.4.5"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/mocha --reporter=dot --ui=tdd"
+  },
+  "author": "",
+  "license": "ISC"
+}

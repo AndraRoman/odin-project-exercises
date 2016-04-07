@@ -134,3 +134,22 @@ function process_input(history, key) {
     history[history.length - 1] = new_num;
   }
 }
+
+// there has to be a better way to do this
+if (typeof (module) !== 'undefined' && typeof (module.exports) !== 'undefined') {
+  module.exports = {
+    add: add,
+    multiply: multiply,
+    subtract: subtract,
+    divide: divide,
+    apply: apply,
+    is_operator: is_operator,
+    higher_precedence: higher_precedence,
+    to_rpn: to_rpn,
+    eval_rpn: eval_rpn,
+    evaluate: evaluate,
+    format: format,
+    add_digit: add_digit,
+    process_input: process_input
+  };
+}

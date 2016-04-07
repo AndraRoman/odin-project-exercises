@@ -66,4 +66,4 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 ##[JavaScript and jQuery](http://www.theodinproject.com/javascript-and-jquery)##
 
 ###[On-Screen Calculator](http://www.theodinproject.com/javascript-and-jquery/on-screen-calculator)
-* [Responsive calculator](javascript/calculator/) using jQuery. Parsing done with shunting-yard algorithm.
+* [Responsive in-browser calculator](javascript/calculator/) using jQuery. Parsing done with shunting-yard algorithm; tests with Mocha and Chai.
