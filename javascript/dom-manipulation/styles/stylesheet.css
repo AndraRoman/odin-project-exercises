@@ -1,0 +1,40 @@
+* {
+  box-sizing: border-box;
+}
+
+#banner {
+  background-image: url("http://www.photos-public-domain.com/wp-content/uploads/2011/03/drunken-noodles-pad-kee-mao-thai-food.jpg");
+  background-size: cover;
+  height: 400px;
+  padding: 100px;
+}
+
+nav li {
+  display: inline-block;
+}
+
+#tabs, nav li {
+  background-color: whitesmoke;
+}
+
+h1 {
+  color: white;
+  text-align: center;
+  font-size: 5em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+.active {
+  background-color: lightskyblue;
+}
+
+section.inactive {
+  display: none;
+}
