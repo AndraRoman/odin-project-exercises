@@ -8,12 +8,23 @@ function toggle_activity(element) {
   }
 }
 
+function switch_to_tab(name) {
+  name = name.substr(1); // remove initial '#'
+  [$('.active'), $(`[id|=${name}]`)].map(toggle_activity);
+}
+
 $(document).ready(function() {
   "use strict";
   $('.tab:not(#menu)').addClass('inactive');
   $('[id|=menu]').addClass('active');
+
+  var hash = window.location.hash;
+  if (hash) {
+    switch_to_tab(hash);
+  }  
+
   $('[id$=link]').on('click', function() {
-    var referent_id = $(this).attr('href').substr(1); // remove initial '#'
-    [$('.active'), $(`[id|=${referent_id}]`)].map(toggle_activity);
+    var name = $(this).attr('href')
+    switch_to_tab(name);
   });
 });

@@ -67,3 +67,6 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 
 ###[On-Screen Calculator](http://www.theodinproject.com/javascript-and-jquery/on-screen-calculator)
 * [Responsive in-browser calculator](javascript/calculator/) using jQuery. Parsing done with shunting-yard algorithm; tests with Mocha and Chai.
+
+###[Tabbed Content](http://www.theodinproject.com/javascript-and-jquery/manipulating-the-dom-with-jquery)
+* [Fake restaurant website](javascript/dom-manipulation/) with tabbed content using jQuery.
