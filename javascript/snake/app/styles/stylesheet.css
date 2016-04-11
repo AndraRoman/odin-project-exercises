@@ -1,0 +1,67 @@
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 20px;
+}
+
+#info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#info div {
+  background-color: whitesmoke;
+  border: 2px solid black;
+  display: inline-block;
+  margin: auto;
+  padding: 5px;
+  border-radius: 3px;
+}
+
+#board {
+  background-color: whitesmoke;
+  border: 2px solid black;
+  width: 80vw;
+  height: 80vw;
+  max-width: 80vh;
+  max-height: 80vh;
+  margin: auto;
+  line-height: 0;
+}
+
+.js-off:before {
+  content: "Please enable JavaScript to play.";
+}
+
+#high-score:after {
+  content: " 0";
+}
+
+.row {
+  height: 5%; /* TODO fix */
+}
+
+.tile {
+  vertical-align: top;
+  border: 1px solid gray;
+  display: inline-block;
+  width: 5%;
+  height: 100%;
+}
+
+.wall {
+  background-color: darkblue;
+}
+
+.snake {
+  background-color: black;
+}
+
+.food {
+  background-color: red;
+}
