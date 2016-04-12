@@ -70,3 +70,6 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 
 ###[Tabbed Content](http://www.theodinproject.com/javascript-and-jquery/manipulating-the-dom-with-jquery)
 * [Fake restaurant website](javascript/dom-manipulation/) with tabbed content using jQuery.
+
+###[Snake Game](http://www.theodinproject.com/javascript-and-jquery/jquery-and-the-dom)
+* [Clone](javascript/snake/) of the classic Snake game.

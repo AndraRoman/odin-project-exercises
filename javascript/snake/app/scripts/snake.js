@@ -64,12 +64,25 @@ function addWalls(board, wallSet) {
 // Objects
 function setUpGame(game, boardElt) {
   "use strict";
-  var walls = makeWallSet(game.size); // lint: out of scope
 
   game.size = 20;
   game.tick = 0;
   game.score = 0;
   game.unit = [1, 0]; // default to moving right
+  game.pendingUnits = []; // queue up moves that are too fast
+
+  var walls = makeWallSet(game.size); // lint: out of scope
+
+  // not very well named
+  game.setUnit = function(newUnit) {
+    var previous = this.pendingUnits[0] || this.unit;
+    if ((previous[0] * newUnit[0] + previous[1] * newUnit[1]) === 0) {
+      this.pendingUnits.push(newUnit);
+    }
+  };
+  game.updateUnit = function() {
+    this.unit = this.pendingUnits.shift() || this.unit;
+  }
 
   game.board = makeBoard(boardElt, game.size, walls);
   game.food = makeFood(game.board); // lint: out of scope
@@ -128,8 +141,8 @@ function makeSnake(game) {
     var tileClass = $(newTile).attr('class').split(' ')[1]; // ignore 'tile' class (which comes first) and assume there's at most one other class
     switch (tileClass) {
       case 'food':
-        game.food.eat(); // LoD fail!
         this.grow(newCoords, newTile);
+        game.food.eat();
         break;
       case 'wall':
       case 'snake': // fallthrough
@@ -159,11 +172,16 @@ function normalize(coords) {
   return [newX, newY];
 }
 
-//TODO follow actual borders
+//TODO avoid duplicate elements
 function makeWallSet(size) {
   "use strict";
-  // later may want to allow different wall sets
-  return [[1, 1], [2, 2], [3, 3]];
+  var coordList = [];
+  var i, j;
+  for (i = 0; i < size; i += 1) {
+    var coordSet = [[0, i], [i, 0], [size - 1, i], [i, size - 1]];
+    coordList = coordList.concat(coordSet);
+  }
+  return coordList;
 }
 
 function addCoords(startPosition, vector) {
@@ -209,6 +227,7 @@ function updateScoreDisplay() {
 function gameLoop() {
   "use strict";
   if (game.tick % 8 === 0) {
+    game.updateUnit();
     game.snake.move();
     game.score = game.snake.body.length - 1;
     updateScoreDisplay();
@@ -224,19 +243,19 @@ function setDirection(key) {
   switch (key) {
   case 'ArrowLeft':
   case 'h': // (fallthrough)
-    game.unit = [-1, 0];
+    game.setUnit([-1, 0]);
     break;
   case 'ArrowUp':
   case 'k':
-    game.unit = [0, -1];
+    game.setUnit([0, -1]);
     break;
   case 'ArrowRight':
   case 'l':
-    game.unit = [1, 0];
+    game.setUnit([1, 0]);
     break;
   case 'ArrowDown':
   case 'j':
-    game.unit = [0, 1];
+    game.setUnit([0, 1]);
     break;
   }
 }
