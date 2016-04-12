@@ -43,15 +43,15 @@ h1 {
 }
 
 .row {
-  height: 5%; /* TODO fix */
+  height: 5%;
 }
 
 .tile {
-  vertical-align: top;
-  border: 1px solid gray;
+  vertical-align: bottom;
   display: inline-block;
   width: 5%;
   height: 100%;
+  border-radius: 10%;
 }
 
 .wall {
@@ -64,4 +64,26 @@ h1 {
 
 .food {
   background-color: red;
+}
+
+.tombstone {
+  position: relative;
+  
+}
+
+.tombstone:before {
+  display: block;
+  position: relative;
+  bottom: 200%;
+
+  font-weight: bold;
+  content: "RIP";
+  width: 200%;
+  height: 215%;
+  border: 2px solid black;
+  background-color: gray;
+  padding-top: 20px;
+  border-top-left-radius: 50% 35%;
+  border-top-right-radius: 50% 35%;
+  text-align: center;
 }
