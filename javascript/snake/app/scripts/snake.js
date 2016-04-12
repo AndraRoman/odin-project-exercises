@@ -23,9 +23,9 @@ function makeBoard(elt, size, walls) {
   addWalls(elt, walls);
 }
 
-function findTile(board, coords) {
+function findTile(coords) {
   var x = coords[0], y = coords[1];
-  var tile = board.find(`#${x}-${y}`);
+  var tile = $(`.tile#${x}-${y}`);
   return tile;
 }
 
@@ -33,38 +33,21 @@ function addWalls(board, wallSet) {
   var coords, i;
   for (i = 0; i < wallSet.length; i++) {
     coords = wallSet[i];
-    findTile(board, coords).addClass('wall');
+    findTile(coords).addClass('wall');
   }
 }
 
-//TODO follow actual borders
-function makeWallSet(size) {
-  // later may want to allow different wall sets
-  return [[1, 1], [2, 2], [3, 3,]];
-}
 
-// TODO handle walls and food
-function update(direction, snake) {
-  console.log("updating with " + direction);
-  var x = snake[snake.length-1][0] + direction[0];
-  var y = snake[snake.length-1][1] + direction[1];
-  snake.push([x, y]);
-}
-
-function draw(game) {
-  findTile(game.board, game.food).addClass('food');
-  // TODO I don't like this
-  for (var i = 0; i < game.snake.length; i++) {
-    findTile(game.board, game.snake[i]).addClass('snake');
-  }
+function drawClass(className, rawCoords) {
+  var coords = normalize(rawCoords);
+  findTile(coords).addClass(className);
 }
 
 function gameLoop() {
-  game.clock = (game.clock + 1) % 30; // throttle refresh rate to keep snake moving at a reasonable pace
-  if(game.clock % 30 == 0) {
+  if(game.tick % 6 == 0) {
     update(game.direction, game.snake);
-    draw(game);
   }
+  game.tick += 1;
   requestAnimationFrame(gameLoop);
 }
 
@@ -75,15 +58,19 @@ function lose(board) {
 function setDirection(key) {
   switch(key) {
     case 37: // left
+    case 104: // h (fallthrough)
       game.direction = [-1, 0];
       break;
     case 38: // up
+    case 107: // k (fallthrough)
       game.direction = [0, -1];
       break;
     case 39: // right
+    case 108: // l (fallthrough)
       game.direction = [1, 0];
       break;
     case 40: // down
+    case 106: // j (fallthrough)
       game.direction = [0, 1];
       break;
   }
@@ -96,16 +83,45 @@ game = {
     snake: [[10, 10]], // snake is a queue
     food: [4, 4],
     walls: makeWallSet(this.size),
-    clock: 0
+    tick: 0
   };
 
 $(document).ready(function () {
   "use strict";
   game.board.removeClass('js-off');
   makeBoard(game.board, game.size, game.walls);
-  draw(game);
   requestAnimationFrame(gameLoop);
   $(document).keypress(function(e) {
     setDirection(e.keyCode);
   });
 });
+
+// Non-jQuery stuff
+
+function mod(n, divisor) {
+  var remainder = n % divisor;
+  return(remainder < 0 ? remainder + divisor : remainder);
+}
+
+// eww
+function normalize(coords) {
+  var newX = mod(coords[0], game.size);
+  var newY = mod(coords[1], game.size);
+  return [newX, newY];
+} 
+
+//TODO follow actual borders
+function makeWallSet(size) {
+  // later may want to allow different wall sets
+  return [[1, 1], [2, 2], [3, 3,]];
+}
+
+// TODO handle walls and food
+// WHY IS THIS SLOW
+function update(direction, snake) {
+  var x = snake[snake.length-1][0] + direction[0];
+  var y = snake[snake.length-1][1] + direction[1];
+  var coords = [x, y];
+  snake.push(coords);
+  drawClass('snake', coords);//oops there goes purity
+}
