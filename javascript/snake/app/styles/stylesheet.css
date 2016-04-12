@@ -15,12 +15,16 @@ h1 {
 }
 
 #info div {
-  background-color: whitesmoke;
-  border: 2px solid black;
   display: inline-block;
+  border: 1px solid gray;
   margin: auto;
   padding: 5px;
   border-radius: 3px;
+}
+
+#new-game {
+  background-color: whitesmoke;
+  border: 2px solid black;
 }
 
 #board {
@@ -36,10 +40,6 @@ h1 {
 
 .js-off:before {
   content: "Please enable JavaScript to play.";
-}
-
-#high-score:after {
-  content: " 0";
 }
 
 .row {

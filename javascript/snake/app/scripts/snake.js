@@ -37,11 +37,12 @@ function makeBoard(elt, size, walls) {
   board.getTile = function(coords) {
     return this.contents[coords[1]][coords[0]];
   };
-  board.getEmptyTile = function() { // TODO enforce empty
-    var emptyTiles = flatten(this.contents);
+  board.getEmptyTile = function() {
+    var emptyTiles = flatten(this.contents).filter(function (item) {
+      return $(item).attr('class') === 'tile'
+    });
     var i = Math.floor(Math.random() * emptyTiles.length);
     var tile = emptyTiles[i];
-    console.log(emptyTiles[0]);
     return $(tile);
   };
 
@@ -67,6 +68,7 @@ function setUpGame(game, boardElt) {
 
   game.size = 20;
   game.tick = 0;
+  game.score = 0;
   game.unit = [1, 0]; // default to moving right
 
   game.board = makeBoard(boardElt, game.size, walls);
@@ -107,6 +109,7 @@ function makeSnake(game) {
     this.alive = false;
     this.body[this.body.length - 1].addClass('tombstone');
     this.body[this.body.length - 1].removeClass('snake');
+    highScore = Math.max(highScore, this.game.score); // TODO belongs elsewhere
   };
   snake.advance = function(newCoords, newTile) {
     this.grow(newCoords, newTile);
@@ -182,6 +185,7 @@ function flatten(arr) {
 
 // Gameplay
 var game = {}; // global, eww
+var highScore = 0;
 
 $(document).ready(function () {
   "use strict";
@@ -197,10 +201,17 @@ $(document).ready(function () {
   });
 });
 
+function updateScoreDisplay() {
+  $('#high-score').text(highScore);
+  $('#current-score').text(game.score);
+}
+
 function gameLoop() {
   "use strict";
-  if (game.tick % 10 === 0) {
+  if (game.tick % 8 === 0) {
     game.snake.move();
+    game.score = game.snake.body.length - 1;
+    updateScoreDisplay();
   }
   if (game.snake.alive) {
     game.tick += 1;
