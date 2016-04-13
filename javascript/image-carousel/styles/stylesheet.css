@@ -1,0 +1,66 @@
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 25px;
+}
+
+#carousel {
+  position: relative;
+  width: 90vw;
+  height: 56vw;
+  margin: auto;
+  border: 4px solid black;
+  background-color: whitesmoke;
+}
+
+.arrow {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 8%;
+  background-color: orange;
+  background-color: hsla(240, 100%, 30%, 0.3);
+  z-index: 1000;
+}
+
+#left {
+  left: 0;
+}
+
+#right {
+  right: 0;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.selected {
+  z-index: 100;
+}
+
+/* pre-jquery */
+section[class|="slide"] {
+  display: none;
+}
+
+#no-js {
+  padding-top: 20px;
+  text-align: center;
+}
+
+/* Temporary styles before I add real images */
+.slide:nth-child(2n) {
+  background-color: lightskyblue;
+}
+
+.slide:nth-child(2n - 1) {
+  background-color: mediumpurple;
+}

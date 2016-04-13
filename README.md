@@ -73,3 +73,6 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 
 ###[Snake Game](http://www.theodinproject.com/javascript-and-jquery/jquery-and-the-dom)
 * [Clone](javascript/snake/) of the classic Snake game.
+
+###[Image Carousel](http://www.theodinproject.com/javascript-and-jquery/creating-an-image-carousel-slider)
+* [Image carousel page] using jQuery to transition between slides.
