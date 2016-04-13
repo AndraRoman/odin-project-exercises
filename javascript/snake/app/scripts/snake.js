@@ -214,8 +214,8 @@ $(document).ready(function () {
     setUpGame(game, boardElt);
     requestAnimationFrame(gameLoop); // lint: gameLoop out of scope, requestAnimationFrame undeclared
   });
-  $(document).keypress(function(e) {
-    setDirection(e.key); // lint: out of scope
+  $(document).keydown(function(e) { // arrow keys don't trigger keypress in Chrome
+    setDirection(e.keyCode); // lint: out of scope. also keyCode is deprecated but key doesn't work in Chrome so oh well
   });
 });
 
@@ -241,20 +241,20 @@ function gameLoop() {
 function setDirection(key) {
   "use strict";
   switch (key) {
-  case 'ArrowLeft':
-  case 'h': // (fallthrough)
+  case 37: // left
+  case 72: // h (fallthrough)
     game.setUnit([-1, 0]);
     break;
-  case 'ArrowUp':
-  case 'k':
+  case 38: // up
+  case 75: // k
     game.setUnit([0, -1]);
     break;
-  case 'ArrowRight':
-  case 'l':
+  case 39: // right
+  case 76: // l
     game.setUnit([1, 0]);
     break;
-  case 'ArrowDown':
-  case 'j':
+  case 40: // down
+  case 74: // j
     game.setUnit([0, 1]);
     break;
   }
