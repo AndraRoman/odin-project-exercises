@@ -1,17 +1,21 @@
 function transition(oldSlide, newSlide) {
   'use strict';
-  newSlide.hide(); // have to explicitly hide before fadeIn can work - 0 opacity and display: none aren't enough for jQuery to know the item can be faded in
-  [oldSlide, newSlide].map(function(elt) {
-    elt.fadeToggle('slow');
+  [newSlide, oldSlide].map(function(elt) {
+    elt.toggleClass('selected');
   });
 }
 
 $(document).ready(function() {
   'use strict';
   $('#no-js').hide();
-  var slides = $('.slide'),
-    current = $('.selected');
-  transition(current, nextSlide(slides, 0));
+  var slides = $('.slide');
+
+  $('.arrow-container').on('click', function() {
+    var current = $('.selected'),
+      position = current.index(),
+      target = ($(this).attr('id') == 'left') ? prevSlide(slides, position): nextSlide(slides, position);
+    transition(current, target);
+  });
 });
 
 // Non-jQuery stuff below
