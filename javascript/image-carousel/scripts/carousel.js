@@ -1,7 +1,7 @@
 function transition(oldSlide, newSlide) {
   'use strict';
   [newSlide, oldSlide].map(function(elt) {
-    elt.toggleClass('selected');
+    elt.fadeToggle('slow').toggleClass('selected');
   });
 }
 

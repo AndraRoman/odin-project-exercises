@@ -24,8 +24,11 @@ a:hover {
 }
 
 img {
-  height: 100%;
-  margin: auto;
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 90vh;
+  border-bottom: 8px solid transparent;
+  margin: 0 auto;
 }
 
 #carousel {
@@ -91,12 +94,13 @@ section[class|="slide"] {
 }
 
 section h1 {
-  display: none;
+  display: none
 }
 
 section:hover h1 {
   display: block;
   position: absolute;
+  z-index: 1000;
   left: 0; right: 0;
   margin: auto;
   font-weight: normal;
