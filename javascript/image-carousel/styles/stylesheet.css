@@ -18,14 +18,17 @@ h1 {
   background-color: whitesmoke;
 }
 
-.arrow {
+.arrow-container {
   position: absolute;
   top: 0;
   height: 100%;
   width: 8%;
-  background-color: orange;
-  background-color: hsla(240, 100%, 30%, 0.3);
+  background-color: hsla(240, 100%, 30%, 0.2);
   z-index: 1000;
+}
+
+.arrow-container:hover {
+  background-color: hsla(240, 100%, 30%, 0.4);
 }
 
 #left {
@@ -35,6 +38,23 @@ h1 {
 #right {
   right: 0;
 }
+
+.arrow {
+  display: inline-block;
+  border-top: 20px solid transparent;
+  border-right: 20px solid hsla(240, 30%, 100%, 0.6);
+  border-bottom: 20px solid transparent;
+  width: 20px;
+  height: 20px;
+  margin: auto;
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+}
+
+#right .arrow {
+  transform: rotate(180deg); /* setting border-left instead of border-right gives uneven diagonal edges in FF for some reason */
+}
+
 
 .slide {
   position: absolute;
