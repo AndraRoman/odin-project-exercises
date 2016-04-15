@@ -1,12 +1,26 @@
 /*jslint browser: true, white: true, es6: true, this: true*/
 /*global $, window*/
 
+function createDot(elt) {
+  return $(`<div class="dot"></div>`);
+}
+
+// jQuery collection -> array of jQuery objects
+function createNavDots(collection) {
+  var dots = [];
+  collection.each(function(index) {
+    dots.push(createDot(this)); // `this` refers to the ELEMENT in the collection
+  });
+  return dots;
+}
+
 // [slide], int, int -> slide; direction will be +/- 1
 function moveInCircle(collection, index, direction) {
   'use strict';
   var newIndex = (index + direction) % (collection.length);
   return collection.eq(newIndex); // to get jQuery object rather than plain DOM element
 }
+
 // index, [slide] -> slide
 function nextSlide(elements, startIndex) {
   'use strict';
@@ -38,6 +52,8 @@ $(document).ready(function() {
   'use strict';
   $('#no-js').hide();
   var slides = $('.slide'),
+    nav = $('#slide-nav'),
+    navDots = createNavDots(slides),
     timeout = { 
       delay: 5000,
       action: function() {
@@ -48,6 +64,9 @@ $(document).ready(function() {
         this.timeoutID = window.setTimeout(() => this.action(), this.delay); // arrow function lexically binds this; otherwise setTimeout would set it to the global object
       }
     };
+  navDots.forEach(function(dot) {
+    nav.append(dot);
+  });
   timeout.restart();
 
   $('.arrow-container').on('click', function() {
