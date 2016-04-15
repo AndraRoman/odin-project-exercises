@@ -52,7 +52,7 @@ img {
   background-color: hsla(240, 100%, 30%, 0.2);
 }
 
-.arrow-container:hover, .dot:hover {
+.arrow-container:hover, div[class="dot"]:hover {
   background-color: hsla(240, 100%, 30%, 0.4);
 }
 
@@ -118,4 +118,8 @@ section:hover h1 {
   width: 30px;
   height: 30px;
   border: 10px solid transparent;
+}
+
+.current {
+  background-color: hsla(240, 100%, 30%, 0.6);
 }

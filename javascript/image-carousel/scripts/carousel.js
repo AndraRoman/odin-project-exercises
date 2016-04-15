@@ -1,36 +1,18 @@
 /*jslint browser: true, white: true, es6: true, this: true*/
 /*global $, window*/
 
-function createDot(elt) {
-  return $(`<div class="dot"></div>`);
-}
-
-// jQuery collection -> array of jQuery objects
-function createNavDots(collection) {
-  var dots = [];
-  collection.each(function(index) {
-    dots.push(createDot(this)); // `this` refers to the ELEMENT in the collection
-  });
-  return dots;
-}
-
-// [slide], int, int -> slide; direction will be +/- 1
-function moveInCircle(collection, index, direction) {
+function createNavDot(slide, index) {
   'use strict';
-  var newIndex = (index + direction) % (collection.length);
-  return collection.eq(newIndex); // to get jQuery object rather than plain DOM element
+  var anchor = $(`<a name="${index}"></a>`),
+    dot = $(`<a href="#${index}"><div class="dot"></div></a>`);
+  slide.prepend(anchor);
+  return dot;
 }
 
-// index, [slide] -> slide
-function nextSlide(elements, startIndex) {
+// int, int, int -> int
+function moveInCircle(collectionSize, index, delta) {
   'use strict';
-  return moveInCircle(elements, startIndex, 1);
-}
-
-// index, [slide] -> slide
-function prevSlide(elements, startIndex) {
-  'use strict';
-  return moveInCircle(elements, startIndex, -1);
+  return (index + delta) % (collectionSize);
 }
 
 function transition(oldSlide, newSlide) {
@@ -40,12 +22,18 @@ function transition(oldSlide, newSlide) {
   });
 }
 
-function transitionTowards(slides, currentSlide, direction, timeout) {
+function updateDots(dots, currentIndex, newIndex) {
   'use strict';
-  var position = currentSlide.index(),
-    target = (direction < 0 ? prevSlide(slides, position) : nextSlide(slides, position));
-  timeout.restart(); // this is convenient but doesn't really belong here
-  transition(currentSlide, target);
+  [currentIndex, newIndex].forEach(function(index) {
+    dots.eq(index).toggleClass('current');
+  });
+}
+
+function update(slides, dots, currentSlideIndex, newSlideIndex, timeout) {
+  'use strict';
+  transition(slides.eq(currentSlideIndex), slides.eq(newSlideIndex), timeout);
+  timeout.restart();
+  updateDots(dots, currentSlideIndex, newSlideIndex);
 }
 
 $(document).ready(function() {
@@ -53,26 +41,47 @@ $(document).ready(function() {
   $('#no-js').hide();
   var slides = $('.slide'),
     nav = $('#slide-nav'),
-    navDots = createNavDots(slides),
+    slideCount = slides.length,
+    currentSlideIndex = 0,
+    newSlideIndex,
+    dots,
+    hash = window.location.hash,
     timeout = { 
       delay: 5000,
       action: function() {
-        transitionTowards(slides, $('.selected'), 1, this);
+        newSlideIndex = moveInCircle(slideCount, currentSlideIndex, 1);
+        update(slides, dots, currentSlideIndex, newSlideIndex, this);
+        currentSlideIndex = newSlideIndex;
       },
       restart: function() {
         window.clearTimeout(this.timeoutID);
         this.timeoutID = window.setTimeout(() => this.action(), this.delay); // arrow function lexically binds this; otherwise setTimeout would set it to the global object
       }
-    };
-  navDots.forEach(function(dot) {
-    nav.append(dot);
+    },
+    delta;
+
+  slides.each(function(index) {
+    nav.append(createNavDot($(this), index));
   });
+  dots = $('.dot');
+  dots.first().addClass('current');
+  if (hash) {
+    newSlideIndex = parseInt(hash.slice(1));
+    update(slides, dots, currentSlideIndex, newSlideIndex, timeout);
+    currentSlideIndex = newSlideIndex;
+  };
   timeout.restart();
 
   $('.arrow-container').on('click', function() {
-    var current = $('.selected'),
-      direction = $(this).attr('id') === 'right' ? 1 : -1;
-    transitionTowards(slides, current, direction, timeout);
+    delta = $(this).attr('id') === 'right' ? 1 : -1;
+    newSlideIndex = moveInCircle(slideCount, currentSlideIndex, delta);
+    update(slides, dots, currentSlideIndex, newSlideIndex, timeout);
+    currentSlideIndex = newSlideIndex;
+  });
+
+  $('nav a').on('click', function() {
+    newSlideIndex = parseInt($(this).attr("href").slice(1));
+    update(slides, dots, currentSlideIndex, newSlideIndex, timeout);
+    currentSlideIndex = newSlideIndex;
   });
 });
-
