@@ -27,8 +27,9 @@ img {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 80vh;
+  border-right: 8px solid transparent;
   border-bottom: 8px solid transparent;
-  margin: 0 auto;
+  margin: auto;
 }
 
 #carousel {
@@ -38,6 +39,7 @@ img {
   margin: auto;
   border: 4px solid black;
   background-color: whitesmoke;
+  overflow: hidden;
 }
 
 .arrow-container {
