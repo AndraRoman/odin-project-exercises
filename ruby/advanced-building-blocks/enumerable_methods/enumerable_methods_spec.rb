@@ -7,7 +7,7 @@ describe "my_each" do
     array.my_each do |i|
       temp.push(i)
     end
-    expect(temp).to eq(temp)
+    expect(array).to eq(temp)
   end
 
   it "doesn't let block variables out" do
