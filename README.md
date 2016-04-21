@@ -58,10 +58,10 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 ##[HTML5 and CSS3](http://www.theodinproject.com/html5-and-css3)##
 
 ###[Embedding Video](http://www.theodinproject.com/html5-and-css3/embedding-images-and-video)
-* ["Fake YouTube"](html-css/embedding-images-and-video), a rough imitation of YouTube's video page with embedded media elements. Video and sidebar look reasonable and are responsive. Rest of page is left as a skeleton.
+* ["Fake YouTube"](html-css/embedding-images-and-video), a rough imitation of YouTube's video page with embedded media elements. Video and sidebar look reasonable and are responsive. Rest of page is left as a skeleton. View [here](https://htmlpreview.github.io/?https://github.com/cdouglass/odin-project-exercises/blob/master/html-css/embedding-images-and-video/faketube.html).
 
 ###[HTML Forms](http://www.theodinproject.com/html5-and-css3/html-forms)
-* [Clone of Mint.com's signup page](html-css/html-forms). Not implemented: interactivity, checkbox styling, lock icon in password box, and exact position of nav dividers. Otherwise pixel-perfect, at least in Firefox.
+* [Clone of Mint.com's signup page](html-css/html-forms). Not implemented: interactivity, checkbox styling, lock icon in password box, and exact position of nav dividers. Otherwise pixel-perfect, at least in Firefox. View [here](https://htmlpreview.github.io/?https://github.com/cdouglass/odin-project-exercises/blob/master/html-css/html-forms/signup.html).
 
 ##[JavaScript and jQuery](http://www.theodinproject.com/javascript-and-jquery)##
 
