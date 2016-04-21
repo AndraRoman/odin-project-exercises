@@ -66,13 +66,13 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 ##[JavaScript and jQuery](http://www.theodinproject.com/javascript-and-jquery)##
 
 ###[On-Screen Calculator](http://www.theodinproject.com/javascript-and-jquery/on-screen-calculator)
-* [Responsive in-browser calculator](javascript/calculator/) using jQuery. Parsing done with shunting-yard algorithm; tests with Mocha and Chai.
+* [Responsive in-browser calculator](javascript/calculator/) using jQuery. Parsing done with shunting-yard algorithm; tests with Mocha and Chai. View [here](https://rawgit.com/cdouglass/odin-project-exercises/master/javascript/calculator/app/calculator.html).
 
 ###[Tabbed Content](http://www.theodinproject.com/javascript-and-jquery/manipulating-the-dom-with-jquery)
-* [Fake restaurant website](javascript/dom-manipulation/) with tabbed content using jQuery.
+* [Fake restaurant website](javascript/dom-manipulation/) with tabbed content using jQuery. View [here](https://rawgit.com/cdouglass/odin-project-exercises/master/javascript/dom-manipulation/tabs.html).
 
 ###[Snake Game](http://www.theodinproject.com/javascript-and-jquery/jquery-and-the-dom)
-* [Clone](javascript/snake/) of the classic Snake game.
+* [Clone](javascript/snake/) of the classic Snake game. Play [here](https://rawgit.com/cdouglass/odin-project-exercises/master/javascript/snake/app/snake.html).
 
 ###[Image Carousel](http://www.theodinproject.com/javascript-and-jquery/creating-an-image-carousel-slider)
-* [Image carousel page] using jQuery to transition between slides.
+* [Image carousel page](javascript/image-carousel/) using jQuery to transition between slides. View [here](https://rawgit.com/cdouglass/odin-project-exercises/master/javascript/image-carousel/carousel.html).
