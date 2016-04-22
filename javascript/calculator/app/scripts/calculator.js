@@ -10,7 +10,7 @@ function make_keypad(calculator) {
     key;
   for (i = 0; i < keys.length; i+=1) {
     sym = keys[i];
-    key = $(`<div class="key" id="${sym}" tabindex="0"><span>${sym}</span></div>`);
+    key = $(`<div class="key" id="key-${sym}" tabindex="0"><span>${sym}</span></div>`);
     calculator.append(key);
   }
 }
@@ -23,7 +23,8 @@ function update_display(display, val) {
 
 function listen(display, history, key) {
   "use strict";
-  process_input(history, key); // mutates history
+  var value = key.substr(4);
+  process_input(history, value); // mutates history
   update_display(display, history);
 }
 
@@ -39,7 +40,7 @@ $(document).ready(function () {
     }
   });
   $('.key').on('click', function () {
-    listen(display, history, this.id); // I'm not sure what `this` does.
+    listen(display, history, this.id);
   });
 });
 
