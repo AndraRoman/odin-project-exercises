@@ -5,4 +5,5 @@ A basic calculator implemented in JavaScript as an introduction to the language.
 ##Features
 * Usable with keyboard as well as mouse
 * Unit tests using Mocha + Chai assertions
+* Integration tests using ZombieJS to test rendering and responses to clicks. Failed to test keyboard input; will try PhantomJS next time.
 * General enough to easily add more operators with different precedence levels
