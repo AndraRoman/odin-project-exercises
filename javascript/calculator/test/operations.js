@@ -18,20 +18,20 @@ suite("Basic ops", function() {
     assert.equal(3, ops.divide(15, 5));
   });
 
-  test("apply add", function() {
-    assert.equal(-3, ops.apply("+", -4, 1));
+  test("add with symbol", function() {
+    assert.equal(-3, ops.toOperator("+")(-4, 1));
   });
 
-  test("apply subtract", function() {
-    assert.equal(-3, ops.apply("-", 1, 4));
+  test("subtract with symbol", function() {
+    assert.equal(-3, ops.toOperator("-")(1, 4));
   });
 
-  test("apply multiply", function() {
-    assert.equal(10, ops.apply("*", -5, -2));
+  test("multiply with symbol", function() {
+    assert.equal(10, ops.toOperator("*")(-5, -2));
   });
 
-  test("apply divide", function() {
-    assert.equal(-4, ops.apply("/", 8, -2));
+  test("divide with symbol", function() {
+    assert.equal(-4, ops.toOperator("/")(8, -2));
   });
 });
 

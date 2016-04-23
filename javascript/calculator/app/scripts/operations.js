@@ -24,10 +24,10 @@ function divide(m, n) {
   return result;
 }
 
-function apply(op_symbol, m, n) {
+function toOperator(op_symbol, m, n) {
   var operators = {"+": add, "*": multiply, "-": subtract, "/": divide},
     op = operators[op_symbol];
-  return op(m, n);
+  return op;
 }
 
 // Things I shouldn't have to write
@@ -87,7 +87,7 @@ function eval_rpn(queue) {
     if (is_operator(token)) {
       second_arg = stack.pop();
       first_arg = stack.pop();
-      partial_result = apply(token, first_arg, second_arg);
+      partial_result = toOperator(token)(first_arg, second_arg);
       stack.push(partial_result);
     } else {
       stack.push(token);
@@ -142,7 +142,7 @@ if (typeof (module) !== 'undefined' && typeof (module.exports) !== 'undefined') 
     multiply: multiply,
     subtract: subtract,
     divide: divide,
-    apply: apply,
+    toOperator: toOperator,
     is_operator: is_operator,
     higher_precedence: higher_precedence,
     to_rpn: to_rpn,
