@@ -24,7 +24,7 @@ function divide(m, n) {
   return result;
 }
 
-function toOperator(op_symbol, m, n) {
+function toOperator(op_symbol) {
   var operators = {"+": add, "*": multiply, "-": subtract, "/": divide},
     op = operators[op_symbol];
   return op;
