@@ -1,6 +1,5 @@
-/*jslint browser: true, white: true, es6: true, for: true*/
-/*global $*/
-// for template strings to be allowed, need es6 version, which lacks indent and plusplus options
+/*jslint browser: true, white: true, es6: true, for: true, this: true*/
+/*global $, format, process_input*/
 
 function make_keypad(calculator) {
   "use strict";
@@ -15,10 +14,10 @@ function make_keypad(calculator) {
   }
 }
 
-function update_display(display, val) {
+function update_display(selector, val) {
   "use strict";
   var formatted = format(val);
-  display.text(formatted);
+  $(selector).text(formatted);
 }
 
 function listen(display, history, key) {
@@ -31,8 +30,7 @@ function listen(display, history, key) {
 $(document).ready(function () {
   "use strict";
   var calculator = $('#calculator'),
-    history = [],
-    display = $('#display');
+    history = [];
   make_keypad(calculator);
   $(document).keypress(function (e) {
     if(e.keyCode === 13) { // enter
@@ -40,7 +38,6 @@ $(document).ready(function () {
     }
   });
   $('.key').on('click', function () {
-    listen(display, history, this.id);
+    listen('#display', history, this.id);
   });
 });
-

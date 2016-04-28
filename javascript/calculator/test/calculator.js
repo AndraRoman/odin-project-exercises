@@ -1,14 +1,19 @@
+/*jslint browser: true, white: true, es6: true*/
+/*global describe, before, it, beforeEach*/
+
 var assert = require('chai').assert,
   Browser = require('zombie'),
   browser = new Browser({site: 'file://'}),
-  clickKey = function(name) { 
-    browser.fire(browser.querySelector(`#key-${name}`), "click", function() {});
+  clickKey = function (name) {
+    'use strict';
+    browser.fire(browser.querySelector(`#key-${name}`), "click");
   };
 
 describe('calculator', function() {
+  'use strict';
 
   before(function(done) {
-    browser.visit('file:///home/douglass/code/github/the-odin-project-exercises/javascript/calculator/app/calculator.html', done);
+    browser.visit(process.cwd() + '/app/calculator.html', done);
   });
 
   describe('basic rendering', function() {
@@ -38,15 +43,21 @@ describe('calculator', function() {
 
     describe('calculator takes user input', function() {
 
-      it('displays the number the user clicks on', function() {
-        clickKey('5'); // this times out
+      it('takes key input via click and displays number', function() {
+        clickKey('5');
         assert.equal(browser.text('#display'), '5');
       });
 
       it('clears screen', function() {
-        clickKey('5'); // but this doesn't!
+        clickKey('5');
         clickKey('CLR');
         assert.equal(browser.text('#display'), '');
+      });
+
+      // can't simulate keystrokes but can call functions from page
+      it('updates display with an array of characters', function() {
+        browser.window.update_display('#display', ['t', 'e', 's', 't']);
+        assert.equal(browser.text('#display'), 'test');
       });
 
     });
