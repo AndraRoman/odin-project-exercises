@@ -1,0 +1,55 @@
+h1 {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  padding: 20px;
+}
+
+#board {
+  background-color: whitesmoke;
+  border: 2px solid black;
+  width: 60vw;
+  height: 60vw;
+  max-width: 60vh; 
+  max-height: 60vh; 
+  margin: auto;
+}
+
+.js-off:before {
+  content: "Please enable JavaScript to play.";
+}
+
+.tile {
+  box-sizing: border-box;
+  display: inline-block;
+  float: left;
+  width: 33.3%;
+  height: 33.3%;
+  border-right: 1px solid black;
+  border-bottom: 1px solid black;
+  text-align: center;
+  position: relative;
+}
+
+.tile:nth-child(3n) {
+  border-right: none;
+}
+
+.tile:nth-last-child(-n+3) {
+  border-bottom: none;
+}
+
+.tile:before, .tile:after {
+  margin: auto;
+  font-size: 10vh;
+  position: relative;
+  top: 25%;
+}
+
+.x:before {
+  content: "X";
+}
+
+.o:before {
+  content: "O";
+}

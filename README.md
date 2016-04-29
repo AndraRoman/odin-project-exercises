@@ -76,3 +76,6 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 
 ###[Image Carousel](http://www.theodinproject.com/javascript-and-jquery/creating-an-image-carousel-slider)
 * [Image carousel page] using jQuery to transition between slides.
+
+###[Tic-Tac-Toe](http://www.theodinproject.com/javascript-and-jquery/tic-tac-toe)
+* [What it says on the tin](javascript/tic-tac-toe/). Play [here](https://rawgit.com/cdouglass/odin-project-exercises/master/javascript/tic-tac-toe/app/tic-tac-toe.html).
