@@ -8,9 +8,14 @@ var ticTacToe = {
     return tile;
   },
 
-  available: function(tile) {
-    var result = tile.jquery && tile.text().length == 0;
-    return result;
+  utilities: {
+    available: function(tile) {
+      'use strict';
+      var result = tile.jquery && tile.attr('class').split(' ').length === 1;
+      return result;
+    },
+    toggle: function(x) {'use strict'; return !x; },
+    boolToPlayer: function(x) { 'use strict'; return x ? 'x' : 'o'; }
   },
 
   newBoard: function (boardElt) {
@@ -32,28 +37,29 @@ var ticTacToe = {
     return tileMatrix;
   },
 
-  play: function (boardElt) {
+  run: function (boardElt) {
     'use strict';
     boardElt.removeClass('js-off');
+    this.play(boardElt);
+  },
+
+  play: function (boardElt) {
+    'use strict';
     var tileMatrix = this.newBoard(boardElt),
-      available = this.available,
-      nand = function(a, b) {
-        return !(a && b);
-      },
+      utilities = this.utilities,
       lastTileClicked = boardElt.asEventStream('click').map(function(event) {
         return $(event.target);
-      }).toProperty("").filter(available),
-      toggle = function(x) { return !x},
-      boolToPlayer = function(x) { return x ? 'x' : 'o' },
-      oddTurn = lastTileClicked.scan(false, toggle),
-      currentPlayer = oddTurn.map(boolToPlayer);
-    currentPlayer.assign($('#current-player'), 'text');
-    lastTileClicked.onValue(function(v) {
-      var alternator = lastTileClicked.scan(false, toggle),
-        nanded = Bacon.combineWith(nand, alternator, oddTurn);
-      nanded.take(1).map(boolToPlayer).assign($(v), 'text'); // nanded.take(n) creates a stream that takes at most n values from nanded and then ends
+      }).toProperty().filter(utilities.available),
+      oddTurn = lastTileClicked.scan(true, utilities.toggle);
+
+    oddTurn.map(utilities.boolToPlayer).assign($('#current-player'), 'text');
+    lastTileClicked.onValue(function(tile) {
+      oddTurn.take(1).onValue(function(parity) {
+        var newClass = utilities.boolToPlayer(!parity);
+        tile.addClass(newClass);
+      });
     });
   }
 };
 
-$(ticTacToe.play($('#board')));
+$(ticTacToe.run($('#board')));

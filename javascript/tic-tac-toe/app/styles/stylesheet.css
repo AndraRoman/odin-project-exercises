@@ -10,6 +10,10 @@ p {
   margin-bottom: 20px;
 }
 
+span {
+  text-transform: capitalize;
+}
+
 #board {
   background-color: whitesmoke;
   border: 2px solid black;
@@ -18,6 +22,7 @@ p {
   max-width: 60vh; 
   max-height: 60vh; 
   margin: auto;
+  font-size: 5vh;
 }
 
 .js-off:before {
@@ -46,7 +51,6 @@ p {
 
 .tile:before, .tile:after {
   margin: auto;
-  font-size: 10vh;
   position: relative;
   top: 25%;
 }
