@@ -33,6 +33,7 @@ span {
   height: 33.3%;
   display: block;
   border-bottom: 1px solid black;
+  box-sizing: border-box;
 }
 
 .row:last-child {
@@ -48,9 +49,10 @@ span {
   border-right: 1px solid black;
   text-align: center;
   position: relative;
+  box-sizing: border-box;
 }
 
-.tile:nth-child(3n) {
+.tile:last-child {
   border-right: none;
 }
 

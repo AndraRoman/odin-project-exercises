@@ -3,6 +3,8 @@
 
 var ticTacToe = {
 
+  width: 3,
+
   utilities: {
     Point: function (x, y) {
       'use strict';
@@ -54,10 +56,10 @@ var ticTacToe = {
     var x,
       y,
       row;
-    for (x = 0; x < 3; x += 1) {
+    for (x = 0; x < this.width; x += 1) {
       row = $('<div/>').addClass('row'); // handy shortcut!
       boardElt.append(row);
-      for (y = 0; y < 3; y += 1) {
+      for (y = 0; y < this.width; y += 1) {
         row.append($('<div/>').addClass('tile'));
       }
     }
@@ -67,6 +69,8 @@ var ticTacToe = {
     'use strict';
     boardElt.removeClass('js-off');
     this.newBoard(boardElt);
+    $('.row').css('height', String(100.0 / this.width) + '%');
+    $('.tile').css('width', String(100.0 / this.width) + '%');
     this.play(boardElt);
   },
 
