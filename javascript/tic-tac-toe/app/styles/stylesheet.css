@@ -29,24 +29,29 @@ span {
   content: "Please enable JavaScript to play.";
 }
 
+.row {
+  height: 33.3%;
+  display: block;
+  border-bottom: 1px solid black;
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
 .tile {
   box-sizing: border-box;
   display: inline-block;
   float: left;
   width: 33.3%;
-  height: 33.3%;
+  height: 100%;
   border-right: 1px solid black;
-  border-bottom: 1px solid black;
   text-align: center;
   position: relative;
 }
 
 .tile:nth-child(3n) {
   border-right: none;
-}
-
-.tile:nth-last-child(-n+3) {
-  border-bottom: none;
 }
 
 .tile:before, .tile:after {
