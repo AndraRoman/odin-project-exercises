@@ -96,4 +96,8 @@ var ticTacToe = {
   }
 };
 
-$(ticTacToe.run($('#board')));
+if (typeof (module) !== 'undefined' && typeof (module.exports) !== 'undefined') {
+  module.exports = {
+    utils: ticTacToe.utilities
+  };
+}
