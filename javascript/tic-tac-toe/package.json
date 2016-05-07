@@ -4,7 +4,7 @@
   "description": "in-browser tic-tac-toe game",
   "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha --reporter=dot --ui=tdd"
+    "test": "./node_modules/.bin/mocha --reporter=list --ui=tdd"
   },
   "author": "cdouglass",
   "license": "ISC",
