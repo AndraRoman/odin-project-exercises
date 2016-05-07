@@ -5,7 +5,7 @@ var ticTacToe = {
 
   utilities: {
     width: 3,
-    Point: function (x, y) {
+    Vector: function Vector(x, y) {
       'use strict';
       var self = this;
       this.equals = function(other) {
@@ -22,6 +22,12 @@ var ticTacToe = {
           return arr.concat(self);
         }
       };
+      this.add = function(diff) {
+        return new Vector(x + diff.x, y + diff.y);
+      };
+      this.negate = function() {
+        return new Vector(-x, -y);
+      };
     },
     available: function(tile) {
       'use strict';
@@ -33,7 +39,7 @@ var ticTacToe = {
       'use strict';
       var x = tile.index(),
           y = tile.parent().index(),
-          p = new this.Point(x, y);
+          p = new this.Vector(x, y);
       return p;
     },
     draw: function(elt, symbol) {
@@ -82,8 +88,8 @@ var ticTacToe = {
         .scan([], function(arr, point) {
           return point.addToSet(arr); })
         .skipDuplicates(function(arr1, arr2) {
-          var newPoint = arr2[arr2.length - 1];
-          return arr1.length > 0 && newPoint.memberOf(arr1);
+          var newVector = arr2[arr2.length - 1];
+          return arr1.length > 0 && newVector.memberOf(arr1);
           }),
       lastTileMarked = allTilesClicked.skip(1).map(function(arr) { return arr[arr.length - 1]; }),
       oddTurn = lastTileMarked.scan(true, utils.not),

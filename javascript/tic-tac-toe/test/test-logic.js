@@ -4,17 +4,17 @@
 var assert = require('chai').assert,
   ttt = require('../app/scripts/tic-tac-toe.js').utils;
 
-suite('Point:', function() {
+suite('Vector:', function() {
 
   setup(function () {
-    this.p = new ttt.Point(3, 5);
-    this.q = new ttt.Point(3, 6);
-    this.r = new ttt.Point(2, 5);
-    this.newPoint = new ttt.Point(3, 5);
+    this.p = new ttt.Vector(3, 5);
+    this.q = new ttt.Vector(3, 6);
+    this.r = new ttt.Vector(2, 5);
+    this.newVector = new ttt.Vector(3, 5);
   });
 
   test('equals gives true if points are equivalent', function () {
-    assert.isTrue(this.p.equals(this.newPoint));
+    assert.isTrue(this.p.equals(this.newVector));
   });
 
   test('equals gives false if points are equivalent', function () {
@@ -33,14 +33,27 @@ suite('Point:', function() {
 
   test('addToSet returns array with point added when not already present', function () {
     var list = [this.r, this.q];
-      newList = this.newPoint.addToSet(list);
+      newList = this.newVector.addToSet(list);
     assert.equal(3, newList.length)
   });
 
   test('addToSet returns unchanged array when point already present', function () {
     var list = [this.r, this.p, this.q],
-      newList = this.newPoint.addToSet(list);
+      newList = this.newVector.addToSet(list);
     assert.equal(3, newList.length)
+  });
+
+  test('add vectors', function () {
+    var expected = new ttt.Vector(6, 7),
+      diff = new ttt.Vector(3, 2),
+      result = this.p.add(diff);
+    assert.isTrue(expected.equals(result));
+  });
+
+  test('negate vector', function () {
+    var expected = new ttt.Vector(-3, -5);
+      result = this.p.negate();
+    assert.isTrue(expected.equals(result));
   });
 
 });
