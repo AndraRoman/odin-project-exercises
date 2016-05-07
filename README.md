@@ -58,24 +58,24 @@ In which I work through the exercises in [http://www.theodinproject.com/](http:/
 ##[HTML5 and CSS3](http://www.theodinproject.com/html5-and-css3)##
 
 ###[Embedding Video](http://www.theodinproject.com/html5-and-css3/embedding-images-and-video)
-* ["Fake YouTube"](html-css/embedding-images-and-video), a rough imitation of YouTube's video page with embedded media elements. Video and sidebar look reasonable and are responsive. Rest of page is left as a skeleton.
+* ["Fake YouTube"](html-css/embedding-images-and-video), a rough imitation of YouTube's video page with embedded media elements. Video and sidebar look reasonable and are responsive. Rest of page is left as a skeleton. View [here](https://htmlpreview.github.io/?https://github.com/cdouglass/odin-project-exercises/blob/master/html-css/embedding-images-and-video/faketube.html).
 
 ###[HTML Forms](http://www.theodinproject.com/html5-and-css3/html-forms)
-* [Clone of Mint.com's signup page](html-css/html-forms). Not implemented: interactivity, checkbox styling, lock icon in password box, and exact position of nav dividers. Otherwise pixel-perfect, at least in Firefox.
+* [Clone of Mint.com's signup page](html-css/html-forms). Not implemented: interactivity, checkbox styling, lock icon in password box, and exact position of nav dividers. Otherwise pixel-perfect, at least in Firefox. View [here](https://htmlpreview.github.io/?https://github.com/cdouglass/odin-project-exercises/blob/master/html-css/html-forms/signup.html).
 
 ##[JavaScript and jQuery](http://www.theodinproject.com/javascript-and-jquery)##
 
 ###[On-Screen Calculator](http://www.theodinproject.com/javascript-and-jquery/on-screen-calculator)
-* [Responsive in-browser calculator](javascript/calculator/) using jQuery. Parsing done with shunting-yard algorithm; tests with Mocha and Chai.
+* [Responsive in-browser calculator](javascript/calculator/) using jQuery. Parsing done with shunting-yard algorithm; unit and integration tests with Mocha and Chai; integration tests with ZombieJS. View [here](https://rawgit.com/cdouglass/odin-project-exercises/master/javascript/calculator/app/calculator.html).
 
 ###[Tabbed Content](http://www.theodinproject.com/javascript-and-jquery/manipulating-the-dom-with-jquery)
-* [Fake restaurant website](javascript/dom-manipulation/) with tabbed content using jQuery.
+* [Fake restaurant website](javascript/dom-manipulation/) with tabbed content using jQuery. View [here](https://rawgit.com/cdouglass/odin-project-exercises/master/javascript/dom-manipulation/tabs.html).
 
 ###[Snake Game](http://www.theodinproject.com/javascript-and-jquery/jquery-and-the-dom)
-* [Clone](javascript/snake/) of the classic Snake game.
+* [Clone](javascript/snake/) of the classic Snake game. Play [here](https://rawgit.com/cdouglass/odin-project-exercises/master/javascript/snake/app/snake.html).
 
 ###[Image Carousel](http://www.theodinproject.com/javascript-and-jquery/creating-an-image-carousel-slider)
-* [Image carousel page] using jQuery to transition between slides.
+* [Image carousel page](javascript/image-carousel/) using jQuery to transition between slides. View [here](https://rawgit.com/cdouglass/odin-project-exercises/master/javascript/image-carousel/carousel.html).
 
 ###[Tic-Tac-Toe](http://www.theodinproject.com/javascript-and-jquery/tic-tac-toe)
-* [What it says on the tin](javascript/tic-tac-toe/). Play [here](https://rawgit.com/cdouglass/odin-project-exercises/master/javascript/tic-tac-toe/app/tic-tac-toe.html).
+* [What it says on the tin](javascript/tic-tac-toe/). Play [here](https://rawgit.com/cdouglass/odin-project-exercises/master/javascript/tic-tac-toe/app/tic-tac-toe.html). Written in functional reactive style using Bacon.js.
