@@ -44,3 +44,23 @@ suite('Point:', function() {
   });
 
 });
+
+suite('Win detection:', function () {
+
+  test('Row', function () {
+    // TODO
+  });
+
+  test('Column', function () {
+    // TODO
+  });
+
+  test('Diagonal', function () {
+    // TODO
+  });
+
+  test('No win', function () {
+    // TODO
+  });
+
+});

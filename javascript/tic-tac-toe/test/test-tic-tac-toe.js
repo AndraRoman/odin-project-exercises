@@ -45,63 +45,99 @@ suite('Gameplay:', function () {
   'use strict';
   var browser;
 
-  setup(function (done) {
-    browser = new Browser({site: 'file://'});
-    browser.visit('file://' + process.cwd() + '/app/tic-tac-toe.html', done);
+  suite('Mechanics:', function () {
+
+    setup(function (done) {
+      browser = new Browser({site: 'file://'});
+      browser.visit('file://' + process.cwd() + '/app/tic-tac-toe.html', done);
+    });
+
+    test('Clicking an empty tile marks it with current player', function () {
+      clickTile(browser, 0, 0);
+      browser.assert.element('.x');
+      browser.assert.hasClass(tileSelector(0, 0), 'x');
+      browser.assert.hasNoClass(tileSelector(0, 0), 'o');
+  
+      clickTile(browser, 1, 1);
+      browser.assert.element('.o');
+      browser.assert.hasClass(tileSelector(1, 1), 'o');
+      browser.assert.hasNoClass(tileSelector(1, 1), 'x');
+    });
+  
+    test('Clicking an empty tile toggles current player', function () {
+      clickTile(browser, 0, 0);
+      assert.equal('o', browser.text('#current-player'));
+  
+      clickTile(browser, 1, 1);
+      assert.equal('x', browser.text('#current-player'));
+    });
+  
+    test('Clicking an empty tile does not change previously marked tile', function () {
+      clickTile(browser, 0, 0);
+      clickTile(browser, 1, 1);
+      browser.assert.hasClass(tileSelector(0, 0), 'x');
+      browser.assert.hasNoClass(tileSelector(0, 0), 'o');
+  
+      clickTile(browser, 2, 2);
+      browser.assert.hasClass(tileSelector(1, 1), 'o');
+      browser.assert.hasNoClass(tileSelector(1, 1), 'x');
+    });
+  
+    test('Clicking a marked tile does not change its mark', function () {
+      clickTile(browser, 0, 0);
+      clickTile(browser, 0, 0);
+      browser.assert.element('.x');
+      browser.assert.hasClass(tileSelector(0, 0), 'x');
+      browser.assert.hasNoClass(tileSelector(0, 0), 'o');
+  
+      clickTile(browser, 1, 1);
+      clickTile(browser, 1, 1);
+      browser.assert.element('.o');
+      browser.assert.hasClass(tileSelector(1, 1), 'o');
+      browser.assert.hasNoClass(tileSelector(1, 1), 'x');
+    });
+  
+    test('Clicking a marked tile does not toggle current player', function () {
+      clickTile(browser, 0, 0);
+      clickTile(browser, 0, 0);
+      assert.equal('o', browser.text('#current-player'));
+  
+      clickTile(browser, 1, 1);
+      clickTile(browser, 1, 1);
+      assert.equal('x', browser.text('#current-player'));
+    });
   });
 
-  test('Clicking an empty tile marks it with current player', function () {
-    clickTile(browser, 0, 0);
-    browser.assert.element('.x');
-    browser.assert.hasClass(tileSelector(0, 0), 'x');
-    browser.assert.hasNoClass(tileSelector(0, 0), 'o');
+  suite('End of game:', function  () {
+    setup(function (done) {
+      browser = new Browser({site: 'file://'});
+      browser.visit('file://' + process.cwd() + '/app/tic-tac-toe.html', done);
+    });
 
-    clickTile(browser, 1, 1);
-    browser.assert.element('.o');
-    browser.assert.hasClass(tileSelector(1, 1), 'o');
-    browser.assert.hasNoClass(tileSelector(1, 1), 'x');
-  });
+    test('Game not over', function () {
+      clickTile(browser, 1, 1)
+      browser.assert.text('#winner', '');
+    });
 
-  test('Clicking an empty tile toggles current player', function () {
-    clickTile(browser, 0, 0);
-    assert.equal('o', browser.text('#current-player'));
+    test('Cat\'s game', function () {
+      clickTile(browser, 0, 0);
+      clickTile(browser, 1, 0);
+      clickTile(browser, 1, 1);
+      clickTile(browser, 0, 1);
+      clickTile(browser, 2, 0);
+      clickTile(browser, 0, 2);
+      clickTile(browser, 1, 2);
+      clickTile(browser, 2, 2);
+      clickTile(browser, 2, 1);
+      browser.assert.text('#winner', /cat/i);
+    });
 
-    clickTile(browser, 1, 1);
-    assert.equal('x', browser.text('#current-player'));
-  });
+    test('Win for X', function () {
+      // TODO
+    });
 
-  test('Clicking an empty tile does not change previously marked tile', function () {
-    clickTile(browser, 0, 0);
-    clickTile(browser, 1, 1);
-    browser.assert.hasClass(tileSelector(0, 0), 'x');
-    browser.assert.hasNoClass(tileSelector(0, 0), 'o');
-
-    clickTile(browser, 2, 2);
-    browser.assert.hasClass(tileSelector(1, 1), 'o');
-    browser.assert.hasNoClass(tileSelector(1, 1), 'x');
-  });
-
-  test('Clicking a marked tile does not change its mark', function () {
-    clickTile(browser, 0, 0);
-    clickTile(browser, 0, 0);
-    browser.assert.element('.x');
-    browser.assert.hasClass(tileSelector(0, 0), 'x');
-    browser.assert.hasNoClass(tileSelector(0, 0), 'o');
-
-    clickTile(browser, 1, 1);
-    clickTile(browser, 1, 1);
-    browser.assert.element('.o');
-    browser.assert.hasClass(tileSelector(1, 1), 'o');
-    browser.assert.hasNoClass(tileSelector(1, 1), 'x');
-  });
-
-  test('Clicking a marked tile does not toggle current player', function () {
-    clickTile(browser, 0, 0);
-    clickTile(browser, 0, 0);
-    assert.equal('o', browser.text('#current-player'));
-
-    clickTile(browser, 1, 1);
-    clickTile(browser, 1, 1);
-    assert.equal('x', browser.text('#current-player'));
+    test('Win for O', function () {
+      // TODO
+    });
   });
 });

@@ -11,7 +11,7 @@ p {
 }
 
 span {
-  text-transform: capitalize;
+  text-transform: uppercase;
 }
 
 #board {

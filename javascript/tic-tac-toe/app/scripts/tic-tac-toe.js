@@ -3,9 +3,8 @@
 
 var ticTacToe = {
 
-  width: 3,
-
   utilities: {
+    width: 3,
     Point: function (x, y) {
       'use strict';
       var self = this;
@@ -30,7 +29,6 @@ var ticTacToe = {
       return result;
     },
     not: function(x) {'use strict'; return !x; },
-    boolToPlayer: function(b) { 'use strict'; return b ? 'x' : 'o'; },
     getTileCoords: function(tile) {
       'use strict';
       var x = tile.index(),
@@ -56,10 +54,10 @@ var ticTacToe = {
     var x,
       y,
       row;
-    for (x = 0; x < this.width; x += 1) {
+    for (x = 0; x < this.utilities.width; x += 1) {
       row = $('<div/>').addClass('row'); // handy shortcut!
       boardElt.append(row);
-      for (y = 0; y < this.width; y += 1) {
+      for (y = 0; y < this.utilities.width; y += 1) {
         row.append($('<div/>').addClass('tile'));
       }
     }
@@ -69,8 +67,8 @@ var ticTacToe = {
     'use strict';
     boardElt.removeClass('js-off');
     this.newBoard(boardElt);
-    $('.row').css('height', String(100.0 / this.width) + '%');
-    $('.tile').css('width', String(100.0 / this.width) + '%');
+    $('.row').css('height', String(100.0 / this.utilities.width) + '%');
+    $('.tile').css('width', String(100.0 / this.utilities.width) + '%');
     this.play(boardElt);
   },
 
@@ -86,17 +84,22 @@ var ticTacToe = {
         .skipDuplicates(function(arr1, arr2) {
           var newPoint = arr2[arr2.length - 1];
           return arr1.length > 0 && newPoint.memberOf(arr1);
-          }).filter(function(arr) { return arr.length > 0; }),
-      lastTileMarked = allTilesClicked.map(function(arr) { return arr[arr.length - 1]; }),
+          }),
+      lastTileMarked = allTilesClicked.skip(1).map(function(arr) { return arr[arr.length - 1]; }),
       oddTurn = lastTileMarked.scan(true, utils.not),
       tilesOdd = lastTileMarked.filter(oddTurn)
         .scan([], function(arr, obj) { return arr.concat([obj]); }),
       tilesEven = lastTileMarked.filter(oddTurn.not())
-        .scan([], function(arr, obj) { return arr.concat([obj]); });
+        .scan([], function(arr, obj) { return arr.concat([obj]); }),
+      catsGame = allTilesClicked.map(function (arr) { return arr.length >= utils.width * utils.width }).skipDuplicates().skip(1);
 
-    oddTurn.map(utils.boolToPlayer).assign($('#current-player'), 'text');
+    oddTurn.map(function (b) { return b ? 'x' : 'o'; }).assign($('#current-player'), 'text');
     tilesOdd.onValue(utils.draw(boardElt, 'o'));
     tilesEven.onValue(utils.draw(boardElt, 'x'));
+    catsGame.onValue(function() {
+      $('#winner').text("cat's game!");
+      $('p:first-of-type').hide();
+    });
   }
 };
 
