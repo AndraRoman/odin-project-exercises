@@ -4,7 +4,8 @@
 var assert = require('chai').assert,
   ttt = require('../app/scripts/utils.js').utils;
 
-suite('Vector:', function() {
+suite('Vector:', function () {
+  'use strict';
 
   setup(function () {
     this.p = new ttt.Vector(3, 5);
@@ -32,15 +33,15 @@ suite('Vector:', function() {
   });
 
   test('addToSet returns array with point added when not already present', function () {
-    var list = [this.r, this.q];
+    var list = [this.r, this.q],
       newList = this.newVector.addToSet(list);
-    assert.equal(3, newList.length)
+    assert.equal(3, newList.length);
   });
 
   test('addToSet returns unchanged array when point already present', function () {
     var list = [this.r, this.p, this.q],
       newList = this.newVector.addToSet(list);
-    assert.equal(3, newList.length)
+    assert.equal(3, newList.length);
   });
 
   test('add vectors', function () {
@@ -51,7 +52,7 @@ suite('Vector:', function() {
   });
 
   test('negate vector', function () {
-    var expected = new ttt.Vector(-3, -5);
+    var expected = new ttt.Vector(-3, -5),
       result = this.p.negate();
     assert.isTrue(expected.equals(result));
   });
@@ -59,6 +60,7 @@ suite('Vector:', function() {
 });
 
 suite('Win detection:', function () {
+  'use strict';
 
   test('Row', function () {
     var point = new ttt.Vector(1, 0),
@@ -110,15 +112,15 @@ suite('Win detection:', function () {
 
   test('No win', function () {
     var point = new ttt.Vector(1, 0),
-      arr = [new ttt.Vector(2, 2), new ttt.Vector(2, 0), new ttt.Vector(1, 1)]
+      arr = [new ttt.Vector(2, 2), new ttt.Vector(2, 0), new ttt.Vector(1, 1)];
     assert.isFalse(point.wins(arr));
   });
 
   test('Empty array', function () {
     var point = new ttt.Vector(1, 0),
       arr = [],
-      winningPoints = [];
-    assert.equal(0, winningPoints.length);
+      winningPoints = point.wins(arr);
+    assert.isFalse(winningPoints);
   });
 
 });

@@ -66,9 +66,16 @@ var ticTacToe = {
         }
       });
 
-    gameWon.or(boardFull).filter(utils.ident).onValue(function () {
-      $('p:first-of-type').css('visibility', 'hidden');
+    gameWon.or(boardFull).filter(utils.ident).onValue(function (val) {
+      var winnerElt = $('#winner');
+      $('#current-player-par').addClass('hidden');
       $('.tile').addClass('tile-frozen').removeClass('tile');
+      if (val === true) {
+        winnerElt.text('nobody');
+      } else {
+        oddTurn.map(function (b) { return  b ? 'o' : 'x'; }).assign(winnerElt, 'text');
+      }
+      $('#winner-par').removeClass('hidden');
     });
   }
 };
