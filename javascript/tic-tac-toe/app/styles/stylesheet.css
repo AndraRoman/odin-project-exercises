@@ -40,7 +40,7 @@ span {
   border-bottom: none;
 }
 
-.tile {
+[class*=tile] {
   box-sizing: border-box;
   display: inline-block;
   float: left;
@@ -52,11 +52,11 @@ span {
   box-sizing: border-box;
 }
 
-.tile:last-child {
+[class*=tile]:last-child {
   border-right: none;
 }
 
-.tile:before, .tile:after {
+[class*=tile]:before, [class*=tile]:after {
   margin: auto;
   position: relative;
   top: 25%;
@@ -68,4 +68,9 @@ span {
 
 .o:before {
   content: "O";
+}
+
+.won {
+  color: red;
+  font-weight: bold;
 }

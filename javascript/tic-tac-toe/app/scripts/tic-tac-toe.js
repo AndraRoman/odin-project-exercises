@@ -4,7 +4,9 @@
 var ticTacToe = {
 
   utilities: {
+
     width: 3,
+
     Vector: function Vector(x, y) {
       'use strict';
       var self = this;
@@ -54,12 +56,9 @@ var ticTacToe = {
         }
       };
     },
-    available: function(tile) {
-      'use strict';
-      var result = tile.jquery && tile.attr('class').split(' ').length === 1;
-      return result;
-    },
+
     not: function(x) {'use strict'; return !x; },
+
     getTileCoords: function(tile) {
       'use strict';
       var x = tile.index(),
@@ -67,14 +66,20 @@ var ticTacToe = {
           p = new this.Vector(x, y);
       return p;
     },
+
+    findTile: function findTile(board, point) {
+      return board.find(`.row:eq(${point.y})`).find(`.tile:eq(${point.x})`);
+    },
+
     draw: function(elt, symbol) {
       'use strict';
-      var board = $(elt);
+      var board = $(elt),
+        self = this;
       return function(points) {
         var i, p;
         for (i = 0; i < points.length; i += 1) {
           p = points[i];
-          board.find(`.row:eq(${p.y})`).find(`.tile:eq(${p.x})`).addClass(symbol);
+          self.findTile(board, p).addClass(symbol);
         }
       };
     }
@@ -106,6 +111,11 @@ var ticTacToe = {
   play: function (boardElt) {
     'use strict';
     var utils = this.utilities,
+      findWinsByPlayer,
+      oddWins,
+      evenWins,
+      catsGame,
+      gameOver,
       rawLastTileClicked = boardElt.asEventStream('click')
         .map(function(event) { return utils.getTileCoords($(event.target)); })
         .toProperty(),
@@ -121,15 +131,42 @@ var ticTacToe = {
       tilesOdd = lastTileMarked.filter(oddTurn)
         .scan([], function(arr, obj) { return arr.concat([obj]); }),
       tilesEven = lastTileMarked.filter(oddTurn.not())
-        .scan([], function(arr, obj) { return arr.concat([obj]); }),
-      catsGame = allTilesClicked.map(function (arr) { return arr.length >= utils.width * utils.width }).skipDuplicates().skip(1);
+        .scan([], function(arr, obj) { return arr.concat([obj]); });
 
     oddTurn.map(function (b) { return b ? 'x' : 'o'; }).assign($('#current-player'), 'text');
     tilesOdd.onValue(utils.draw(boardElt, 'o'));
     tilesEven.onValue(utils.draw(boardElt, 'x'));
-    catsGame.onValue(function() {
-      $('#winner').text("cat's game!");
+
+    findWinsByPlayer = function(arr) {
+       var point = arr[arr.length - 1],
+        rest = arr.slice(0, arr.length - 1),
+        winningTiles;
+      if (arr.length < 1) { return false; } else {
+        winningTiles = point.wins(rest);
+        if (winningTiles.length > 0) { return winningTiles; } else { return false; }
+      }
+    };
+
+    catsGame = allTilesClicked.map(function (arr) { return arr.length >= utils.width * utils.width }).skipDuplicates().skip(1).startWith(false);
+    oddWins = tilesOdd.map(findWinsByPlayer);
+    evenWins = tilesEven.map(findWinsByPlayer);
+
+    oddWins.or(evenWins).onValue(function(arr) {
+      var i;
+      if (arr) {
+        for (i = 0; i < arr.length; i += 1) {
+          arr.forEach(function(point) {
+            utils.findTile(boardElt, point).addClass('won');
+          });
+        }
+      }
+    });
+
+    gameOver = oddWins.or(evenWins).or(catsGame).filter(function (val) { return val; });
+
+    gameOver.onValue(function(val) {
       $('p:first-of-type').hide();
+      $('.tile').addClass('tile-frozen').removeClass('tile');
     });
   }
 };

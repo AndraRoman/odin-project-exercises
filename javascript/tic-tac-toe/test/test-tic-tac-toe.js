@@ -116,7 +116,7 @@ suite('Gameplay:', function () {
 
     test('Game not over', function () {
       clickTile(browser, 1, 1)
-      browser.assert.text('#winner', '');
+      browser.assert.elements('.won', 0);
     });
 
     test('Cat\'s game', function () {
@@ -129,15 +129,29 @@ suite('Gameplay:', function () {
       clickTile(browser, 1, 2);
       clickTile(browser, 2, 2);
       clickTile(browser, 2, 1);
-      browser.assert.text('#winner', /cat/i);
+      browser.assert.elements('.tile', 0); // should be frozen
+      browser.assert.elements('.won', 0);
     });
 
     test('Win for X', function () {
-      // TODO
+      clickTile(browser, 0, 0);
+      clickTile(browser, 0, 1);
+      clickTile(browser, 1, 1);
+      clickTile(browser, 1, 0);
+      clickTile(browser, 2, 2);
+      browser.assert.elements('.tile', 0);
+      browser.assert.elements('.won.x', 3);
     });
 
     test('Win for O', function () {
-      // TODO
+      clickTile(browser, 2, 0);
+      clickTile(browser, 0, 0);
+      clickTile(browser, 0, 1);
+      clickTile(browser, 1, 1);
+      clickTile(browser, 1, 0);
+      clickTile(browser, 2, 2);
+      browser.assert.elements('.tile', 0);
+      browser.assert.elements('.won.o', 3);
     });
   });
 });
