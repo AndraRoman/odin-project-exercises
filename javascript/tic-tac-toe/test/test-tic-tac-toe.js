@@ -3,6 +3,7 @@
 
 var assert = require('assert'),
   Browser = require('zombie'),
+  browser = new Browser({site: 'file://'}),
   tileSelector = function (x, y) {
     'use strict';
     return `.row:nth-child(${y + 1}) .tile:nth-child(${x + 1})`;
@@ -14,11 +15,9 @@ var assert = require('assert'),
 
 suite('Load page:', function () {
   'use strict';
-  var browser;
 
   suiteSetup(function (done) {
-    browser = new Browser({site: 'file://'});
-    browser.visit('file://' + process.cwd() + '/app/tic-tac-toe.html', done);
+    browser.visit(process.cwd() + '/app/tic-tac-toe.html', done);
   });
 
   test('Successfully loads page', function () {
@@ -43,13 +42,11 @@ suite('Load page:', function () {
 
 suite('Gameplay:', function () {
   'use strict';
-  var browser;
 
   suite('Mechanics:', function () {
 
     setup(function (done) {
-      browser = new Browser({site: 'file://'});
-      browser.visit('file://' + process.cwd() + '/app/tic-tac-toe.html', done);
+      browser.visit(process.cwd() + '/app/tic-tac-toe.html', done);
     });
 
     test('Clicking an empty tile marks it with current player', function () {
@@ -97,6 +94,7 @@ suite('Gameplay:', function () {
       browser.assert.hasNoClass(tileSelector(1, 1), 'x');
     });
   
+    // sometimes beforeEach times out here!
     test('Clicking a marked tile does not toggle current player', function () {
       clickTile(browser, 0, 0);
       clickTile(browser, 0, 0);
@@ -110,8 +108,7 @@ suite('Gameplay:', function () {
 
   suite('End of game:', function  () {
     setup(function (done) {
-      browser = new Browser({site: 'file://'});
-      browser.visit('file://' + process.cwd() + '/app/tic-tac-toe.html', done);
+      browser.visit(process.cwd() + '/app/tic-tac-toe.html', done);
     });
 
     test('Game not over', function () {
@@ -119,6 +116,7 @@ suite('Gameplay:', function () {
       browser.assert.elements('.won', 0);
     });
 
+// The following tests seem to take time dependent on order - whichever is first runs slower.
     test('Cat\'s game', function () {
       clickTile(browser, 0, 0);
       clickTile(browser, 1, 0);
@@ -153,5 +151,6 @@ suite('Gameplay:', function () {
       browser.assert.elements('.tile', 0);
       browser.assert.elements('.won.o', 3);
     });
+
   });
 });

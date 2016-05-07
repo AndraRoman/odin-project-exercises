@@ -2,7 +2,7 @@
 /*global suite, suiteSetup, setup, test*/
 
 var assert = require('chai').assert,
-  ttt = require('../app/scripts/tic-tac-toe.js').utils;
+  ttt = require('../app/scripts/utils.js').utils;
 
 suite('Vector:', function() {
 
