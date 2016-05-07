@@ -15,18 +15,43 @@ var ticTacToe = {
       this.memberOf = function(arr) {
         return arr.reduce(function(a, b) { return a || self.equals(b); }, false);
       };
-      this.addToSet = function(arr) {
+      this.addToSet = function (arr) {
         if (self.memberOf(arr)) {
           return arr;
         } else {
           return arr.concat(self);
         }
       };
-      this.add = function(diff) {
+      this.add = function (diff) {
         return new Vector(x + diff.x, y + diff.y);
       };
-      this.negate = function() {
+      this.negate = function () {
         return new Vector(-x, -y);
+      };
+      this.wins = function (arr) {
+        var nextPoint = arr[0],
+          rest = arr.slice(1),
+          diff,
+          distance;
+        if (arr.length < 1) { return false; }
+        diff = this.negate().add(nextPoint);
+        distance = Math.max(Math.abs(diff.x), Math.abs(diff.y));
+
+        if (distance > 1) {
+          if (diff.x % distance === 0 && diff.y % distance === 0) {
+            diff.x = diff.x / distance;
+            diff.y = diff.y / distance;
+          }
+        }
+
+        // TODO don't be specific to width of 3
+        var lastPoint = [nextPoint.add(diff), nextPoint.add(diff.negate()), this.add(diff.negate()), this.add(diff)]
+              .filter(function(point) { return (point.memberOf(rest)); })[0];
+        if (lastPoint) {
+          return [this, nextPoint, lastPoint];
+        } else {
+          return this.wins(rest);
+        }
       };
     },
     available: function(tile) {
